@@ -1,0 +1,26 @@
+import type { MetadataRoute } from 'next';
+import { SITE_CONFIG } from '@/config/site';
+
+export default function manifest(): MetadataRoute.Manifest {
+  return {
+    name: SITE_CONFIG.title,
+    short_name: SITE_CONFIG.name,
+    description: SITE_CONFIG.description,
+    start_url: '/',
+    display: 'standalone',
+    background_color: '#0B0F17',
+    theme_color: SITE_CONFIG.themeColor,
+    icons: [
+      {
+        src: '/android-chrome-192x192.png?v=2',
+        sizes: '192x192',
+        type: 'image/png',
+      },
+      {
+        src: '/android-chrome-512x512.png?v=2',
+        sizes: '512x512',
+        type: 'image/png',
+      },
+    ],
+  };
+}
