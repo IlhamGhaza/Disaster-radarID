@@ -726,7 +726,7 @@ export default function DisasterMap({
       </div>
 
       {/* 4. Timeline Bar (LIVE / 1H / 6H / 24H / 30D) */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[1000] pointer-events-auto">
+      <div className="absolute bottom-3 sm:bottom-6 left-1/2 -translate-x-1/2 z-[1000] pointer-events-auto max-w-[calc(100vw-1rem)]">
         <div className="flex items-center gap-1 rounded-2xl border border-white/15 bg-[#0B0F17]/90 px-1.5 sm:px-2 py-1.5 backdrop-blur-xl shadow-2xl">
           <span className="flex items-center gap-1 px-2 text-[10px] font-bold uppercase tracking-wider text-[#8B95A7] hidden sm:flex">
             <Clock className="h-3 w-3" />
@@ -762,7 +762,7 @@ export default function DisasterMap({
       </div>
 
       {/* 5. Left Floating Controls (Layer Toggles & Map Controls) */}
-      <div className="absolute bottom-20 left-4 sm:bottom-6 sm:left-4 z-[1000] flex flex-col gap-2 pointer-events-auto">
+      <div className="absolute bottom-16 left-3 sm:bottom-6 sm:left-4 z-[1000] flex flex-col gap-2 pointer-events-auto">
         {/* Layer Selector Trigger */}
         <div className="relative">
           <button
@@ -933,7 +933,7 @@ export default function DisasterMap({
       <button
         type="button"
         onClick={() => setShowMobileActivitySheet(true)}
-        className="sm:hidden absolute bottom-20 right-4 z-[1000] flex items-center gap-2 px-3 py-2 rounded-2xl border border-white/20 bg-[#0B0F17]/95 text-white shadow-2xl backdrop-blur-xl active:scale-95 transition pointer-events-auto"
+        className="sm:hidden absolute bottom-16 right-3 z-[1000] flex items-center gap-2 px-3 py-2 rounded-2xl border border-white/20 bg-[#0B0F17]/95 text-white shadow-2xl backdrop-blur-xl active:scale-95 transition pointer-events-auto"
       >
         <span className="relative flex h-2 w-2">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />

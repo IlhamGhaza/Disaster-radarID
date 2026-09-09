@@ -46,7 +46,7 @@ export default async function MapPage() {
   return (
     <div className="flex flex-col w-full bg-[#0B0F17]">
       {/* Interactive Map Section */}
-      <div className="relative h-[calc(100vh-61px)] w-full overflow-hidden bg-[#0B0F17]">
+      <div className="relative h-[calc(100svh-60px)] sm:h-[calc(100dvh-60px)] w-full overflow-hidden bg-[#0B0F17]">
         <h1 className="sr-only">Peta Bencana Indonesia</h1>
         <p className="sr-only">
           Peta interaktif pemantauan bencana Indonesia. Pantau sebaran gempa terkini BMKG, banjir BNPB, aktivitas gunung api PVMBG, dan sebaran abu vulkanik Darwin VAAC.

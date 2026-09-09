@@ -33,9 +33,9 @@ export function Navbar() {
   return (
     <header
       suppressHydrationWarning
-      className="sticky top-0 z-50 w-full border-b border-white/10 bg-[#0B0F17]/90 backdrop-blur-md"
+      className="sticky top-0 z-50 w-full h-[60px] border-b border-white/10 bg-[#0B0F17]/90 backdrop-blur-md flex items-center"
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+      <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Brand */}
         <Link
           href="/"
