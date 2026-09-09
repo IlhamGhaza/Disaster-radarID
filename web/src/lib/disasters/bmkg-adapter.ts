@@ -111,37 +111,56 @@ export async function fetchBmkgEarthquakes(): Promise<{
   lastUpdated: string;
 }> {
   try {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 4000);
+    const fetchEndpoint = async (url: string) => {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 4500);
+        const res = await fetch(url, {
+          signal: controller.signal,
+          next: { revalidate: 120 }, // 2 min cache
+        });
+        clearTimeout(timeoutId);
+        if (!res.ok) return [];
+        const data: BmkgResponse = await res.json();
+        const raw = data.Infogempa?.gempa;
+        return Array.isArray(raw) ? raw : [raw].filter(Boolean) as BmkgGempaItem[];
+      } catch {
+        return [];
+      }
+    };
 
-    const res = await fetch('https://data.bmkg.go.id/DataMKG/TEWS/gempaterkini.json', {
-      signal: controller.signal,
-      next: { revalidate: 180 }, // 3 min cache
-    });
+    // Ingest all 3 official BMKG feeds: real-time latest (autogempa), felt (gempadirasakan), and M>=5.0 (gempaterkini)
+    const [autoList, feltList, terkiniList] = await Promise.all([
+      fetchEndpoint('https://data.bmkg.go.id/DataMKG/TEWS/autogempa.json'),
+      fetchEndpoint('https://data.bmkg.go.id/DataMKG/TEWS/gempadirasakan.json'),
+      fetchEndpoint('https://data.bmkg.go.id/DataMKG/TEWS/gempaterkini.json'),
+    ]);
 
-    clearTimeout(timeoutId);
+    const combinedRaw = [...autoList, ...feltList, ...terkiniList];
 
-    if (!res.ok) {
-      throw new Error(`BMKG returned status ${res.status}`);
+    if (combinedRaw.length === 0) {
+      throw new Error('BMKG returned empty earthquake list across all endpoints');
     }
 
-    const data: BmkgResponse = await res.json();
-    const rawList = Array.isArray(data.Infogempa?.gempa)
-      ? data.Infogempa.gempa
-      : [data.Infogempa?.gempa].filter(Boolean);
-
-    if (!rawList || rawList.length === 0) {
-      throw new Error('BMKG returned empty earthquake list');
+    // Deduplicate by DateTime / Tanggal+Jam + Coordinates + Magnitude
+    const seen = new Set<string>();
+    const dedupedRaw: BmkgGempaItem[] = [];
+    for (const item of combinedRaw) {
+      const key = `${item.DateTime || item.Tanggal + item.Jam}_${item.Coordinates || ''}_${item.Magnitude || ''}`;
+      if (!seen.has(key)) {
+        seen.add(key);
+        dedupedRaw.push(item);
+      }
     }
 
-    const events: DisasterEvent[] = rawList.map((item, idx) => {
+    const events: DisasterEvent[] = dedupedRaw.map((item, idx) => {
       const [latStr, lonStr] = (item.Coordinates || '').split(',');
       const lat = parseFloat(latStr) || 0;
       const lon = parseFloat(lonStr) || 0;
       const mag = parseFloat(item.Magnitude) || 5.0;
 
       const severity =
-        mag >= 6.5 ? 'critical' : mag >= 5.5 ? 'high' : mag >= 4.5 ? 'moderate' : 'low';
+        mag >= 6.5 ? 'critical' : mag >= 5.5 ? 'high' : mag >= 4.0 ? 'moderate' : 'low';
 
       // Parse date time or fallback
       let isoTime = new Date().toISOString();
@@ -153,29 +172,35 @@ export async function fetchBmkgEarthquakes(): Promise<{
         // use fallback
       }
 
+      const statusText =
+        item.Potensi || (item.Dirasakan ? `Dirasakan: ${item.Dirasakan}` : 'Info BMKG');
+      const descText = `Kedalaman: ${item.Kedalaman}. ${
+        item.Potensi || (item.Dirasakan ? `Dirasakan (${item.Dirasakan})` : 'Tidak berpotensi tsunami.')
+      }`;
+
       return {
         id: `bmkg-eq-${item.DateTime || idx}-${mag}`,
         type: 'earthquake',
         title: `Gempa Bumi M ${item.Magnitude} ${item.Wilayah}`,
-        description: `Kedalaman: ${item.Kedalaman}. ${item.Potensi || 'Tidak berpotensi tsunami.'}`,
+        description: descText,
         latitude: lat,
         longitude: lon,
         locationName: item.Wilayah,
         eventTime: isoTime,
         updatedAt: new Date().toISOString(),
         severity,
-        status: item.Potensi || 'Info BMKG',
+        status: statusText,
         source: {
           name: 'BMKG Indonesia',
           url: 'https://data.bmkg.go.id/',
           description: 'Pusat Gempa Bumi dan Tsunami BMKG',
         },
-        isOfficialWarning: mag >= 5.5,
-        radiusKm: Math.round(mag * 12),
+        isOfficialWarning: mag >= 5.0 || !!item.Dirasakan,
+        radiusKm: Math.max(15, Math.round(mag * 8)),
         metadata: {
           magnitude: mag,
           depth: item.Kedalaman,
-          tsunamiPotential: item.Potensi,
+          tsunamiPotential: item.Potensi || 'Tidak berpotensi tsunami',
           shakemapUrl: item.Shakemap
             ? `https://data.bmkg.go.id/DataMKG/TEWS/${item.Shakemap}`
             : undefined,

@@ -10,6 +10,7 @@ import { formatWibDateTime } from '@/lib/parser/date-utils';
 import { searchIndonesiaPlaces, IndonesiaPlace } from '@/lib/indonesia-places';
 import { getAllMonitoredVolcanoes, MonitoredVolcanoItem } from '@/lib/magma-status';
 import { DISASTER_SAFETY_GUIDES } from '@/lib/safety-guides';
+import { haversineDistanceKm } from '@/lib/geo-checker';
 import {
   getCachedUserLocation,
   saveUserLocation,
@@ -133,11 +134,12 @@ export default function DisasterMap({
 
   const [showAshForecast, setShowAshForecast] = useState(true);
   const [showHazardZones, setShowHazardZones] = useState(true);
+  const [showRecentActivity, setShowRecentActivity] = useState(true);
+  const [showMobileActivitySheet, setShowMobileActivitySheet] = useState(false);
   const [showLayersMenu, setShowLayersMenu] = useState(false);
   const [showSourceStatus, setShowSourceStatus] = useState(false);
-  const [showRecentActivity, setShowRecentActivity] = useState(true);
 
-  // Search autocomplete
+  // Search & Autocomplete state
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState<IndonesiaPlace[]>([]);
   const [volcanoSuggestions, setVolcanoSuggestions] = useState<MonitoredVolcanoItem[]>([]);
@@ -177,11 +179,43 @@ export default function DisasterMap({
   useEffect(() => {
     const loc = getCachedUserLocation();
     setCachedUserLoc(loc);
+
+    const handleUpdate = () => {
+      setCachedUserLoc(getCachedUserLocation());
+    };
+    const handleClear = () => {
+      setCachedUserLoc(null);
+    };
+
+    window.addEventListener('disaster-radar:location-updated', handleUpdate);
+    window.addEventListener('disaster-radar:location-cleared', handleClear);
+
+    return () => {
+      window.removeEventListener('disaster-radar:location-updated', handleUpdate);
+      window.removeEventListener('disaster-radar:location-cleared', handleClear);
+    };
   }, []);
 
-  // Filter events based on active category toggles
+  // Filter events based on active category toggles and explicitly sort newest first
   const filteredEvents = useMemo(() => {
-    return events.filter((ev) => activeCategories[ev.type]);
+    const now = Date.now();
+    return events
+      .filter((ev) => {
+        if (!activeCategories[ev.type]) return false;
+        // Strict requirement: Gempa yang ditampilkan hanya 24 jam kebelakang
+        if (ev.type === 'earthquake') {
+          const evTime = new Date(ev.eventTime || ev.updatedAt || 0).getTime();
+          if (now - evTime > 24 * 3600 * 1000) {
+            return false;
+          }
+        }
+        return true;
+      })
+      .sort((a, b) => {
+        const timeA = new Date(a.eventTime || a.updatedAt || 0).getTime();
+        const timeB = new Date(b.eventTime || b.updatedAt || 0).getTime();
+        return timeB - timeA;
+      });
   }, [events, activeCategories]);
 
   // Autocomplete outside click
@@ -398,11 +432,13 @@ export default function DisasterMap({
 
       // Initial props or cached location
       if (initialLat && initialLng) {
-        map.flyTo([initialLat, initialLng], 7.5, { duration: 1 });
+        map.setView([initialLat, initialLng], 8.5);
         renderUserMarker({ latitude: initialLat, longitude: initialLng }, initialLabel || 'Area Terpilih');
       } else {
         const cached = getCachedUserLocation();
         if (cached) {
+          // Immediately center and zoom in on user's saved location
+          map.setView([cached.latitude, cached.longitude], 11);
           renderUserMarker({ latitude: cached.latitude, longitude: cached.longitude }, cached.label);
         }
       }
@@ -589,19 +625,10 @@ export default function DisasterMap({
       {/* 1. Map Canvas with OpenStreetMap dark mode transformation */}
       <div ref={mapContainerRef} className="h-full w-full osm-dark-tiles" />
 
-      {/* 2. Top Location Alert Banner (User Zone Detection) */}
-      <div className="absolute top-3 left-3 right-3 sm:left-4 sm:right-auto sm:max-w-xl z-[1000] pointer-events-auto">
-        <LocationAlertBanner
-          events={events}
-          advisories={advisories}
-          onSelectEvent={handleFocusEvent}
-        />
-      </div>
-
-      {/* 3. Search Bar & Suggestions */}
+      {/* 2. Top Search Bar & Suggestions (Topmost on mobile) */}
       <div
         ref={searchContainerRef}
-        className="absolute top-20 sm:top-4 left-3 right-3 sm:left-auto sm:right-4 sm:w-80 z-[1000] pointer-events-auto"
+        className="absolute top-3 left-3 right-3 sm:top-4 sm:left-auto sm:right-4 sm:w-80 z-[1010] pointer-events-auto"
       >
         <div className="relative flex items-center rounded-2xl border border-white/15 bg-[#0B0F17]/90 backdrop-blur-xl shadow-2xl">
           <Search className="ml-3.5 h-4 w-4 text-[#8B95A7] shrink-0" />
@@ -639,7 +666,7 @@ export default function DisasterMap({
 
         {/* Autocomplete Dropdown */}
         {showSuggestions && (suggestions.length > 0 || volcanoSuggestions.length > 0) && (
-          <div className="absolute top-full mt-2 w-full max-h-72 overflow-y-auto rounded-2xl border border-white/15 bg-[#0B0F17]/95 p-2 shadow-2xl backdrop-blur-2xl z-[1001]">
+          <div className="absolute top-full mt-2 w-full max-h-72 overflow-y-auto rounded-2xl border border-white/15 bg-[#0B0F17]/95 p-2 shadow-2xl backdrop-blur-2xl z-[1020]">
             {suggestions.length > 0 && (
               <div className="mb-2">
                 <span className="px-2 text-[10px] font-bold uppercase tracking-wider text-[#8B95A7]">
@@ -689,28 +716,46 @@ export default function DisasterMap({
         )}
       </div>
 
-      {/* 4. Timeline Bar (LIVE / 24H / 7D / 30D / 1Y) */}
+      {/* 3. Top Location Alert Banner (Placed safely below search on mobile, top-left on desktop) */}
+      <div className="absolute top-[62px] left-3 right-3 sm:top-4 sm:left-4 sm:right-auto sm:max-w-xl z-[1000] pointer-events-auto">
+        <LocationAlertBanner
+          events={events}
+          advisories={advisories}
+          onSelectEvent={handleFocusEvent}
+        />
+      </div>
+
+      {/* 4. Timeline Bar (LIVE / 1H / 6H / 24H / 30D) */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[1000] pointer-events-auto">
-        <div className="flex items-center gap-1 rounded-2xl border border-white/15 bg-[#0B0F17]/90 px-2 py-1.5 backdrop-blur-xl shadow-2xl">
+        <div className="flex items-center gap-1 rounded-2xl border border-white/15 bg-[#0B0F17]/90 px-1.5 sm:px-2 py-1.5 backdrop-blur-xl shadow-2xl">
           <span className="flex items-center gap-1 px-2 text-[10px] font-bold uppercase tracking-wider text-[#8B95A7] hidden sm:flex">
             <Clock className="h-3 w-3" />
             <span>Periode:</span>
           </span>
-          {(['LIVE', '24H', '7D', '30D', '1Y'] as TimelinePeriod[]).map((period) => (
+          {(
+            [
+              { id: 'LIVE', label: 'LIVE', shortLabel: 'LIVE' },
+              { id: '6H', label: '6 Jam', shortLabel: '6h' },
+              { id: '12H', label: '12 Jam', shortLabel: '12h' },
+              { id: '24H', label: '24 Jam', shortLabel: '24h' },
+              { id: '30D', label: '30 Hari', shortLabel: '30d' },
+            ] as const
+          ).map((item) => (
             <button
-              key={period}
+              key={item.id}
               type="button"
-              onClick={() => handleTimelineChange(period)}
-              className={`rounded-xl px-3 py-1 text-xs font-bold transition ${
-                selectedTimeline === period
+              onClick={() => handleTimelineChange(item.id as TimelinePeriod)}
+              className={`rounded-xl px-2.5 sm:px-3 py-1 text-xs font-bold transition whitespace-nowrap ${
+                selectedTimeline === item.id
                   ? 'bg-gradient-to-r from-[#EF4444] to-[#F97316] text-white shadow-md shadow-red-500/20'
                   : 'text-[#8B95A7] hover:text-white hover:bg-white/5'
               }`}
             >
-              {period === 'LIVE' && (
-                <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400 mr-1.5 animate-pulse" />
+              {item.id === 'LIVE' && (
+                <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400 mr-1 sm:mr-1.5 animate-pulse" />
               )}
-              {period}
+              <span className="sm:hidden">{item.shortLabel}</span>
+              <span className="hidden sm:inline">{item.label}</span>
             </button>
           ))}
         </div>
@@ -884,7 +929,134 @@ export default function DisasterMap({
         </div>
       )}
 
-      {/* 7. Collapsible Recent Activity Panel (Right side) */}
+      {/* 7. Mobile Floating Button for Aktivitas Terkini */}
+      <button
+        type="button"
+        onClick={() => setShowMobileActivitySheet(true)}
+        className="sm:hidden absolute bottom-20 right-4 z-[1000] flex items-center gap-2 px-3 py-2 rounded-2xl border border-white/20 bg-[#0B0F17]/95 text-white shadow-2xl backdrop-blur-xl active:scale-95 transition pointer-events-auto"
+      >
+        <span className="relative flex h-2 w-2">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500" />
+        </span>
+        <span className="text-xs font-black tracking-wide">Aktivitas</span>
+        <span className="rounded-full bg-white/10 px-1.5 py-0.5 text-[10px] font-bold text-[#CBD5E1]">
+          {filteredEvents.length}
+        </span>
+      </button>
+
+      {/* 7b. Mobile Aktivitas Terkini Bottom Sheet Drawer */}
+      {showMobileActivitySheet && (
+        <div className="sm:hidden fixed inset-0 z-[1050] flex flex-col justify-end bg-black/60 backdrop-blur-sm animate-in fade-in">
+          {/* Backdrop dismiss */}
+          <div className="flex-1" onClick={() => setShowMobileActivitySheet(false)} />
+
+          <div className="relative max-h-[75vh] w-full rounded-t-3xl border-t border-x border-white/20 bg-[#0B0F17]/98 backdrop-blur-2xl p-4 shadow-2xl flex flex-col animate-in slide-in-from-bottom-5 pointer-events-auto">
+            {/* Drag Handle */}
+            <div className="mx-auto mb-3 h-1.5 w-12 rounded-full bg-white/20" />
+
+            {/* Header */}
+            <div className="flex items-center justify-between pb-3 border-b border-white/10 mb-2">
+              <div className="flex items-center gap-2">
+                <span className="flex h-2.5 w-2.5 rounded-full bg-red-500 animate-pulse" />
+                <h3 className="text-sm font-black text-white uppercase tracking-wider">
+                  Aktivitas Bencana Terkini
+                </h3>
+                <span className="rounded-full bg-white/10 px-2 py-0.5 text-[11px] font-bold text-[#8B95A7]">
+                  {filteredEvents.length}
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowMobileActivitySheet(false)}
+                className="rounded-xl p-1.5 text-[#8B95A7] hover:bg-white/10 hover:text-white"
+                aria-label="Tutup aktivitas"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            {/* Event list */}
+            <div className="overflow-y-auto space-y-2 py-1 flex-1 pr-1">
+              {filteredEvents.length === 0 ? (
+                <div className="py-8 text-center text-xs text-[#8B95A7]">
+                  Tidak ada laporan bencana pada rentang waktu ini.
+                </div>
+              ) : (
+                filteredEvents.map((ev) => {
+                  const visual = DISASTER_VISUALS[ev.type] || DISASTER_VISUALS.earthquake;
+                  const distFromUser = cachedUserLoc
+                    ? haversineDistanceKm(
+                        { latitude: cachedUserLoc.latitude, longitude: cachedUserLoc.longitude },
+                        { latitude: ev.latitude, longitude: ev.longitude }
+                      )
+                    : null;
+
+                  return (
+                    <button
+                      key={ev.id}
+                      type="button"
+                      onClick={() => {
+                        handleFocusEvent(ev);
+                        setShowMobileActivitySheet(false);
+                      }}
+                      className="flex w-full items-start gap-3 p-3 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] active:bg-white/[0.12] border border-white/5 text-left transition"
+                    >
+                      <div
+                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-white/10"
+                        style={{ backgroundColor: `${visual.color}25`, color: visual.color }}
+                      >
+                        <DisasterIcon type={ev.type} size={18} color={visual.color} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="truncate text-xs font-bold text-white">
+                            {ev.title}
+                          </span>
+                          <span
+                            className="shrink-0 text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded"
+                            style={{
+                              backgroundColor:
+                                ev.severity === 'critical'
+                                  ? '#EF444430'
+                                  : ev.severity === 'high'
+                                  ? '#F9731630'
+                                  : '#EAB30830',
+                              color:
+                                ev.severity === 'critical'
+                                  ? '#F87171'
+                                  : ev.severity === 'high'
+                                  ? '#FB923C'
+                                  : '#FDE047',
+                            }}
+                          >
+                            {ev.severity}
+                          </span>
+                        </div>
+                        <div className="flex flex-wrap items-center gap-1.5 text-[10px] text-[#8B95A7] mt-1">
+                          <span>{ev.locationName || 'Indonesia'}</span>
+                          <span>•</span>
+                          <span>{getRelativeTime(ev.eventTime)}</span>
+                          {distFromUser !== null && (
+                            <>
+                              <span>•</span>
+                              <span className="text-[#38BDF8] font-bold">
+                                📍 {distFromUser.toFixed(1)} km
+                              </span>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 7c. Collapsible Recent Activity Panel (Desktop right side) */}
       <div className="hidden lg:block absolute top-20 right-4 w-72 z-[1000] pointer-events-auto">
         <div className="rounded-3xl border border-white/15 bg-[#0B0F17]/90 backdrop-blur-xl shadow-2xl overflow-hidden">
           <div
@@ -907,6 +1079,13 @@ export default function DisasterMap({
             <div className="max-h-80 overflow-y-auto p-2 space-y-1.5 border-t border-white/10">
               {filteredEvents.slice(0, 10).map((ev) => {
                 const visual = DISASTER_VISUALS[ev.type] || DISASTER_VISUALS.earthquake;
+                const distFromUser = cachedUserLoc
+                  ? haversineDistanceKm(
+                      { latitude: cachedUserLoc.latitude, longitude: cachedUserLoc.longitude },
+                      { latitude: ev.latitude, longitude: ev.longitude }
+                    )
+                  : null;
+
                 return (
                   <button
                     key={ev.id}
@@ -920,14 +1099,19 @@ export default function DisasterMap({
                     >
                       <DisasterIcon type={ev.type} size={18} color={visual.color} />
                     </div>
-                    <div className="truncate">
+                    <div className="truncate flex-1 min-w-0">
                       <div className="truncate text-xs font-bold text-white group-hover:text-[#FF8A3D] transition">
                         {ev.title}
                       </div>
-                      <div className="flex items-center gap-2 text-[10px] text-[#8B95A7] mt-0.5">
+                      <div className="flex flex-wrap items-center gap-1.5 text-[10px] text-[#8B95A7] mt-0.5">
                         <span>{ev.locationName || 'Indonesia'}</span>
                         <span>•</span>
                         <span>{getRelativeTime(ev.eventTime)}</span>
+                        {distFromUser !== null && (
+                          <span className="text-[#38BDF8] font-semibold">
+                            • 📍 {distFromUser.toFixed(1)} km
+                          </span>
+                        )}
                       </div>
                     </div>
                   </button>

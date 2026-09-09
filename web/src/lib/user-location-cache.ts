@@ -188,7 +188,24 @@ export function evaluateUserDisasterExposure(
 
   for (const ev of events) {
     const distKm = haversineDistanceKm(userLoc, { latitude: ev.latitude, longitude: ev.longitude });
-    const impactRadius = ev.radiusKm || (ev.type === 'earthquake' ? 60 : ev.type === 'tsunami' ? 50 : 15);
+
+    // Realistic calibrated impact radius per disaster category
+    const defaultRadius =
+      ev.type === 'earthquake'
+        ? (ev.metadata?.magnitude ? Number(ev.metadata.magnitude) * 7 : 35)
+        : ev.type === 'tsunami'
+        ? 30
+        : ev.type === 'volcano'
+        ? 5
+        : ev.type === 'flood'
+        ? 3.5
+        : ev.type === 'landslide'
+        ? 2.5
+        : ev.type === 'forest-fire'
+        ? 4
+        : 5;
+
+    const impactRadius = ev.radiusKm || defaultRadius;
 
     if (distKm <= impactRadius) {
       if (!closestCriticalEvent || distKm < closestCriticalEvent.distKm) {
@@ -207,8 +224,8 @@ export function evaluateUserDisasterExposure(
     return {
       status: 'INSIDE_DANGER_ZONE',
       dangerLevel: ev.severity === 'critical' ? 'critical' : 'high',
-      headline: `⚠️ PERHATIAN: Anda Berada di Zona Berdampak ${ev.title}`,
-      message: `Titik kejadian terdeteksi berjarak ${dist.toFixed(1)} km dari koordinat Anda. Sumber informasi resmi: ${ev.source.name}.`,
+      headline: `⚠️ PERHATIAN: Anda Berada di Zona Bahaya ${ev.title}`,
+      message: `Titik kejadian terdeteksi sangat dekat (${dist.toFixed(1)} km) dari koordinat Anda. Sumber informasi resmi: ${ev.source.name}.`,
       affectedEvent: ev,
       distanceKm: dist,
       safetyGuideType: ev.type,
@@ -227,8 +244,8 @@ export function evaluateUserDisasterExposure(
     return {
       status: 'NEARBY_WARNING',
       dangerLevel: 'moderate',
-      headline: `ℹ️ Info Sekitar: ${ev.title} (${dist.toFixed(0)} km)`,
-      message: `Terjadi aktivitas kebencanaan dalam radius ${dist.toFixed(1)} km dari lokasi Anda. Waspadai potensi dampak susulan.`,
+      headline: `ℹ️ Waspada Sekitar: ${ev.title} (${dist.toFixed(1)} km)`,
+      message: `Aktivitas kebencanaan dilaporkan berjarak ${dist.toFixed(1)} km dari lokasi Anda. Waspadai potensi dampak susulan.`,
       affectedEvent: ev,
       distanceKm: dist,
       safetyGuideType: ev.type,
@@ -252,4 +269,49 @@ export function evaluateUserDisasterExposure(
     ],
     lastCheckedAt: now,
   };
+}
+
+/**
+ * Request browser Notification permission
+ */
+export async function requestDisasterNotificationPermission(): Promise<NotificationPermission> {
+  if (typeof window === 'undefined' || !('Notification' in window)) {
+    return 'denied';
+  }
+  try {
+    return await Notification.requestPermission();
+  } catch {
+    return 'denied';
+  }
+}
+
+/**
+ * Dispatch native browser Web Notification for danger / warning zone
+ */
+export function dispatchWebDisasterNotification(alert: UserDisasterZoneAlert): boolean {
+  if (typeof window === 'undefined' || !('Notification' in window)) return false;
+  if (Notification.permission !== 'granted') return false;
+  if (alert.status === 'SAFE') return false;
+
+  const notifyKey = `notif_${alert.status}_${alert.headline}_${alert.distanceKm?.toFixed(1) || '0'}`;
+  const alreadyNotified = sessionStorage.getItem(notifyKey);
+  if (alreadyNotified) return false;
+
+  try {
+    sessionStorage.setItem(notifyKey, Date.now().toString());
+    const n = new Notification(alert.headline, {
+      body: alert.message,
+      icon: '/icon.png',
+      badge: '/icon.png',
+      tag: 'disaster-radar-alert',
+    });
+    n.onclick = () => {
+      window.focus();
+      n.close();
+    };
+    return true;
+  } catch (e) {
+    console.warn('Web notification dispatch failed:', e);
+    return false;
+  }
 }

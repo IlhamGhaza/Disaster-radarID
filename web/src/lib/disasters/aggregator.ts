@@ -146,26 +146,39 @@ export async function getAggregatedDisasters(
   // Filter by timeline period
   const now = Date.now();
   const filteredEvents = allEvents.filter((ev) => {
-    // Volcanic ash and active magma status are always relevant to current LIVE view
-    if (ev.type === 'volcanic-ash' || ev.type === 'volcano') return true;
-
     const evTime = new Date(ev.eventTime).getTime();
     const diffMs = now - evTime;
 
+    // User requirement: gempa yang ditampilkan hanya 24 jam kebelakang
+    if (ev.type === 'earthquake' && diffMs > 24 * 3600 * 1000) {
+      return false;
+    }
+
+    // Active volcano status from PVMBG represents ongoing active monitoring
+    if (ev.type === 'volcano') return true;
+
     switch (period) {
       case 'LIVE':
-        return diffMs <= 48 * 3600 * 1000;
+        // Real-time: within last 4 hours or official critical advisory
+        return diffMs <= 4 * 3600 * 1000 || ev.severity === 'critical' || ev.isOfficialWarning;
+      case '6H':
+        return diffMs <= 6 * 3600 * 1000;
+      case '12H':
+        return diffMs <= 12 * 3600 * 1000;
       case '24H':
         return diffMs <= 24 * 3600 * 1000;
-      case '7D':
-        return diffMs <= 7 * 24 * 3600 * 1000;
       case '30D':
         return diffMs <= 30 * 24 * 3600 * 1000;
-      case '1Y':
-        return diffMs <= 365 * 24 * 3600 * 1000;
       default:
         return true;
     }
+  });
+
+  // Explicitly sort newest events first (descending by timestamp)
+  filteredEvents.sort((a, b) => {
+    const timeA = new Date(a.eventTime || a.updatedAt || 0).getTime();
+    const timeB = new Date(b.eventTime || b.updatedAt || 0).getTime();
+    return timeB - timeA;
   });
 
   // Calculate severity breakdown

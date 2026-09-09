@@ -100,7 +100,7 @@ export default function AboutPage() {
         <div className="pt-4 flex items-center justify-between text-xs text-[#8B95A7]">
           <span>Dikembangkan oleh Ilham Ghazali</span>
           <a
-            href="https://github.com/IlhamGhaza/ashwatch"
+            href="https://github.com/IlhamGhaza/Disaster-radarID"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1 text-[#FF8A3D] hover:underline font-semibold"

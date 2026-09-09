@@ -58,7 +58,7 @@ export interface DisasterEvent {
   };
 }
 
-export type TimelinePeriod = 'LIVE' | '24H' | '7D' | '30D' | '1Y';
+export type TimelinePeriod = 'LIVE' | '6H' | '12H' | '24H' | '30D';
 
 export interface DisasterCategoryMeta {
   type: DisasterType;

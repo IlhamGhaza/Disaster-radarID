@@ -8,6 +8,8 @@ import {
   saveUserLocation,
   clearCachedUserLocation,
   evaluateUserDisasterExposure,
+  requestDisasterNotificationPermission,
+  dispatchWebDisasterNotification,
   CachedUserLocation,
   UserDisasterZoneAlert,
 } from '@/lib/user-location-cache';
@@ -23,6 +25,7 @@ import {
   BookOpen,
   Info,
   Radio,
+  Bell,
 } from 'lucide-react';
 
 interface LocationAlertBannerProps {
@@ -43,6 +46,13 @@ export function LocationAlertBanner({
   const [isDismissed, setIsDismissed] = useState(false);
   const [showGuideModal, setShowGuideModal] = useState(false);
   const [isLocating, setIsLocating] = useState(false);
+  const [notificationPermission, setNotificationPermission] = useState<NotificationPermission>('default');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && 'Notification' in window) {
+      setNotificationPermission(Notification.permission);
+    }
+  }, []);
 
   // Sync with localStorage
   const refreshLocation = () => {
@@ -55,8 +65,19 @@ export function LocationAlertBanner({
         advisories
       );
       setAlertInfo(evaluation);
+      if (evaluation.status !== 'SAFE') {
+        dispatchWebDisasterNotification(evaluation);
+      }
     } else {
       setAlertInfo(null);
+    }
+  };
+
+  const handleEnableNotification = async () => {
+    const perm = await requestDisasterNotificationPermission();
+    setNotificationPermission(perm);
+    if (perm === 'granted' && alertInfo && alertInfo.status !== 'SAFE') {
+      dispatchWebDisasterNotification(alertInfo);
     }
   };
 
@@ -224,6 +245,19 @@ export function LocationAlertBanner({
                     >
                       <span>Fokus ke Kejadian</span>
                       <ChevronRight className="h-3 w-3" />
+                    </button>
+                  )}
+
+                  {/* Notification Permission Prompt if not granted */}
+                  {notificationPermission !== 'granted' && typeof window !== 'undefined' && 'Notification' in window && (
+                    <button
+                      type="button"
+                      onClick={handleEnableNotification}
+                      className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/30 text-xs font-bold text-red-300 border border-red-500/40 transition"
+                      title="Aktifkan notifikasi bahaya di browser"
+                    >
+                      <Bell className="h-3.5 w-3.5 animate-bounce" />
+                      <span>Aktifkan Notifikasi</span>
                     </button>
                   )}
 

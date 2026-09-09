@@ -22,7 +22,7 @@ const VERIFIED_BNPB_EVENTS: DisasterEvent[] = [
       description: 'Pusdalops Penanggulangan Bencana',
     },
     isOfficialWarning: true,
-    radiusKm: 14,
+    radiusKm: 3.5,
     metadata: {
       waterLevelCm: 140,
     },
@@ -47,7 +47,7 @@ const VERIFIED_BNPB_EVENTS: DisasterEvent[] = [
       description: 'Pusdalops BNPB',
     },
     isOfficialWarning: true,
-    radiusKm: 8,
+    radiusKm: 2.5,
   },
   {
     id: 'bnpb-fire-kalteng-1',

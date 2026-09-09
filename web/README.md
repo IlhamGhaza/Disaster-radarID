@@ -17,20 +17,20 @@ AshWatch Web is the production-ready Next.js web application for monitoring, par
 
 ## 📋 Public Routes Architecture
 
-| Route | Purpose | SEO / Rendering |
-|---|---|---|
-| `/` | Primary landing page with crawlable text, active volcano ticker, and FAQ | SSG / ISR (300s) |
-| `/map` | Fullscreen interactive map with layers, geolocation, and filters | CSR / Dynamic |
-| `/volcanoes` | Directory of Indonesian volcanoes monitored by Darwin VAAC | SSG |
-| `/volcanoes/[slug]` | Individual volcano profile (e.g. Krakatau, Semeru, Lewotolok) | SSG (generateStaticParams) |
-| `/advisories` | Feed of recent Darwin VAAC bulletins with DTG and flight levels | SSG / ISR |
-| `/advisories/[id]` | Full bulletin inspector with parsed coordinates and raw attributes | SSG / ISR |
-| `/data-sources` | Explanation of Darwin VAAC, Himawari-9 satellite, and MAGMA | SSG |
-| `/faq` | Aviation meteorological FAQs with `FAQPage` JSON-LD schema | SSG |
-| `/about` | Project engineering mission, author, and safety disclaimer | SSG |
-| `/api/advisories` | Serverless REST API returning parsed advisory JSON | Edge / Serverless |
-| `/sitemap.xml` | XML sitemap containing all canonical indexable URLs | Dynamic |
-| `/robots.txt` | Robots crawler instructions | Dynamic |
+| Route               | Purpose                                                                  | SEO / Rendering            |
+| ------------------- | ------------------------------------------------------------------------ | -------------------------- |
+| `/`                 | Primary landing page with crawlable text, active volcano ticker, and FAQ | SSG / ISR (300s)           |
+| `/map`              | Fullscreen interactive map with layers, geolocation, and filters         | CSR / Dynamic              |
+| `/volcanoes`        | Directory of Indonesian volcanoes monitored by Darwin VAAC               | SSG                        |
+| `/volcanoes/[slug]` | Individual volcano profile (e.g. Krakatau, Semeru, Lewotolok)            | SSG (generateStaticParams) |
+| `/advisories`       | Feed of recent Darwin VAAC bulletins with DTG and flight levels          | SSG / ISR                  |
+| `/advisories/[id]`  | Full bulletin inspector with parsed coordinates and raw attributes       | SSG / ISR                  |
+| `/data-sources`     | Explanation of Darwin VAAC, Himawari-9 satellite, and MAGMA              | SSG                        |
+| `/faq`              | Aviation meteorological FAQs with `FAQPage` JSON-LD schema               | SSG                        |
+| `/about`            | Project engineering mission, author, and safety disclaimer               | SSG                        |
+| `/api/advisories`   | Serverless REST API returning parsed advisory JSON                       | Edge / Serverless          |
+| `/sitemap.xml`      | XML sitemap containing all canonical indexable URLs                      | Dynamic                    |
+| `/robots.txt`       | Robots crawler instructions                                              | Dynamic                    |
 
 ---
 
@@ -48,23 +48,28 @@ NEXT_PUBLIC_SITE_URL=https://ashwatch.vercel.app
 ## 🛠️ Local Development & Testing
 
 ### 1. Install Dependencies
+
 ```bash
 cd ashwatch-web
 npm install
 ```
 
 ### 2. Run Unit Tests (VAA Parser, Coordinates, Dates)
+
 ```bash
 npm test
 ```
 
 ### 3. Run Development Server
+
 ```bash
 npm run dev
 ```
+
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ### 4. Production Build Verification
+
 ```bash
 npm run build
 ```
@@ -76,16 +81,19 @@ npm run build
 ### Method A: Deploy via Vercel CLI (Recommended)
 
 1. Install Vercel CLI globally:
+
    ```bash
    npm i -g vercel
    ```
 
 2. Navigate into the web folder:
+
    ```bash
-   cd ashwatch-web
+   cd web
    ```
 
 3. Deploy to preview:
+
    ```bash
    vercel
    ```
@@ -97,12 +105,12 @@ npm run build
 
 ### Method B: Deploy via Vercel Git Integration
 
-1. Push your repository to GitHub: `https://github.com/IlhamGhaza/ashwatch`.
+1. Push your repository to GitHub: `https://github.com/IlhamGhaza/Disaster-radarID`.
 2. Go to your [Vercel Dashboard](https://vercel.com/dashboard) and click **Add New Project**.
-3. Import the `ashwatch` repository.
+3. Import the `Disaster-radarID` repository.
 4. **Important**: In the configuration modal, set the **Root Directory** to:
    ```
-   ashwatch-web
+   web
    ```
 5. Set Environment Variable:
    - `NEXT_PUBLIC_SITE_URL` = `https://your-custom-domain.vercel.app`
@@ -114,7 +122,7 @@ npm run build
 
 Follow these exact steps to index AshWatch:
 
-1. **Add Property**: Open [Google Search Console](https://search.google.com/search-console), select **URL Prefix**, and enter your production URL (e.g. `https://ashwatch.vercel.app`).
+1. **Add Property**: Open [Google Search Console](https://search.google.com/search-console), select **URL Prefix**, and enter your production URL (e.g. `https://disaster-radar-id.vercel.app/`).
 2. **Verify Ownership**: Use the HTML tag method or Vercel DNS CNAME record.
 3. **Submit Sitemap**: Go to **Sitemaps** in the left menu, submit `sitemap.xml`, and click **Submit**.
 4. **URL Inspection**: Enter the homepage URL into the top search bar and click **Test Live URL**. Verify that Googlebot renders the `<h1>` and content without errors.

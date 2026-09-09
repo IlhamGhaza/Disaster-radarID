@@ -8,8 +8,8 @@ const rawSiteUrl =
   (process.env.VERCEL_PROJECT_PRODUCTION_URL
     ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
     : process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : 'https://disaster-radar-id.vercel.app');
+      ? `https://${process.env.VERCEL_URL}`
+      : 'https://disaster-radar-id.vercel.app');
 
 export const SITE_URL = rawSiteUrl.replace(/\/+$/, '');
 
@@ -26,7 +26,7 @@ export const SITE_CONFIG = {
   author: 'Ilham Ghazali',
   authorUrl: 'https://github.com/IlhamGhaza',
   links: {
-    github: 'https://github.com/IlhamGhaza/ashwatch',
+    github: 'https://github.com/IlhamGhaza/Disaster-radarID',
     authorGithub: 'https://github.com/IlhamGhaza',
     bmkgDataSource: 'https://data.bmkg.go.id/',
     bnpbDataSource: 'https://gis.bnpb.go.id/',
