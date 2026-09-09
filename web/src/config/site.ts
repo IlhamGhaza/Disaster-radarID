@@ -3,15 +3,19 @@
  * Compliant with tugas.md and seo.md specifications.
  */
 
-const rawSiteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ||
-  (process.env.VERCEL_PROJECT_PRODUCTION_URL
-    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-    : process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : 'https://disaster-radar-id.vercel.app');
+function resolveSiteUrl(): string {
+  const envUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  if (envUrl && !envUrl.includes('disaster-radar-indonesia')) {
+    return envUrl;
+  }
+  const vercelProd = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+  if (vercelProd && !vercelProd.includes('disaster-radar-indonesia')) {
+    return `https://${vercelProd}`;
+  }
+  return 'https://disaster-radar-id.vercel.app';
+}
 
-export const SITE_URL = rawSiteUrl.replace(/\/+$/, '');
+export const SITE_URL = resolveSiteUrl().replace(/\/+$/, '');
 
 export const SITE_CONFIG = {
   name: 'Disaster Radar Indonesia',
