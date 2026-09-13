@@ -30,25 +30,25 @@ export function TacticalRadarHud({ events, criticalCount }: TacticalRadarHudProp
     <div
       role="region"
       aria-label="Visualisasi Radar Geospasial Nusantara"
-      className="relative rounded-2xl border border-white/[0.08] bg-[#0A0E17]/90 p-4 sm:p-5 shadow-2xl shadow-black/60 overflow-hidden backdrop-blur-xl group"
+      className="relative w-full max-w-full min-w-0 rounded-2xl border border-white/[0.08] bg-[#0A0E17]/90 p-3.5 sm:p-5 shadow-2xl shadow-black/60 overflow-hidden backdrop-blur-xl group"
     >
       {/* Subtle top border accent glow */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-red-500/50 to-transparent" />
 
       {/* Header telemetry HUD strip */}
-      <div className="flex items-center justify-between gap-2 border-b border-white/[0.06] pb-3 text-[11px] font-mono tracking-wider text-[#8B95A7]">
-        <div className="flex items-center gap-2">
-          <span className="relative flex h-2 w-2">
+      <div className="flex items-center justify-between gap-2 border-b border-white/[0.06] pb-3 text-[10px] sm:text-[11px] font-mono tracking-wider text-[#8B95A7] min-w-0">
+        <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+          <span className="relative flex h-2 w-2 shrink-0">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-80" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
           </span>
-          <span className="font-semibold text-[#E8ECF1]">SEKTOR NUSANTARA</span>
+          <span className="font-semibold text-[#E8ECF1] truncate">SEKTOR NUSANTARA</span>
           <span className="hidden sm:inline text-white/30">•</span>
           <span className="hidden sm:inline text-emerald-400">SWEEP 360° AKTIF</span>
         </div>
 
-        <div className="flex items-center gap-2">
-          <span className="text-[10px] text-[#8B95A7] tabular-nums">0.78°S 113.92°E</span>
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          <span className="text-[9px] sm:text-[10px] text-[#8B95A7] tabular-nums">0.78°S 113.92°E</span>
           <div className="h-1.5 w-1.5 rounded-full bg-cyan-400/80 animate-pulse" />
         </div>
       </div>
@@ -216,12 +216,12 @@ export function TacticalRadarHud({ events, criticalCount }: TacticalRadarHudProp
       </div>
 
       {/* Footer ticker info */}
-      <div className="mt-3 flex items-center justify-between text-[10px] text-[#8B95A7]">
-        <span className="flex items-center gap-1">
-          <ShieldAlert className="h-3 w-3 text-red-400/80" />
-          <span>Deteksi Spasial BMKG • PVMBG • BNPB</span>
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-1.5 text-[10px] text-[#8B95A7]">
+        <span className="flex items-center gap-1 min-w-0">
+          <ShieldAlert className="h-3 w-3 text-red-400/80 shrink-0" />
+          <span className="truncate">Deteksi Spasial BMKG • PVMBG • BNPB</span>
         </span>
-        <span className="font-mono text-white/50">WGS-84 / GIS PROJECTION</span>
+        <span className="font-mono text-white/50 hidden sm:inline">WGS-84 / GIS PROJECTION</span>
       </div>
     </div>
   );

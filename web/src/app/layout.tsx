@@ -107,7 +107,7 @@ export default function RootLayout({
           <JsonLd key={i} data={schema} />
         ))}
         <Navbar />
-        <main className="flex-1">{children}</main>
+        <main className="flex-1 w-full max-w-full overflow-x-hidden min-w-0">{children}</main>
         <Footer />
       </body>
     </html>

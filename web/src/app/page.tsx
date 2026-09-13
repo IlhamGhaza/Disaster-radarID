@@ -185,20 +185,20 @@ export default async function HomePage() {
             {/* Left Column: Heading & Telemetry Meta */}
             <div className="lg:col-span-7 flex flex-col items-start">
               {/* Telemetry status badge */}
-              <div className="inline-flex items-center gap-2.5 rounded-full border border-white/[0.1] bg-[#0E1420]/80 px-3.5 py-1.5 backdrop-blur-md mb-6 shadow-sm">
-                <span className="relative flex h-2 w-2">
+              <div className="inline-flex max-w-full flex-wrap items-center gap-2 sm:gap-2.5 rounded-full border border-white/[0.1] bg-[#0E1420]/80 px-3 py-1.5 sm:px-3.5 sm:py-1.5 backdrop-blur-md mb-6 shadow-sm">
+                <span className="relative flex h-2 w-2 shrink-0">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
                 </span>
-                <span className="text-[11px] font-mono font-semibold tracking-wider text-emerald-400 uppercase">
+                <span className="text-[10px] sm:text-[11px] font-mono font-semibold tracking-wider text-emerald-400 uppercase">
                   RADAR GEOSPASIAL AKTIF
                 </span>
                 <span className="text-white/20">•</span>
-                <span className="text-[11px] font-mono text-[#94A3B8] tabular-nums">
+                <span className="text-[10px] sm:text-[11px] font-mono text-[#94A3B8] tabular-nums">
                   {activeSources}/{disasterSources.length} Feed Online
                 </span>
                 <span className="text-white/20 hidden sm:inline">•</span>
-                <span className="text-[11px] font-mono text-[#94A3B8] hidden sm:inline">
+                <span className="text-[10px] sm:text-[11px] font-mono text-[#94A3B8] hidden sm:inline">
                   {formatTimeAgo(lastUpdated)}
                 </span>
               </div>
@@ -238,37 +238,39 @@ export default async function HomePage() {
               </div>
 
               {/* CTAs */}
-              <div className="mt-8 flex flex-wrap items-center gap-3 w-full sm:w-auto">
+              <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
                 <Link
                   href="/map"
-                  className="group relative inline-flex items-center justify-center gap-2.5 rounded-xl bg-gradient-to-r from-red-600 to-orange-500 px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-red-600/25 transition-all duration-200 hover:from-red-500 hover:to-orange-400 hover:shadow-red-500/40 hover:-translate-y-0.5 active:translate-y-0"
+                  className="group relative inline-flex items-center justify-center gap-2.5 rounded-xl bg-gradient-to-r from-red-600 to-orange-500 px-5 sm:px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-red-600/25 transition-all duration-200 hover:from-red-500 hover:to-orange-400 hover:shadow-red-500/40 hover:-translate-y-0.5 active:translate-y-0"
                 >
-                  <Radar className="h-4 w-4 transition-transform group-hover:rotate-45" />
-                  <span>Buka Peta Radar Interaktif</span>
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  <Radar className="h-4 w-4 transition-transform group-hover:rotate-45 shrink-0" />
+                  <span className="truncate">Buka Peta Radar Interaktif</span>
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1 shrink-0" />
                 </Link>
 
-                <Link
-                  href="/safety-guide"
-                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/[0.12] bg-[#0D1117]/90 px-5 py-3.5 text-sm font-semibold text-[#E8ECF1] backdrop-blur-md transition-all duration-200 hover:border-white/[0.25] hover:bg-[#151C28] hover:text-white"
-                >
-                  <Shield className="h-4 w-4 text-orange-400" />
-                  <span>Panduan Evakuasi</span>
-                </Link>
+                <div className="flex items-center gap-2.5 sm:gap-3">
+                  <Link
+                    href="/safety-guide"
+                    className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 rounded-xl border border-white/[0.12] bg-[#0D1117]/90 px-4 sm:px-5 py-3.5 text-sm font-semibold text-[#E8ECF1] backdrop-blur-md transition-all duration-200 hover:border-white/[0.25] hover:bg-[#151C28] hover:text-white"
+                  >
+                    <Shield className="h-4 w-4 text-orange-400 shrink-0" />
+                    <span>Panduan Evakuasi</span>
+                  </Link>
 
-                <a
-                  href="tel:112"
-                  className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-red-500/30 bg-red-950/30 px-4 py-3.5 text-sm font-bold text-red-300 transition-all hover:border-red-500/60 hover:bg-red-900/40 hover:text-white"
-                  title="Panggil Nomor Darurat Nasional Bebas Pulsa"
-                >
-                  <Phone className="h-4 w-4 text-red-400" />
-                  <span>Darurat 112</span>
-                </a>
+                  <a
+                    href="tel:112"
+                    className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-red-500/30 bg-red-950/30 px-3.5 sm:px-4 py-3.5 text-sm font-bold text-red-300 transition-all hover:border-red-500/60 hover:bg-red-900/40 hover:text-white shrink-0"
+                    title="Panggil Nomor Darurat Nasional Bebas Pulsa"
+                  >
+                    <Phone className="h-4 w-4 text-red-400 shrink-0" />
+                    <span>Darurat 112</span>
+                  </a>
+                </div>
               </div>
             </div>
 
             {/* Right Column: Interactive Tactical Radar HUD */}
-            <div className="lg:col-span-5 w-full">
+            <div className="lg:col-span-5 w-full min-w-0">
               <TacticalRadarHud events={events} criticalCount={counts.critical} />
             </div>
 
@@ -281,68 +283,68 @@ export default async function HomePage() {
           ════════════════════════════════════════════════════════ */}
       <section className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 -mt-6 sm:-mt-8 z-10">
         <h2 className="sr-only">Matriks Tingkat Bahaya Darurat Indonesia</h2>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
           {/* Critical */}
-          <div className="relative rounded-xl border border-red-500/25 bg-[#0D1117]/95 p-4 sm:p-5 shadow-lg shadow-black/40 backdrop-blur-md transition-all hover:border-red-500/50 hover:bg-[#121722] group">
+          <div className="relative rounded-xl border border-red-500/25 bg-[#0D1117]/95 p-3.5 sm:p-5 shadow-lg shadow-black/40 backdrop-blur-md transition-all hover:border-red-500/50 hover:bg-[#121722] group min-w-0">
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-600 via-red-500 to-transparent rounded-t-xl" />
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-mono font-bold tracking-wider text-red-400 uppercase">
+            <div className="flex items-center justify-between gap-1">
+              <span className="text-[10px] sm:text-[11px] font-mono font-bold tracking-wider text-red-400 uppercase truncate">
                 Kritis (Level IV)
               </span>
-              <span className="relative flex h-2 w-2">
+              <span className="relative flex h-2 w-2 shrink-0">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-80" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
               </span>
             </div>
-            <div className="mt-2 text-3xl sm:text-4xl font-extrabold text-[#E8ECF1] tabular-nums tracking-tight">
+            <div className="mt-2 text-2xl sm:text-4xl font-extrabold text-[#E8ECF1] tabular-nums tracking-tight">
               {counts.critical}
             </div>
-            <p className="mt-1 text-xs text-[#94A3B8]">Status Awas / Gempa M≥6.0</p>
+            <p className="mt-1 text-[11px] sm:text-xs text-[#94A3B8] truncate">Status Awas / M≥6.0</p>
           </div>
 
           {/* High */}
-          <div className="relative rounded-xl border border-orange-500/25 bg-[#0D1117]/95 p-4 sm:p-5 shadow-lg shadow-black/40 backdrop-blur-md transition-all hover:border-orange-500/50 hover:bg-[#121722] group">
+          <div className="relative rounded-xl border border-orange-500/25 bg-[#0D1117]/95 p-3.5 sm:p-5 shadow-lg shadow-black/40 backdrop-blur-md transition-all hover:border-orange-500/50 hover:bg-[#121722] group min-w-0">
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 via-amber-500 to-transparent rounded-t-xl" />
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-mono font-bold tracking-wider text-orange-400 uppercase">
+            <div className="flex items-center justify-between gap-1">
+              <span className="text-[10px] sm:text-[11px] font-mono font-bold tracking-wider text-orange-400 uppercase truncate">
                 Tinggi (Level III)
               </span>
-              <div className="h-2 w-2 rounded-full bg-orange-400" />
+              <div className="h-2 w-2 rounded-full bg-orange-400 shrink-0" />
             </div>
-            <div className="mt-2 text-3xl sm:text-4xl font-extrabold text-[#E8ECF1] tabular-nums tracking-tight">
+            <div className="mt-2 text-2xl sm:text-4xl font-extrabold text-[#E8ECF1] tabular-nums tracking-tight">
               {counts.high}
             </div>
-            <p className="mt-1 text-xs text-[#94A3B8]">Status Siaga / Luapan Banjir</p>
+            <p className="mt-1 text-[11px] sm:text-xs text-[#94A3B8] truncate">Status Siaga / Banjir</p>
           </div>
 
           {/* Moderate / Warning */}
-          <div className="relative rounded-xl border border-amber-500/25 bg-[#0D1117]/95 p-4 sm:p-5 shadow-lg shadow-black/40 backdrop-blur-md transition-all hover:border-amber-500/50 hover:bg-[#121722] group">
+          <div className="relative rounded-xl border border-amber-500/25 bg-[#0D1117]/95 p-3.5 sm:p-5 shadow-lg shadow-black/40 backdrop-blur-md transition-all hover:border-amber-500/50 hover:bg-[#121722] group min-w-0">
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 via-yellow-500 to-transparent rounded-t-xl" />
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-mono font-bold tracking-wider text-amber-400 uppercase">
+            <div className="flex items-center justify-between gap-1">
+              <span className="text-[10px] sm:text-[11px] font-mono font-bold tracking-wider text-amber-400 uppercase truncate">
                 Waspada (Level II)
               </span>
-              <div className="h-2 w-2 rounded-full bg-amber-400" />
+              <div className="h-2 w-2 rounded-full bg-amber-400 shrink-0" />
             </div>
-            <div className="mt-2 text-3xl sm:text-4xl font-extrabold text-[#E8ECF1] tabular-nums tracking-tight">
+            <div className="mt-2 text-2xl sm:text-4xl font-extrabold text-[#E8ECF1] tabular-nums tracking-tight">
               {counts.moderate}
             </div>
-            <p className="mt-1 text-xs text-[#94A3B8]">Gempa Dirasakan / Waspada</p>
+            <p className="mt-1 text-[11px] sm:text-xs text-[#94A3B8] truncate">Dirasakan / Waspada</p>
           </div>
 
           {/* Total Monitored */}
-          <div className="relative rounded-xl border border-cyan-500/25 bg-[#0D1117]/95 p-4 sm:p-5 shadow-lg shadow-black/40 backdrop-blur-md transition-all hover:border-cyan-500/50 hover:bg-[#121722] group">
+          <div className="relative rounded-xl border border-cyan-500/25 bg-[#0D1117]/95 p-3.5 sm:p-5 shadow-lg shadow-black/40 backdrop-blur-md transition-all hover:border-cyan-500/50 hover:bg-[#121722] group min-w-0">
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-500 via-blue-500 to-transparent rounded-t-xl" />
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-mono font-bold tracking-wider text-cyan-400 uppercase">
+            <div className="flex items-center justify-between gap-1">
+              <span className="text-[10px] sm:text-[11px] font-mono font-bold tracking-wider text-cyan-400 uppercase truncate">
                 Total Kejadian
               </span>
-              <div className="h-2 w-2 rounded-full bg-cyan-400" />
+              <div className="h-2 w-2 rounded-full bg-cyan-400 shrink-0" />
             </div>
-            <div className="mt-2 text-3xl sm:text-4xl font-extrabold text-[#E8ECF1] tabular-nums tracking-tight">
+            <div className="mt-2 text-2xl sm:text-4xl font-extrabold text-[#E8ECF1] tabular-nums tracking-tight">
               {counts.total}
             </div>
-            <p className="mt-1 text-xs text-[#94A3B8]">Data Aktif Terverifikasi</p>
+            <p className="mt-1 text-[11px] sm:text-xs text-[#94A3B8] truncate">Data Terverifikasi</p>
           </div>
         </div>
       </section>
@@ -350,11 +352,11 @@ export default async function HomePage() {
       {/* ════════════════════════════════════════════════════════
           SECTION 3 — PRIORITY INCIDENT SPOTLIGHT & LIVE STREAM
           ════════════════════════════════════════════════════════ */}
-      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+      <section className="mx-auto max-w-7xl px-4 py-12 sm:py-16 sm:px-6 lg:px-8">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 sm:gap-4 mb-6 sm:mb-8">
           <div>
             <div className="flex items-center gap-2 mb-1.5">
-              <Radio className="h-4 w-4 text-red-400 animate-pulse" />
+              <Radio className="h-4 w-4 text-red-400 animate-pulse shrink-0" />
               <span className="text-xs font-mono font-bold tracking-widest text-red-400 uppercase">
                 TELEMETRI REAL-TIME
               </span>
@@ -369,28 +371,28 @@ export default async function HomePage() {
 
           <Link
             href="/map"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-400 hover:text-cyan-300 transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-400 hover:text-cyan-300 transition-colors self-start sm:self-auto"
           >
             <span>Buka Seluruh Titik di Peta</span>
-            <ArrowRight className="h-3.5 w-3.5" />
+            <ArrowRight className="h-3.5 w-3.5 shrink-0" />
           </Link>
         </div>
 
         <div className="grid lg:grid-cols-12 gap-6 items-start">
           
           {/* Priority Event Spotlight Card (5 cols) */}
-          <div className="lg:col-span-5">
+          <div className="lg:col-span-5 w-full min-w-0">
             {priorityEvent ? (
-              <div className="rounded-2xl border border-red-500/30 bg-gradient-to-b from-[#16121E] via-[#0E131F] to-[#0A0E17] p-6 shadow-xl shadow-red-950/20 relative overflow-hidden">
-                <div className="absolute top-0 right-0 px-3 py-1 rounded-bl-xl border-l border-b border-red-500/30 bg-red-950/60 text-[10px] font-mono font-bold text-red-300 uppercase tracking-wider">
+              <div className="rounded-2xl border border-red-500/30 bg-gradient-to-b from-[#16121E] via-[#0E131F] to-[#0A0E17] p-4 sm:p-6 shadow-xl shadow-red-950/20 relative overflow-hidden">
+                <div className="absolute top-0 right-0 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-bl-xl border-l border-b border-red-500/30 bg-red-950/70 text-[9px] sm:text-[10px] font-mono font-bold text-red-300 uppercase tracking-wider">
                   PRIORITAS TERTINGGI
                 </div>
 
-                <div className="flex items-center gap-2.5 mb-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-500/20 text-red-400 border border-red-500/30">
+                <div className="flex items-center gap-2.5 mb-4 pr-24 sm:pr-28">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-500/20 text-red-400 border border-red-500/30">
                     <DisasterIcon type={priorityEvent.type} size={22} color="#EF4444" />
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <span className="inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border border-red-500/40 bg-red-950/60 text-red-300">
                       {priorityEvent.severity.toUpperCase()}
                     </span>
@@ -400,7 +402,7 @@ export default async function HomePage() {
                   </div>
                 </div>
 
-                <h3 className="text-lg sm:text-xl font-bold text-[#E8ECF1] leading-snug">
+                <h3 className="text-base sm:text-xl font-bold text-[#E8ECF1] leading-snug break-words">
                   {priorityEvent.title}
                 </h3>
 
@@ -412,22 +414,22 @@ export default async function HomePage() {
 
                 {/* Spatial coordinates & metadata */}
                 <div className="mt-5 grid grid-cols-2 gap-2 rounded-xl border border-white/[0.06] bg-[#070A10] p-3 text-xs font-mono">
-                  <div>
+                  <div className="min-w-0">
                     <span className="text-[10px] text-[#64748B] block">LOKASI</span>
                     <span className="text-[#E8ECF1] font-semibold truncate block">
                       {priorityEvent.locationName || priorityEvent.province || 'Indonesia'}
                     </span>
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <span className="text-[10px] text-[#64748B] block">KOORDINAT</span>
-                    <span className="text-[#E8ECF1] font-semibold tabular-nums block">
+                    <span className="text-[#E8ECF1] font-semibold tabular-nums truncate block">
                       {priorityEvent.latitude !== undefined && priorityEvent.longitude !== undefined
                         ? `${priorityEvent.latitude.toFixed(2)}°, ${priorityEvent.longitude.toFixed(2)}°`
                         : 'Telemetri Spasial'}
                     </span>
                   </div>
                   {priorityEvent.metadata?.magnitude !== undefined && (
-                    <div>
+                    <div className="min-w-0">
                       <span className="text-[10px] text-[#64748B] block">MAGNITUDO</span>
                       <span className="text-red-400 font-bold block">
                         M {priorityEvent.metadata.magnitude.toFixed(1)}
@@ -435,17 +437,17 @@ export default async function HomePage() {
                     </div>
                   )}
                   {priorityEvent.metadata?.depth && (
-                    <div>
+                    <div className="min-w-0">
                       <span className="text-[10px] text-[#64748B] block">KEDALAMAN</span>
-                      <span className="text-amber-400 font-bold block">
+                      <span className="text-amber-400 font-bold truncate block">
                         {priorityEvent.metadata.depth}
                       </span>
                     </div>
                   )}
                   {priorityEvent.metadata?.magmaLevelName && (
-                    <div>
+                    <div className="min-w-0">
                       <span className="text-[10px] text-[#64748B] block">STATUS PVMBG</span>
-                      <span className="text-orange-400 font-bold block">
+                      <span className="text-orange-400 font-bold truncate block">
                         {priorityEvent.metadata.magmaLevelName}
                       </span>
                     </div>
@@ -457,7 +459,7 @@ export default async function HomePage() {
                     href={`/map?lat=${priorityEvent.latitude || -0.78}&lng=${priorityEvent.longitude || 113.92}&zoom=9`}
                     className="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-red-600 px-4 py-2.5 text-xs font-bold text-white transition-all hover:bg-red-500 shadow-md shadow-red-600/30"
                   >
-                    <Compass className="h-3.5 w-3.5" />
+                    <Compass className="h-3.5 w-3.5 shrink-0" />
                     <span>Inspeksi di Peta</span>
                   </Link>
                   <Link
@@ -465,7 +467,7 @@ export default async function HomePage() {
                     className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-white/[0.12] bg-white/[0.04] px-3.5 py-2.5 text-xs font-medium text-[#E8ECF1] transition-all hover:bg-white/[0.08]"
                   >
                     <span>Katalog</span>
-                    <ArrowRight className="h-3 w-3" />
+                    <ArrowRight className="h-3 w-3 shrink-0" />
                   </Link>
                 </div>
               </div>
@@ -483,7 +485,7 @@ export default async function HomePage() {
           </div>
 
           {/* Chronological Telemetry Feed (7 cols) */}
-          <div className="lg:col-span-7 space-y-2.5">
+          <div className="lg:col-span-7 space-y-2.5 w-full min-w-0">
             {recentEvents.map((event) => {
               const badge = getSeverityBadge(event.severity);
               const catMeta = DISASTER_CATEGORIES.find((c) => c.type === event.type);
@@ -492,7 +494,7 @@ export default async function HomePage() {
                 <Link
                   key={event.id}
                   href={`/disasters/${event.type}`}
-                  className="group flex items-start gap-3.5 rounded-xl border border-white/[0.06] bg-[#0D1117]/80 p-3.5 transition-all hover:border-white/[0.16] hover:bg-[#131926] hover:-translate-y-0.5"
+                  className="group flex items-start gap-3 rounded-xl border border-white/[0.06] bg-[#0D1117]/80 p-3 sm:p-3.5 transition-all hover:border-white/[0.16] hover:bg-[#131926] hover:-translate-y-0.5 min-w-0"
                 >
                   <div
                     className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg mt-0.5"
@@ -505,18 +507,18 @@ export default async function HomePage() {
                   </div>
 
                   <div className="flex-1 min-w-0">
-                    <div className="flex flex-wrap items-center gap-2 mb-1">
+                    <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1 min-w-0">
                       <span
-                        className={`inline-block px-1.5 py-0.5 rounded text-[9px] font-mono font-bold tracking-wider border ${badge.badgeClass}`}
+                        className={`inline-block px-1.5 py-0.5 rounded text-[9px] font-mono font-bold tracking-wider border ${badge.badgeClass} shrink-0`}
                       >
                         {badge.label}
                       </span>
-                      <span className="text-[11px] font-mono text-[#64748B] flex items-center gap-1">
+                      <span className="text-[11px] font-mono text-[#64748B] flex items-center gap-1 shrink-0">
                         <Clock className="h-3 w-3" />
                         {formatTimeAgo(event.eventTime)}
                       </span>
-                      <span className="text-white/20 text-[10px]">•</span>
-                      <span className="text-[11px] font-mono text-[#8B95A7]">
+                      <span className="text-white/20 text-[10px] shrink-0">•</span>
+                      <span className="text-[11px] font-mono text-[#8B95A7] truncate max-w-[140px] sm:max-w-[220px] lg:max-w-none">
                         {event.source.name}
                       </span>
                     </div>
@@ -528,8 +530,8 @@ export default async function HomePage() {
                     {event.locationName && (
                       <p className="mt-1 text-[11px] text-[#94A3B8] flex items-center gap-1.5 truncate">
                         <MapPin className="h-3 w-3 text-[#64748B] shrink-0" />
-                        <span>{event.locationName}</span>
-                        {event.province ? <span className="text-[#64748B]">, {event.province}</span> : null}
+                        <span className="truncate">{event.locationName}</span>
+                        {event.province ? <span className="text-[#64748B] truncate">, {event.province}</span> : null}
                       </p>
                     )}
                   </div>

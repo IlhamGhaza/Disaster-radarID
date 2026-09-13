@@ -59,10 +59,16 @@
 }
 
 /* ── Base ── */
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+  position: relative;
+}
+
 body {
   background-color: var(--bg-base);
   color: var(--text-primary);
-  overflow-x: hidden;
 }
 
 /* ── Tabular Numerals ── */
