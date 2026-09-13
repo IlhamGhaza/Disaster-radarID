@@ -1,9 +1,10 @@
 import React from 'react';
 import type { Metadata } from 'next';
 import { Breadcrumbs } from '@/components/breadcrumbs';
-import { SITE_CONFIG, SITE_URL } from '@/config/site';
+import { SITE_URL } from '@/config/site';
 import { JsonLd, getFaqJsonLd } from '@/components/json-ld';
 import Link from 'next/link';
+import { HelpCircle, Compass, Shield } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Pertanyaan Umum (FAQ) | Disaster Radar Indonesia',
@@ -77,48 +78,74 @@ const FAQ_LIST = [
 
 export default function FaqPage() {
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8 bg-[#080C14] text-[#E8ECF1]">
       <JsonLd data={getFaqJsonLd(FAQ_LIST)} />
       <Breadcrumbs items={[{ name: 'Pertanyaan Umum (FAQ)', url: '/faq' }]} />
 
-      <div className="max-w-2xl mb-10">
-        <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-white">
-          Pertanyaan Umum (FAQ)
-        </h1>
-        <p className="mt-3 text-sm text-[#8B95A7]">
-          Informasi panduan, interpretasi data peta bencana, serta metodologi sistem Disaster Radar Indonesia.
-        </p>
+      {/* Hero Header */}
+      <div className="relative mt-4 mb-10 rounded-2xl border border-white/[0.08] bg-gradient-to-b from-[#101420] via-[#0D1017] to-[#070A10] p-6 sm:p-8 overflow-hidden shadow-2xl">
+        <div className="pointer-events-none absolute -top-24 right-0 h-72 w-72 rounded-full bg-cyan-600/10 blur-[100px]" />
+
+        <div className="relative z-10 max-w-2xl">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.1] bg-[#141B26]/80 px-3 py-1 text-[11px] font-mono font-semibold tracking-wider text-cyan-400 uppercase mb-3 backdrop-blur-md">
+            <HelpCircle className="h-3 w-3" />
+            <span>PUSAT BANTUAN & TANYA JAWAB</span>
+          </div>
+
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[#E8ECF1] leading-[1.1]">
+            Pertanyaan Umum (FAQ)
+          </h1>
+
+          <p className="mt-3 text-sm sm:text-base text-[#94A3B8] leading-relaxed">
+            Informasi panduan, interpretasi data peta bencana, metodologi agregasi, serta penjelasan sistem Disaster Radar Indonesia.
+          </p>
+        </div>
       </div>
 
-      <div className="space-y-4">
+      {/* FAQ Cards List */}
+      <div className="space-y-4 mb-14">
         {FAQ_LIST.map((faq, i) => (
-          <div
+          <article
             key={i}
-            className="p-6 rounded-2xl bg-[#111827] border border-white/10 space-y-2"
+            className="p-6 rounded-2xl bg-[#0D1117] border border-white/[0.07] shadow-lg transition-all hover:border-white/[0.16] space-y-2.5"
           >
-            <h2 className="text-base font-bold text-white">{faq.question}</h2>
-            <p className="text-xs text-[#CBD5E1] leading-relaxed">{faq.answer}</p>
-          </div>
+            <div className="flex items-start gap-3">
+              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-mono font-bold mt-0.5">
+                {i + 1}
+              </span>
+              <h2 className="text-base sm:text-lg font-bold text-[#E8ECF1] leading-snug">
+                {faq.question}
+              </h2>
+            </div>
+            <p className="text-xs sm:text-sm text-[#94A3B8] leading-relaxed pl-9">
+              {faq.answer}
+            </p>
+          </article>
         ))}
       </div>
 
-      <div className="mt-12 p-6 rounded-3xl bg-white/5 border border-white/10 text-center">
-        <h3 className="text-base font-bold text-white">Punya Pertanyaan Lain?</h3>
-        <p className="text-xs text-[#8B95A7] mt-1">
-          Pelajari lebih lanjut tentang arsitektur data atau jelajahi panduan keselamatan bencana.
-        </p>
-        <div className="mt-4 flex justify-center gap-3">
-          <Link
-            href="/data-sources"
-            className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-xs text-white font-semibold transition"
-          >
-            Sumber Data
-          </Link>
+      {/* Quick Discovery Strip */}
+      <div className="p-6 sm:p-7 rounded-2xl bg-gradient-to-r from-[#0E1524] via-[#0D1117] to-[#0A0F1A] border border-white/[0.08] shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h3 className="text-sm font-bold text-[#E8ECF1]">Masih Membutuhkan Informasi Tambahan?</h3>
+          <p className="text-xs text-[#94A3B8] mt-0.5">
+            Pelajari panduan evakuasi atau telusuri langsung titik bencana di peta interaktif.
+          </p>
+        </div>
+        <div className="flex items-center gap-3 shrink-0">
           <Link
             href="/safety-guide"
-            className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-xs text-white font-bold transition"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-white/[0.1] bg-white/[0.04] text-xs font-semibold text-[#E8ECF1] hover:bg-white/[0.08] transition-all"
           >
-            Panduan Evakuasi
+            <Shield className="h-3.5 w-3.5 text-red-400" />
+            <span>Panduan Keselamatan</span>
+          </Link>
+          <Link
+            href="/map"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-red-600 text-xs font-bold text-white hover:bg-red-500 transition-all shadow-md shadow-red-600/30"
+          >
+            <Compass className="h-3.5 w-3.5" />
+            <span>Buka Peta</span>
           </Link>
         </div>
       </div>

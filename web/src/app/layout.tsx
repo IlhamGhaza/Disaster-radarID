@@ -1,9 +1,17 @@
 import type { Metadata, Viewport } from 'next';
+import { Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
 import { JsonLd, getRootJsonLd } from '@/components/json-ld';
 import { SITE_CONFIG, SITE_URL } from '@/config/site';
+
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ['latin', 'latin-ext'],
+  weight: ['400', '500', '600', '700', '800'],
+  display: 'swap',
+  variable: '--font-jakarta',
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -90,10 +98,10 @@ export default function RootLayout({
   const rootSchemas = getRootJsonLd();
 
   return (
-    <html lang="id" className="dark" suppressHydrationWarning>
+    <html lang="id" className={`dark ${jakarta.variable}`} suppressHydrationWarning>
       <body
         suppressHydrationWarning
-        className="min-h-screen bg-slate-950 text-slate-100 antialiased flex flex-col selection:bg-red-500 selection:text-white"
+        className={`${jakarta.className} min-h-screen bg-[#080C14] text-[#E8ECF1] antialiased flex flex-col selection:bg-red-500 selection:text-white`}
       >
         {rootSchemas.map((schema, i) => (
           <JsonLd key={i} data={schema} />
