@@ -192,9 +192,9 @@
     "semantic_hash": ""
   },
   "web/src/components/map/disaster-map.tsx": {
-    "mtime": 1789470561.8275151,
-    "seen": 1789470643.8200696,
-    "ast_hash": "4e0291cd45b24d44e7c073eaeba6d987",
+    "mtime": 1789469238.9258919,
+    "seen": 1789469346.7774494,
+    "ast_hash": "06dc07685981d4981097cc3f60a22195",
     "semantic_hash": ""
   },
   "web/src/components/map/map-wrapper.tsx": {
@@ -336,9 +336,9 @@
     "semantic_hash": ""
   },
   "web/src/lib/user-location-cache.ts": {
-    "mtime": 1789470052.2551506,
-    "seen": 1789470643.82017,
-    "ast_hash": "a99fc83431636926c3497c9e07b94eba",
+    "mtime": 1788885790.2917614,
+    "seen": 1789312963.6066158,
+    "ast_hash": "ebd43eb0afdfac20f7902d819feaacf7",
     "semantic_hash": ""
   },
   "web/tsconfig.json": {
@@ -618,15 +618,15 @@
     "semantic_hash": ""
   },
   "web/src/components/air-quality-card.tsx": {
-    "mtime": 1789470182.8934567,
-    "seen": 1789470643.820017,
-    "ast_hash": "ad14e60af8c818b7386eae8899bb2dfc",
+    "mtime": 1789466317.8126514,
+    "seen": 1789466926.2829604,
+    "ast_hash": "55f3b077c66925d9a5f1127daeadd0bb",
     "semantic_hash": ""
   },
   "web/src/lib/air-quality.ts": {
-    "mtime": 1789470106.1363947,
-    "seen": 1789470643.8200896,
-    "ast_hash": "d6a8ae7de87d35f72e58cd33bdb83fd7",
+    "mtime": 1789469238.9170861,
+    "seen": 1789469346.777455,
+    "ast_hash": "b4d9452f212939c33c18fb073bf2066f",
     "semantic_hash": ""
   },
   "web/public/logo-navbar.png": {

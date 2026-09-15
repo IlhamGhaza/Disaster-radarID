@@ -6,6 +6,7 @@ import { SITE_URL } from '@/config/site';
 import { JsonLd, getFaqJsonLd } from '@/components/json-ld';
 import { DisasterIcon } from '@/components/icons/disaster-icons';
 import { TacticalRadarHud } from '@/components/home/tactical-radar-hud';
+import { AirQualityCard } from '@/components/air-quality-card';
 import {
   ArrowRight,
   ShieldAlert,
@@ -347,6 +348,13 @@ export default async function HomePage() {
             <p className="mt-1 text-[11px] sm:text-xs text-[#94A3B8] truncate">Data Terverifikasi</p>
           </div>
         </div>
+      </section>
+
+      {/* ════════════════════════════════════════════════════════
+          SECTION 2.5 — KUALITAS UDARA (ISPU KLHK) REAL-TIME
+          ════════════════════════════════════════════════════════ */}
+      <section className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-6 z-10">
+        <AirQualityCard />
       </section>
 
       {/* ════════════════════════════════════════════════════════

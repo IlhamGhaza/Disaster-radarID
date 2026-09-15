@@ -29,6 +29,91 @@ export interface UserDisasterZoneAlert {
 
 const STORAGE_KEY = 'disaster_radar_cached_user_location';
 
+export const POPULAR_CITIES = [
+  { label: 'Jakarta', latitude: -6.2088, longitude: 106.8456 },
+  { label: 'Bandung', latitude: -6.9175, longitude: 107.6191 },
+  { label: 'Surabaya', latitude: -7.2575, longitude: 112.7521 },
+  { label: 'Medan', latitude: 3.5952, longitude: 98.6722 },
+  { label: 'Makassar', latitude: -5.1477, longitude: 119.4327 },
+  { label: 'Yogyakarta', latitude: -7.7956, longitude: 110.3695 },
+];
+
+export interface LocationResolution {
+  location: CachedUserLocation | null;
+  source: 'gps' | 'cache' | 'none';
+  needsPermissionPrompt: boolean;
+  error?: string;
+}
+
+/**
+ * Unified Location Resolver:
+ * 1. Checks if GPS is enabled/active in browser.
+ * 2. If GPS active, saves to cache and returns GPS location.
+ * 3. If GPS is off/fails/denied, falls back to localStorage cache.
+ * 4. If neither GPS nor cache is available, flags needsPermissionPrompt: true so UI asks user to turn on GPS.
+ */
+export async function resolveUserLocation(options?: {
+  timeoutMs?: number;
+  enableHighAccuracy?: boolean;
+}): Promise<LocationResolution> {
+  const timeoutMs = options?.timeoutMs ?? 6000;
+  const enableHighAccuracy = options?.enableHighAccuracy ?? true;
+
+  if (typeof window === 'undefined') {
+    return { location: null, source: 'none', needsPermissionPrompt: false };
+  }
+
+  // If geolocation API is not supported
+  if (!navigator.geolocation) {
+    const cached = getCachedUserLocation();
+    return {
+      location: cached,
+      source: cached ? 'cache' : 'none',
+      needsPermissionPrompt: !cached,
+      error: 'Browser tidak mendukung geolokasi GPS.',
+    };
+  }
+
+  // Attempt GPS detection
+  return new Promise((resolve) => {
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const loc: LatLng = {
+          latitude: pos.coords.latitude,
+          longitude: pos.coords.longitude,
+        };
+        const saved = saveUserLocation(loc, 'Lokasi Saya (GPS)', true, pos.coords.accuracy);
+        resolve({
+          location: saved,
+          source: 'gps',
+          needsPermissionPrompt: false,
+        });
+      },
+      (err) => {
+        // GPS inactive, denied, or timed out -> fall back to cache
+        const cached = getCachedUserLocation();
+        if (cached) {
+          resolve({
+            location: cached,
+            source: 'cache',
+            needsPermissionPrompt: false,
+            error: err.code === 1 ? 'Izin GPS ditolak' : 'GPS tidak aktif',
+          });
+        } else {
+          // Neither GPS nor cache is available! Prompt user to turn on GPS
+          resolve({
+            location: null,
+            source: 'none',
+            needsPermissionPrompt: true,
+            error: err.code === 1 ? 'Izin GPS belum diberikan' : 'GPS tidak aktif',
+          });
+        }
+      },
+      { timeout: timeoutMs, enableHighAccuracy, maximumAge: 60000 }
+    );
+  });
+}
+
 /**
  * Save user location to browser localStorage cache
  */

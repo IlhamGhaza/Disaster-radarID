@@ -1,12 +1,12 @@
 # Graph Report - Disaster-radarID  (2026-09-15)
 
 ## Corpus Check
-- 84 files · ~184,752 words
+- 84 files · ~183,393 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 8 file(s) not represented in the graph (top: .ico 3, (none) 2, .webmanifest 2)
 
 ## Summary
-- 515 nodes · 1050 edges · 30 communities (19 shown, 10 thin omitted)
+- 510 nodes · 1027 edges · 30 communities (19 shown, 10 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 3 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
@@ -21,7 +21,7 @@
 - test-runner.ts
 - seo.md
 - package.json
-- [slug]/page.tsx
+- [id]/page.tsx
 - What You Must Do When Invoked
 - Laporan Audit Komprehensif — Disaster Radar Indonesia
 - disasters/types.ts
@@ -61,14 +61,14 @@
 ## Surprising Connections (you probably didn't know these)
 - `LiveAdvisoriesListProps` --references--> `VolcanoAdvisory`  [EXTRACTED]
   web/src/components/live-advisories-list.tsx → web/src/lib/types.ts
+- `LiveAdvisoryTickerProps` --references--> `VolcanoAdvisory`  [EXTRACTED]
+  web/src/components/live-advisory-ticker.tsx → web/src/lib/types.ts
 - `AdvisoriesResponse` --references--> `VolcanoAdvisory`  [EXTRACTED]
   web/src/lib/advisories.ts → web/src/lib/types.ts
 - `generateMetadata()` --calls--> `getDarwinAdvisories()`  [EXTRACTED]
   web/src/app/advisories/[id]/page.tsx → web/src/lib/advisories.ts
 - `AdvisoriesPage()` --calls--> `getDarwinAdvisories()`  [EXTRACTED]
   web/src/app/advisories/page.tsx → web/src/lib/advisories.ts
-- `GET()` --calls--> `getDarwinAdvisories()`  [EXTRACTED]
-  web/src/app/api/advisories/route.ts → web/src/lib/advisories.ts
 
 ## Import Cycles
 - None detected.
@@ -81,11 +81,11 @@ Nodes (50): lucide-react, next, react, nextConfig, metadata, metadata, revalidat
 
 ### Community 1 - "ash-map.tsx"
 Cohesion: 0.08
-Nodes (42): leaflet, CheckMyAreaCard(), CheckMyAreaCardProps, IndonesiaMiniMap(), initMiniMap(), IndonesiaMiniMapProps, getRelativeTime(), LiveAdvisoryTicker() (+34 more)
+Nodes (41): leaflet, sitemap(), CheckMyAreaCard(), CheckMyAreaCardProps, IndonesiaMiniMap(), initMiniMap(), IndonesiaMiniMapProps, AshMap() (+33 more)
 
 ### Community 2 - "test-runner.ts"
-Cohesion: 0.08
-Nodes (27): MULTIPLE_ADVISORIES_FIXTURE, SINGLE_ADVISORY_FIXTURE, parseAviationComponent(), parseAviationCoordinate(), parsePolygonCoordinates(), parseDtg(), parseForecastDtg(), coord (+19 more)
+Cohesion: 0.07
+Nodes (30): AdvisoriesResponse, MULTIPLE_ADVISORIES_FIXTURE, SINGLE_ADVISORY_FIXTURE, parseAviationComponent(), parseAviationCoordinate(), parsePolygonCoordinates(), parseDtg(), parseForecastDtg() (+22 more)
 
 ### Community 3 - "seo.md"
 Cohesion: 0.05
@@ -95,9 +95,9 @@ Nodes (38): 10. Internal Linking, 11. Sitemap, 12. Robots.txt, 13. Canonical URL
 Cohesion: 0.05
 Nodes (37): eslint, eslint-config-next, react-dom, tailwindcss, @tailwindcss/postcss, tsx, @types/leaflet, @types/node (+29 more)
 
-### Community 5 - "[slug]/page.tsx"
+### Community 5 - "[id]/page.tsx"
 Cohesion: 0.14
-Nodes (23): AdvisoryDetailPage(), generateMetadata(), PageProps, AdvisoriesPage(), dynamic, GET(), VolcanoesPage(), dynamic (+15 more)
+Nodes (22): AdvisoryDetailPage(), generateMetadata(), PageProps, AdvisoriesPage(), dynamic, GET(), VolcanoesPage(), generateMetadata() (+14 more)
 
 ### Community 6 - "What You Must Do When Invoked"
 Cohesion: 0.07
@@ -109,7 +109,7 @@ Nodes (21): 1. Framework & Runtime, 1. Konsep Estetika: *"National Geospatial De
 
 ### Community 8 - "disasters/types.ts"
 Cohesion: 0.09
-Nodes (33): dynamic, GET(), DisastersIndexPage(), MapPage(), metadata, revalidate, sitemap(), TacticalRadarHud() (+25 more)
+Nodes (31): dynamic, GET(), DisastersIndexPage(), CategoryDetailPage(), MapPage(), metadata, revalidate, TacticalRadarHud() (+23 more)
 
 ### Community 9 - "compilerOptions"
 Cohesion: 0.11
@@ -121,7 +121,7 @@ Nodes (14): 1. Install Dependencies, 2. Run Unit Tests (VAA Parser, Coordinates,
 
 ### Community 11 - "disaster-map.tsx"
 Cohesion: 0.13
-Nodes (31): GET(), revalidate, AirQualityCard(), AirQualityCardProps, DisasterIconProps, LocationAlertBanner(), DISASTER_VISUALS, DisasterMap() (+23 more)
+Nodes (27): GET(), revalidate, AirQualityCard(), AirQualityCardProps, createDisasterMarkerHtml(), DisasterIconProps, LocationAlertBanner(), DISASTER_VISUALS (+19 more)
 
 ### Community 12 - "graphify reference: extra exports and benchmark"
 Cohesion: 0.22
@@ -152,24 +152,24 @@ Cohesion: 0.50
 Nodes (3): For --cluster-only, For --update (incremental re-extraction), graphify reference: incremental update and cluster-only
 
 ## Knowledge Gaps
-- **247 isolated node(s):** `eslintConfig`, `nextConfig`, `name`, `version`, `private` (+242 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 285 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **246 isolated node(s):** `eslintConfig`, `nextConfig`, `name`, `version`, `private` (+241 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 284 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
 - **10 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `react` connect `react` to `ash-map.tsx`, `package.json`, `[slug]/page.tsx`, `disasters/types.ts`, `disaster-map.tsx`?**
-  _High betweenness centrality (0.070) - this node is a cross-community bridge._
-- **Why does `lucide-react` connect `react` to `ash-map.tsx`, `package.json`, `[slug]/page.tsx`, `disasters/types.ts`, `disaster-map.tsx`?**
+- **Why does `react` connect `react` to `ash-map.tsx`, `package.json`, `[id]/page.tsx`, `disasters/types.ts`, `disaster-map.tsx`?**
+  _High betweenness centrality (0.071) - this node is a cross-community bridge._
+- **Why does `lucide-react` connect `react` to `ash-map.tsx`, `package.json`, `[id]/page.tsx`, `disasters/types.ts`, `disaster-map.tsx`?**
   _High betweenness centrality (0.058) - this node is a cross-community bridge._
-- **Why does `next` connect `react` to `disasters/types.ts`, `package.json`, `[slug]/page.tsx`?**
+- **Why does `next` connect `react` to `disasters/types.ts`, `ash-map.tsx`, `package.json`, `[id]/page.tsx`?**
   _High betweenness centrality (0.030) - this node is a cross-community bridge._
 - **What connects `eslintConfig`, `nextConfig`, `name` to the rest of the system?**
-  _247 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _246 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `react` be split into smaller, more focused modules?**
-  _Cohesion score 0.057911392405063294 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.058544303797468354 - nodes in this community are weakly interconnected._
 - **Should `ash-map.tsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.08246753246753247 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.08311688311688312 - nodes in this community are weakly interconnected._
 - **Should `test-runner.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.07948717948717948 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.07272727272727272 - nodes in this community are weakly interconnected._

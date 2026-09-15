@@ -157,6 +157,9 @@ export async function getAggregatedDisasters(
     // Active volcano status from PVMBG represents ongoing active monitoring
     if (ev.type === 'volcano') return true;
 
+    // Active forest-fire hotspots from SiPongi KLHK represent active environmental alerts (up to 72h)
+    if (ev.type === 'forest-fire') return diffMs <= 72 * 3600 * 1000;
+
     switch (period) {
       case 'LIVE':
         // Real-time: within last 4 hours or official critical advisory

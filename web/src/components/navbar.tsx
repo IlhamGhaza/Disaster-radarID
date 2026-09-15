@@ -239,14 +239,14 @@ export function Navbar() {
       {/* Mobile Drawer — Rendered OUTSIDE <header> to avoid backdrop-filter containing block trap */}
       {isOpen && (
         <div
-          className="fixed inset-0 z-[100] md:hidden"
+          className="fixed inset-0 z-[9999] md:hidden"
           role="dialog"
           aria-modal="true"
           aria-label="Menu Navigasi Mobile"
         >
           {/* Dark Backdrop Overlay */}
           <div
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity animate-[fadeIn_150ms_ease]"
+            className="fixed inset-0 bg-black/75 backdrop-blur-sm transition-opacity animate-[fadeIn_150ms_ease]"
             onClick={() => setIsOpen(false)}
             aria-hidden="true"
           />
@@ -255,7 +255,7 @@ export function Navbar() {
           <div
             ref={drawerRef}
             id="mobile-nav-drawer"
-            className="fixed right-0 top-0 bottom-0 w-[280px] max-w-[85vw] bg-[#0A0E16] border-l border-white/[0.08] shadow-2xl flex flex-col z-[101] overflow-y-auto animate-[slideInRight_200ms_ease]"
+            className="fixed right-0 top-0 bottom-0 w-[280px] max-w-[85vw] bg-[#0A0E16] border-l border-white/[0.08] shadow-2xl flex flex-col z-[10000] overflow-y-auto animate-[slideInRight_200ms_ease]"
           >
             {/* Mobile Drawer Header with Logo & Close button */}
             <div className="flex items-center justify-between p-4 border-b border-white/[0.08] shrink-0 bg-[#080C14]/90">

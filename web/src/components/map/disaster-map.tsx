@@ -14,9 +14,11 @@ import { haversineDistanceKm } from '@/lib/geo-checker';
 import {
   getCachedUserLocation,
   saveUserLocation,
+  resolveUserLocation,
   CachedUserLocation,
 } from '@/lib/user-location-cache';
 import { LocationAlertBanner } from '@/components/location-alert-banner';
+import { AirQualityCard } from '@/components/air-quality-card';
 import {
   Crosshair,
   X,
@@ -35,6 +37,8 @@ import {
   ChevronUp,
   Radio,
   AlertTriangle,
+  Wind,
+  Compass,
 } from 'lucide-react';
 
 import { DisasterIcon, createDisasterMarkerHtml } from '@/components/icons/disaster-icons';
@@ -138,6 +142,7 @@ export default function DisasterMap({
   const [showMobileActivitySheet, setShowMobileActivitySheet] = useState(false);
   const [showLayersMenu, setShowLayersMenu] = useState(false);
   const [showSourceStatus, setShowSourceStatus] = useState(false);
+  const [showAirQualityModal, setShowAirQualityModal] = useState(false);
 
   // Search & Autocomplete state
   const [searchQuery, setSearchQuery] = useState('');
@@ -345,41 +350,29 @@ export default function DisasterMap({
     }
   };
 
-  // GPS Locate Action
+  // GPS Locate Action or Fly to Saved Location
   const handleLocateUser = () => {
-    if (!navigator.geolocation) {
-      alert('Geolokasi tidak didukung oleh peramban Anda.');
-      return;
-    }
     setIsLocatingGps(true);
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setIsLocatingGps(false);
-        const loc: LatLng = {
-          latitude: pos.coords.latitude,
-          longitude: pos.coords.longitude,
-        };
-        const label = 'Lokasi Saya (GPS)';
-        setSearchQuery(label);
-        const saved = saveUserLocation(loc, label, true, pos.coords.accuracy);
-        setCachedUserLoc(saved);
-
-        const map = mapInstanceRef.current;
-        if (map) {
-          map.flyTo([loc.latitude, loc.longitude], 8.5, { duration: 1.2 });
-          renderUserMarker(loc, label);
+    resolveUserLocation({ timeoutMs: 8000, enableHighAccuracy: true }).then((res) => {
+      setIsLocatingGps(false);
+      if (res.location && mapInstanceRef.current) {
+        setCachedUserLoc(res.location);
+        setSearchQuery(res.location.label);
+        mapInstanceRef.current.flyTo([res.location.latitude, res.location.longitude], 12, { duration: 1.2 });
+        renderUserMarker({ latitude: res.location.latitude, longitude: res.location.longitude }, res.location.label);
+      } else {
+        const cached = getCachedUserLocation();
+        if (cached && mapInstanceRef.current) {
+          mapInstanceRef.current.flyTo([cached.latitude, cached.longitude], 12, { duration: 1.2 });
+          renderUserMarker({ latitude: cached.latitude, longitude: cached.longitude }, cached.label);
+        } else {
+          alert(
+            res.error ||
+              'GPS tidak aktif atau izin lokasi belum diberikan. Silakan aktifkan GPS atau gunakan kotak pencarian untuk memilih kota Anda.'
+          );
         }
-      },
-      (err) => {
-        setIsLocatingGps(false);
-        alert(
-          err.code === 1
-            ? 'Izin akses lokasi ditolak oleh browser. Silakan cari kota/daerah Anda.'
-            : 'Gagal mendeteksi lokasi GPS.'
-        );
-      },
-      { timeout: 10000, enableHighAccuracy: true }
-    );
+      }
+    });
   };
 
   // Initialize Leaflet Map with OpenStreetMap (OSM) Provider
@@ -430,17 +423,27 @@ export default function DisasterMap({
         renderUserMarker(clickedLoc, `${clickedLoc.latitude.toFixed(3)}°, ${clickedLoc.longitude.toFixed(3)}°`);
       });
 
-      // Initial props or cached location
+      // Initial props or cached location with auto GPS detection
       if (initialLat && initialLng) {
         map.setView([initialLat, initialLng], 8.5);
         renderUserMarker({ latitude: initialLat, longitude: initialLng }, initialLabel || 'Area Terpilih');
       } else {
         const cached = getCachedUserLocation();
         if (cached) {
-          // Immediately center and zoom in on user's saved location
+          // Immediately center on cached location with zero delay
           map.setView([cached.latitude, cached.longitude], 11);
           renderUserMarker({ latitude: cached.latitude, longitude: cached.longitude }, cached.label);
         }
+
+        // Auto-detect GPS silently; if active, smoothly flies to GPS position and updates cache
+        resolveUserLocation({ timeoutMs: 6000 }).then((res) => {
+          if (!isSubscribed) return;
+          if (res.source === 'gps' && res.location) {
+            setCachedUserLoc(res.location);
+            map.flyTo([res.location.latitude, res.location.longitude], 12, { duration: 1.2 });
+            renderUserMarker({ latitude: res.location.latitude, longitude: res.location.longitude }, res.location.label);
+          }
+        });
       }
 
       setIsMapReady(true);
@@ -849,6 +852,21 @@ export default function DisasterMap({
           )}
         </div>
 
+        {/* Air Quality (ISPU) Trigger */}
+        <button
+          type="button"
+          onClick={() => setShowAirQualityModal(!showAirQualityModal)}
+          className={`flex h-10 w-10 items-center justify-center rounded-2xl border backdrop-blur-xl shadow-xl transition ${
+            showAirQualityModal
+              ? 'border-cyan-500/50 bg-cyan-500/20 text-cyan-400'
+              : 'border-white/15 bg-[#0B0F17]/90 text-[#CBD5E1] hover:text-white hover:bg-[#151C28]'
+          }`}
+          title="Kualitas Udara & ISPU"
+          aria-label="Kualitas Udara & ISPU"
+        >
+          <Wind className="h-4 w-4" />
+        </button>
+
         {/* Source Health Indicator Trigger */}
         <button
           type="button"
@@ -929,7 +947,53 @@ export default function DisasterMap({
         </div>
       )}
 
-      {/* 7. Mobile Floating Button for Aktivitas Terkini */}
+      {/* 6b. Air Quality (ISPU) Floating Panel */}
+      {showAirQualityModal && (
+        <div className="absolute top-16 left-3 right-3 sm:left-16 sm:right-auto sm:top-20 z-[1001] sm:w-96 max-w-md animate-in fade-in slide-in-from-left-4 pointer-events-auto">
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setShowAirQualityModal(false)}
+              className="absolute top-3 right-3 z-30 rounded-lg p-1 text-[#8B95A7] hover:text-white hover:bg-white/10"
+              aria-label="Tutup Panel Kualitas Udara"
+            >
+              <X className="h-4 w-4" />
+            </button>
+            <AirQualityCard
+              initialLat={cachedUserLoc?.latitude}
+              initialLng={cachedUserLoc?.longitude}
+              locationLabel={cachedUserLoc?.label}
+              compact={true}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* 7. Google Maps-style Round Location FAB (Pusatkan ke Lokasi Saya / Tersimpan) */}
+      <button
+        type="button"
+        onClick={handleLocateUser}
+        disabled={isLocatingGps}
+        className={`absolute bottom-28 right-3 sm:bottom-6 sm:right-4 z-[1000] flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-[#0B0F17]/95 text-white shadow-2xl backdrop-blur-xl transition-all duration-200 active:scale-90 hover:bg-[#151C28] hover:border-cyan-500/50 hover:text-cyan-400 group pointer-events-auto ${
+          isLocatingGps ? 'animate-pulse text-cyan-400 border-cyan-500/60' : ''
+        }`}
+        title="Pusatkan ke Lokasi Saya / Tersimpan (GPS)"
+        aria-label="Pusatkan ke Lokasi Saya"
+      >
+        <Crosshair
+          className={`h-5 w-5 transition-transform duration-300 ${
+            isLocatingGps ? 'animate-spin text-cyan-400' : 'group-hover:rotate-45'
+          }`}
+        />
+        {cachedUserLoc && (
+          <span className="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-500 border border-[#0B0F17]" />
+          </span>
+        )}
+      </button>
+
+      {/* 7b. Mobile Floating Button for Aktivitas Terkini */}
       <button
         type="button"
         onClick={() => setShowMobileActivitySheet(true)}
