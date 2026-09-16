@@ -8,16 +8,25 @@ import { ChevronRight, ArrowRight, Map, Layers, Radio, Shield, Compass } from 'l
 import { DisasterIcon } from '@/components/icons/disaster-icons';
 
 export const metadata: Metadata = {
-  title: 'Kategori Bencana Indonesia | Disaster Radar',
+  title: 'Daftar Bencana Alam di Indonesia Hari Ini — Info Gempa BMKG, Banjir, & Cuaca | Disaster Radar',
   description:
-    'Daftar lengkap kategori bencana yang dipantau di Indonesia: gempa bumi, banjir, gunung api, abu vulkanik, longsor, karhutla, cuaca ekstrem, dan tsunami.',
+    'Pantau daftar lengkap bencana alam di Indonesia hari ini: gempa bumi BMKG, titik banjir, gunung meletus PVMBG, sebaran abu vulkanik, tanah longsor, karhutla, dan cuaca ekstrem.',
+  keywords: [
+    'daftar bencana alam indonesia',
+    'info bencana hari ini',
+    'gempa bumi bmkg hari ini',
+    'pantauan banjir hari ini',
+    'status gunung meletus',
+    'kebakaran hutan sumatera kalimantan',
+    'cuaca ekstrem bmkg',
+  ],
   alternates: {
     canonical: `${SITE_URL}/disasters`,
   },
   openGraph: {
-    title: 'Kategori Bencana Indonesia | Disaster Radar',
+    title: 'Daftar Bencana Alam di Indonesia Hari Ini — Info Gempa BMKG, Banjir, & Cuaca | Disaster Radar',
     description:
-      'Daftar lengkap kategori bencana yang dipantau di Indonesia: gempa bumi, banjir, gunung api, abu vulkanik, longsor, karhutla, cuaca ekstrem, dan tsunami.',
+      'Pantau daftar lengkap bencana alam di Indonesia hari ini: gempa bumi BMKG, titik banjir, gunung meletus PVMBG, sebaran abu vulkanik, tanah longsor, karhutla, dan cuaca ekstrem.',
     url: `${SITE_URL}/disasters`,
     siteName: 'Disaster Radar Indonesia',
     type: 'website',
@@ -50,33 +59,33 @@ export default async function DisastersIndexPage() {
         <div className="relative z-10 max-w-3xl">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.1] bg-[#121824]/80 px-3 py-1 text-[11px] font-mono font-semibold tracking-wider text-red-400 uppercase mb-4 backdrop-blur-md">
             <Radio className="h-3 w-3 animate-pulse" />
-            <span>KATALOG MULTI-BAHAYA NASIONAL</span>
+            <span>PANTAUAN BENCANA SELURUH INDONESIA</span>
             <span className="text-white/20">•</span>
             <span className="text-emerald-400 font-bold tabular-nums">
-              {totalActiveIncidents} Kejadian Aktif
+              {totalActiveIncidents} Laporan Terkini
             </span>
           </div>
 
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[#E8ECF1] leading-[1.1]">
-            Kategori Pemantauan Bencana
+            Daftar Bencana yang Dipantau di Indonesia
           </h1>
 
           <p className="mt-4 text-sm sm:text-base text-[#94A3B8] leading-relaxed max-w-2xl">
-            Pilih salah satu kategori kebencanaan untuk melihat laporan kejadian terkini, zona kerentanan risiko, panduan mitigasi keselamatan, serta peta interaktif khusus berdasarkan standarisasi BNPB dan PVMBG.
+            Pilih jenis bencana di bawah untuk melihat laporan kejadian hari ini, peta wilayah yang terdampak, serta langkah penyelamatan diri sesuai panduan BPBD dan BMKG.
           </p>
 
           <div className="mt-6 flex flex-wrap items-center gap-2.5 text-xs font-mono">
             <div className="flex items-center gap-1.5 rounded-md border border-white/[0.06] bg-[#070A10] px-3 py-1.5 text-[#8B95A7]">
               <Compass className="h-3 w-3 text-red-400" />
-              <span>4 Bahaya Geologi</span>
+              <span>4 Bencana Gempa & Bumi</span>
             </div>
             <div className="flex items-center gap-1.5 rounded-md border border-white/[0.06] bg-[#070A10] px-3 py-1.5 text-[#8B95A7]">
               <Layers className="h-3 w-3 text-blue-400" />
-              <span>5 Bahaya Hidrometeorologi</span>
+              <span>5 Bencana Cuaca & Air</span>
             </div>
             <div className="flex items-center gap-1.5 rounded-md border border-white/[0.06] bg-[#070A10] px-3 py-1.5 text-[#8B95A7]">
               <Shield className="h-3 w-3 text-cyan-400" />
-              <span>1 Bahaya Oseanografi</span>
+              <span>1 Bencana Laut</span>
             </div>
           </div>
         </div>
@@ -90,11 +99,11 @@ export default async function DisastersIndexPage() {
             <div className="flex items-center gap-2.5">
               <div className="h-2.5 w-2.5 rounded-full bg-red-500 shadow-sm shadow-red-500/50" />
               <h2 className="text-base sm:text-lg font-bold uppercase tracking-wider text-[#E8ECF1]">
-                Klaster Bahaya Geologis & Vulkanik
+                Bencana Gempa & Gunung Api (Geologi)
               </h2>
             </div>
             <span className="text-xs font-mono text-[#64748B] hidden sm:inline">
-              BMKG Seismik • PVMBG MAGMA
+              Data Resmi BMKG & PVMBG MAGMA
             </span>
           </div>
 
@@ -157,11 +166,11 @@ export default async function DisastersIndexPage() {
             <div className="flex items-center gap-2.5">
               <div className="h-2.5 w-2.5 rounded-full bg-blue-500 shadow-sm shadow-blue-500/50" />
               <h2 className="text-base sm:text-lg font-bold uppercase tracking-wider text-[#E8ECF1]">
-                Klaster Bahaya Hidrometeorologis & Iklim
+                Bencana Cuaca, Banjir, & Air (Hidrometeorologi)
               </h2>
             </div>
             <span className="text-xs font-mono text-[#64748B] hidden sm:inline">
-              BNPB InaRISK • BMKG Cuaca
+              Data Resmi BMKG Cuaca & BNPB
             </span>
           </div>
 
@@ -224,11 +233,11 @@ export default async function DisastersIndexPage() {
             <div className="flex items-center gap-2.5">
               <div className="h-2.5 w-2.5 rounded-full bg-cyan-500 shadow-sm shadow-cyan-500/50" />
               <h2 className="text-base sm:text-lg font-bold uppercase tracking-wider text-[#E8ECF1]">
-                Klaster Bahaya Pesisir & Oseanografi
+                Bencana Gelombang & Pesisir Laut
               </h2>
             </div>
             <span className="text-xs font-mono text-[#64748B] hidden sm:inline">
-              BMKG Maritim • BNPB
+              Data Resmi BMKG Maritim & BNPB
             </span>
           </div>
 

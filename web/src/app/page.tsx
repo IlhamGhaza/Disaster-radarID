@@ -27,16 +27,27 @@ import {
 export const revalidate = 180; // 3 min revalidation
 
 export const metadata: Metadata = {
-  title: 'Peta Bencana Indonesia Terkini | Disaster Radar Indonesia',
+  title: 'Peta Bencana Indonesia Terkini, Info Gempa BMKG & Kualitas Udara',
   description:
-    'Pantau kondisi bencana Indonesia melalui peta interaktif. Lihat gempa, banjir, longsor, kebakaran, cuaca ekstrem, tsunami, gunung api, dan abu vulkanik terkini.',
+    'Pantau info gempa bumi hari ini dari BMKG, peta banjir, kualitas udara ISPU, status gunung meletus PVMBG, dan peringatan cuaca ekstrem terkini di Indonesia.',
+  keywords: [
+    'gempa hari ini',
+    'info gempa bmkg',
+    'gempa bumi terkini',
+    'kualitas udara hari ini',
+    'cek polusi udara',
+    'gunung meletus hari ini',
+    'peta banjir hari ini',
+    'cuaca ekstrem bmkg',
+    'peta bencana indonesia',
+  ],
   alternates: {
     canonical: `${SITE_URL}`,
   },
   openGraph: {
-    title: 'Peta Bencana Indonesia Terkini | Disaster Radar Indonesia',
+    title: 'Peta Bencana Indonesia Terkini, Info Gempa BMKG & Kualitas Udara',
     description:
-      'Pantau kondisi bencana Indonesia melalui peta interaktif. Lihat gempa, banjir, longsor, kebakaran, cuaca ekstrem, tsunami, gunung api, dan abu vulkanik.',
+      'Pantau info gempa bumi hari ini dari BMKG, peta banjir, kualitas udara ISPU, status gunung meletus PVMBG, dan peringatan cuaca ekstrem terkini di Indonesia.',
     url: `${SITE_URL}`,
     siteName: 'Disaster Radar Indonesia',
     type: 'website',
@@ -51,43 +62,43 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Peta Bencana Indonesia Terkini | Disaster Radar Indonesia',
+    title: 'Peta Bencana Indonesia Terkini, Info Gempa BMKG & Kualitas Udara',
     description:
-      'Pantau kondisi bencana Indonesia melalui peta interaktif dan data dari berbagai sumber resmi.',
+      'Pantau info gempa bumi hari ini dari BMKG, peta banjir, kualitas udara ISPU, status gunung meletus PVMBG, dan cuaca ekstrem.',
     images: [`${SITE_URL}/opengraph-image`],
   },
 };
 
 const FAQ_ITEMS = [
   {
-    question: 'Apa itu Disaster Radar Indonesia?',
+    question: 'Bagaimana cara mengecek info gempa bumi terkini hari ini dari BMKG?',
     answer:
-      'Disaster Radar Indonesia adalah platform independen agregasi dan visualisasi geospasial yang menyatukan data kebencanaan dari berbagai otoritas resmi Indonesia (seperti BMKG, BNPB, dan PVMBG) ke dalam satu peta interaktif real-time.',
+      'Anda dapat melihat daftar gempa bumi terbaru langsung di halaman depan atau buka menu Peta Radar. Informasi mencakup magnitudo, kedalaman, koordinat pusat gempa, dan peringatan potensi tsunami yang diperbarui otomatis dari BMKG.',
   },
   {
-    question: 'Bagaimana cara melihat peta bencana Indonesia?',
+    question: 'Bagaimana cara melihat peta banjir dan wilayah terdampak di Indonesia?',
     answer:
-      'Buka menu Peta Radar di bagian atas navigasi. Anda dapat melihat titik gempa, banjir, kawah gunung api aktif, sebaran abu vulkanik, serta mengaktifkan atau menonaktifkan layer bencana sesuai kebutuhan.',
+      'Pilih kategori Peta Banjir atau buka Peta Radar. Anda dapat melihat titik genangan luapan air, ketinggian muka air sungai, serta kawasan rawan banjir berdasarkan laporan BNPB dan BPBD setempat.',
   },
   {
-    question: 'Dari mana sumber data kebencanaan berasal?',
+    question: 'Bagaimana cara memantau status gunung api aktif dan arah abu vulkanik?',
     answer:
-      'Informasi dihimpun dari feed terbuka resmi: BMKG untuk data gempa tektonik dan peringatan tsunami, BNPB & InaRISK untuk banjir, longsor, dan karhutla, PVMBG / MAGMA ESDM untuk status aktivitas gunung api, serta Darwin VAAC untuk advisori sebaran abu vulkanik penerbangan.',
+      'Buka menu Gunung Api untuk memantau 127 gunung berapi di Indonesia dengan status resmi MAGMA PVMBG (Normal, Waspada, Siaga, Awas), lengkap dengan peta prakiraan sebaran abu vulkanik penerbangan dari Darwin VAAC.',
   },
   {
-    question: 'Apakah Disaster Radar Indonesia merupakan instansi resmi pemerintah?',
+    question: 'Bagaimana cara cek kualitas udara (ISPU) di lokasi saya saat ini?',
     answer:
-      'Bukan. Disaster Radar Indonesia adalah platform independen untuk penyebaran informasi publik. Platform ini tidak menggantikan fungsi atau instruksi dari BNPB, BPBD, atau BMKG.',
+      'Izinkan akses lokasi atau pilih kota Anda pada kartu Kualitas Udara di halaman utama atau di peta. Sistem akan menampilkan angka indeks ISPU, kadar debu halus PM2.5, riwayat 24 jam, dan panduan kesehatan.',
   },
   {
-    question: 'Bagaimana cara mengetahui apakah lokasi saya berada di zona bahaya bencana?',
+    question: 'Dari mana sumber data resmi kebencanaan di Disaster Radar Indonesia?',
     answer:
-      'Gunakan fitur deteksi lokasi atau simpan kota Anda. Sistem kami secara otomatis menghitung jarak koordinat Anda terhadap poligon sebaran abu vulkanik, kawah gunung api berstatus Waspada/Siaga/Awas, serta radius pusat gempa bumi dan banjir.',
+      'Semua data dihimpun langsung dari sumber resmi pemerintah: BMKG untuk gempa tektonik dan cuaca, BNPB untuk banjir dan karhutla, PVMBG untuk aktivitas gunung api, serta Darwin VAAC untuk pergerakan abu vulkanik.',
   },
   {
-    question: 'Apa perbedaan antara kejadian bencana, peringatan dini, hazard, dan risiko?',
+    question: 'Apakah Disaster Radar Indonesia platform resmi pemerintah?',
     answer:
-      'Kejadian (Event) adalah peristiwa fisik yang telah atau sedang berlangsung saat ini. Peringatan Dini (Warning) adalah maklumat resmi BMKG/PVMBG tentang ancaman yang akan terjadi. Hazard adalah potensi ancaman alamiah suatu wilayah, sedangkan Risiko (Risk) adalah kombinasi hazard dengan kerentanan dan kepadatan penduduk.',
+      'Bukan. Disaster Radar Indonesia adalah inisiatif independen untuk menyajikan informasi publik agar mudah dipahami semua orang. Untuk instruksi evakuasi darurat resmi, selalu ikuti komando dari BNPB, BPBD, dan aparat di lapangan.',
   },
 ];
 
@@ -192,11 +203,11 @@ export default async function HomePage() {
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
                 </span>
                 <span className="text-[10px] sm:text-[11px] font-mono font-semibold tracking-wider text-emerald-400 uppercase">
-                  RADAR GEOSPASIAL AKTIF
+                  PANTAUAN LANGSUNG (LIVE)
                 </span>
                 <span className="text-white/20">•</span>
                 <span className="text-[10px] sm:text-[11px] font-mono text-[#94A3B8] tabular-nums">
-                  {activeSources}/{disasterSources.length} Feed Online
+                  {activeSources} Sumber Resmi Terhubung
                 </span>
                 <span className="text-white/20 hidden sm:inline">•</span>
                 <span className="text-[10px] sm:text-[11px] font-mono text-[#94A3B8] hidden sm:inline">
@@ -214,38 +225,71 @@ export default async function HomePage() {
 
               {/* Subheading */}
               <p className="mt-5 max-w-2xl text-sm sm:text-base leading-relaxed text-[#94A3B8]">
-                Agregasi data kebencanaan resmi dari{' '}
-                <span className="text-[#E8ECF1] font-semibold">BMKG</span>,{' '}
-                <span className="text-[#E8ECF1] font-semibold">BNPB</span>,{' '}
-                <span className="text-[#E8ECF1] font-semibold">PVMBG</span>, dan{' '}
-                <span className="text-[#E8ECF1] font-semibold">Darwin VAAC</span>{' '}
-                ke dalam satu peta geospasial interaktif real-time.
+                Pantau info gempa bumi hari ini dari <span className="text-[#E8ECF1] font-semibold">BMKG</span>, titik banjir dari <span className="text-[#E8ECF1] font-semibold">BNPB</span>, status gunung berapi <span className="text-[#E8ECF1] font-semibold">PVMBG</span>, serta kualitas udara real-time dalam satu peta interaktif yang mudah dipahami.
               </p>
 
               {/* Tactical Quick Stats Pills */}
               <div className="mt-6 flex flex-wrap items-center gap-2 text-xs font-mono">
                 <div className="flex items-center gap-1.5 rounded-md border border-white/[0.08] bg-[#0D121D] px-2.5 py-1 text-[#94A3B8]">
                   <Compass className="h-3 w-3 text-red-400" />
-                  <span>127 Gunung Api PVMBG</span>
+                  <span>127 Gunung Api Terpantau</span>
                 </div>
                 <div className="flex items-center gap-1.5 rounded-md border border-white/[0.08] bg-[#0D121D] px-2.5 py-1 text-[#94A3B8]">
                   <Zap className="h-3 w-3 text-amber-400" />
-                  <span>Gempa M≥5.0 & Dirasakan</span>
+                  <span>Gempa Bumi BMKG</span>
                 </div>
                 <div className="flex items-center gap-1.5 rounded-md border border-white/[0.08] bg-[#0D121D] px-2.5 py-1 text-[#94A3B8]">
                   <Layers className="h-3 w-3 text-cyan-400" />
-                  <span>10 Layer Ancaman InaRISK</span>
+                  <span>10 Jenis Peringatan Bahaya</span>
                 </div>
               </div>
 
+              {/* High-volume SEO Quick Search Strip (Topik Paling Dicari) */}
+              <div className="mt-5 flex flex-wrap items-center gap-1.5 text-xs">
+                <span className="text-[11px] text-[#64748B] flex items-center gap-1 font-mono">
+                  <Zap className="h-3 w-3 text-amber-400" />
+                  Paling Dicari:
+                </span>
+                <Link
+                  href="/disasters/earthquake"
+                  className="px-2.5 py-1 rounded-lg border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.08] hover:border-red-500/40 text-[11px] text-[#CBD5E1] hover:text-white transition"
+                >
+                  Gempa Hari Ini BMKG
+                </Link>
+                <Link
+                  href="/disasters/flood"
+                  className="px-2.5 py-1 rounded-lg border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.08] hover:border-blue-500/40 text-[11px] text-[#CBD5E1] hover:text-white transition"
+                >
+                  Peta Titik Banjir
+                </Link>
+                <Link
+                  href="/volcanoes"
+                  className="px-2.5 py-1 rounded-lg border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.08] hover:border-orange-500/40 text-[11px] text-[#CBD5E1] hover:text-white transition"
+                >
+                  Status Gunung Meletus
+                </Link>
+                <Link
+                  href="/map"
+                  className="px-2.5 py-1 rounded-lg border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.08] hover:border-cyan-500/40 text-[11px] text-[#CBD5E1] hover:text-white transition"
+                >
+                  Kualitas Udara ISPU
+                </Link>
+                <Link
+                  href="/disasters/extreme-weather"
+                  className="px-2.5 py-1 rounded-lg border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.08] hover:border-yellow-500/40 text-[11px] text-[#CBD5E1] hover:text-white transition"
+                >
+                  Peringatan Cuaca Ekstrem
+                </Link>
+              </div>
+
               {/* CTAs */}
-              <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
+              <div className="mt-7 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
                 <Link
                   href="/map"
                   className="group relative inline-flex items-center justify-center gap-2.5 rounded-xl bg-gradient-to-r from-red-600 to-orange-500 px-5 sm:px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-red-600/25 transition-all duration-200 hover:from-red-500 hover:to-orange-400 hover:shadow-red-500/40 hover:-translate-y-0.5 active:translate-y-0"
                 >
                   <Radar className="h-4 w-4 transition-transform group-hover:rotate-45 shrink-0" />
-                  <span className="truncate">Buka Peta Radar Interaktif</span>
+                  <span className="truncate">Buka Peta Bencana Live</span>
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1 shrink-0" />
                 </Link>
 
@@ -255,7 +299,7 @@ export default async function HomePage() {
                     className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 rounded-xl border border-white/[0.12] bg-[#0D1117]/90 px-4 sm:px-5 py-3.5 text-sm font-semibold text-[#E8ECF1] backdrop-blur-md transition-all duration-200 hover:border-white/[0.25] hover:bg-[#151C28] hover:text-white"
                   >
                     <Shield className="h-4 w-4 text-orange-400 shrink-0" />
-                    <span>Panduan Evakuasi</span>
+                    <span>Panduan Keselamatan</span>
                   </Link>
 
                   <a
@@ -283,14 +327,14 @@ export default async function HomePage() {
           SECTION 2 — EMERGENCY THREAT LEVEL MATRIX (LIVE STATS)
           ════════════════════════════════════════════════════════ */}
       <section className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 -mt-6 sm:-mt-8 z-10">
-        <h2 className="sr-only">Matriks Tingkat Bahaya Darurat Indonesia</h2>
+        <h2 className="sr-only">Ringkasan Tingkat Bahaya Bencana Indonesia Hari Ini</h2>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
           {/* Critical */}
           <div className="relative rounded-xl border border-red-500/25 bg-[#0D1117]/95 p-3.5 sm:p-5 shadow-lg shadow-black/40 backdrop-blur-md transition-all hover:border-red-500/50 hover:bg-[#121722] group min-w-0">
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-600 via-red-500 to-transparent rounded-t-xl" />
             <div className="flex items-center justify-between gap-1">
               <span className="text-[10px] sm:text-[11px] font-mono font-bold tracking-wider text-red-400 uppercase truncate">
-                Kritis (Level IV)
+                Bahaya Kritis
               </span>
               <span className="relative flex h-2 w-2 shrink-0">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-80" />
@@ -300,7 +344,7 @@ export default async function HomePage() {
             <div className="mt-2 text-2xl sm:text-4xl font-extrabold text-[#E8ECF1] tabular-nums tracking-tight">
               {counts.critical}
             </div>
-            <p className="mt-1 text-[11px] sm:text-xs text-[#94A3B8] truncate">Status Awas / M≥6.0</p>
+            <p className="mt-1 text-[11px] sm:text-xs text-[#94A3B8] truncate">Status Awas / Gempa M≥6.0</p>
           </div>
 
           {/* High */}
@@ -308,14 +352,14 @@ export default async function HomePage() {
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 via-amber-500 to-transparent rounded-t-xl" />
             <div className="flex items-center justify-between gap-1">
               <span className="text-[10px] sm:text-[11px] font-mono font-bold tracking-wider text-orange-400 uppercase truncate">
-                Tinggi (Level III)
+                Status Siaga
               </span>
               <div className="h-2 w-2 rounded-full bg-orange-400 shrink-0" />
             </div>
             <div className="mt-2 text-2xl sm:text-4xl font-extrabold text-[#E8ECF1] tabular-nums tracking-tight">
               {counts.high}
             </div>
-            <p className="mt-1 text-[11px] sm:text-xs text-[#94A3B8] truncate">Status Siaga / Banjir</p>
+            <p className="mt-1 text-[11px] sm:text-xs text-[#94A3B8] truncate">Siaga Erupsi / Banjir</p>
           </div>
 
           {/* Moderate / Warning */}
@@ -323,14 +367,14 @@ export default async function HomePage() {
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 via-yellow-500 to-transparent rounded-t-xl" />
             <div className="flex items-center justify-between gap-1">
               <span className="text-[10px] sm:text-[11px] font-mono font-bold tracking-wider text-amber-400 uppercase truncate">
-                Waspada (Level II)
+                Status Waspada
               </span>
               <div className="h-2 w-2 rounded-full bg-amber-400 shrink-0" />
             </div>
             <div className="mt-2 text-2xl sm:text-4xl font-extrabold text-[#E8ECF1] tabular-nums tracking-tight">
               {counts.moderate}
             </div>
-            <p className="mt-1 text-[11px] sm:text-xs text-[#94A3B8] truncate">Dirasakan / Waspada</p>
+            <p className="mt-1 text-[11px] sm:text-xs text-[#94A3B8] truncate">Getaran Terasa / Waspada</p>
           </div>
 
           {/* Total Monitored */}
@@ -338,14 +382,14 @@ export default async function HomePage() {
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-500 via-blue-500 to-transparent rounded-t-xl" />
             <div className="flex items-center justify-between gap-1">
               <span className="text-[10px] sm:text-[11px] font-mono font-bold tracking-wider text-cyan-400 uppercase truncate">
-                Total Kejadian
+                Laporan Aktif
               </span>
               <div className="h-2 w-2 rounded-full bg-cyan-400 shrink-0" />
             </div>
             <div className="mt-2 text-2xl sm:text-4xl font-extrabold text-[#E8ECF1] tabular-nums tracking-tight">
               {counts.total}
             </div>
-            <p className="mt-1 text-[11px] sm:text-xs text-[#94A3B8] truncate">Data Terverifikasi</p>
+            <p className="mt-1 text-[11px] sm:text-xs text-[#94A3B8] truncate">Data Resmi Terverifikasi</p>
           </div>
         </div>
       </section>
@@ -366,14 +410,14 @@ export default async function HomePage() {
             <div className="flex items-center gap-2 mb-1.5">
               <Radio className="h-4 w-4 text-red-400 animate-pulse shrink-0" />
               <span className="text-xs font-mono font-bold tracking-widest text-red-400 uppercase">
-                TELEMETRI REAL-TIME
+                UPDATE BENCANA HARI INI
               </span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#E8ECF1]">
-              Insiden & Kejadian Terkini
+              Laporan Bencana Terbaru
             </h2>
             <p className="text-sm text-[#94A3B8] mt-1">
-              Daftar kejadian darurat hasil verifikasi sistem multi-lembaga secara real-time.
+              Pantauan gempa bumi, banjir, dan aktivitas bencana alam terbaru yang dihimpun langsung dari BMKG & BNPB.
             </p>
           </div>
 
@@ -381,7 +425,7 @@ export default async function HomePage() {
             href="/map"
             className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-400 hover:text-cyan-300 transition-colors self-start sm:self-auto"
           >
-            <span>Buka Seluruh Titik di Peta</span>
+            <span>Lihat Semua Titik di Peta</span>
             <ArrowRight className="h-3.5 w-3.5 shrink-0" />
           </Link>
         </div>
@@ -393,7 +437,7 @@ export default async function HomePage() {
             {priorityEvent ? (
               <div className="rounded-2xl border border-red-500/30 bg-gradient-to-b from-[#16121E] via-[#0E131F] to-[#0A0E17] p-4 sm:p-6 shadow-xl shadow-red-950/20 relative overflow-hidden">
                 <div className="absolute top-0 right-0 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-bl-xl border-l border-b border-red-500/30 bg-red-950/70 text-[9px] sm:text-[10px] font-mono font-bold text-red-300 uppercase tracking-wider">
-                  PRIORITAS TERTINGGI
+                  PERLU PERHATIAN
                 </div>
 
                 <div className="flex items-center gap-2.5 mb-4 pr-24 sm:pr-28">
@@ -433,7 +477,7 @@ export default async function HomePage() {
                     <span className="text-[#E8ECF1] font-semibold tabular-nums truncate block">
                       {priorityEvent.latitude !== undefined && priorityEvent.longitude !== undefined
                         ? `${priorityEvent.latitude.toFixed(2)}°, ${priorityEvent.longitude.toFixed(2)}°`
-                        : 'Telemetri Spasial'}
+                        : 'Koordinat Wilayah'}
                     </span>
                   </div>
                   {priorityEvent.metadata?.magnitude !== undefined && (
@@ -468,13 +512,13 @@ export default async function HomePage() {
                     className="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-red-600 px-4 py-2.5 text-xs font-bold text-white transition-all hover:bg-red-500 shadow-md shadow-red-600/30"
                   >
                     <Compass className="h-3.5 w-3.5 shrink-0" />
-                    <span>Inspeksi di Peta</span>
+                    <span>Lihat di Peta</span>
                   </Link>
                   <Link
                     href={`/disasters/${priorityEvent.type}`}
                     className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-white/[0.12] bg-white/[0.04] px-3.5 py-2.5 text-xs font-medium text-[#E8ECF1] transition-all hover:bg-white/[0.08]"
                   >
-                    <span>Katalog</span>
+                    <span>Info Lengkap</span>
                     <ArrowRight className="h-3 w-3 shrink-0" />
                   </Link>
                 </div>
@@ -483,10 +527,10 @@ export default async function HomePage() {
               <div className="rounded-2xl border border-white/[0.08] bg-[#0D1117] p-8 text-center">
                 <ShieldAlert className="mx-auto h-8 w-8 text-[#64748B]" />
                 <h3 className="mt-3 text-sm font-semibold text-[#E8ECF1]">
-                  Tidak ada insiden darurat mayor saat ini
+                  Tidak ada laporan bencana besar saat ini
                 </h3>
                 <p className="mt-1 text-xs text-[#94A3B8]">
-                  Kondisi telemetri nasional terpantau dalam status normal.
+                  Situasi di seluruh wilayah Indonesia saat ini terpantau aman dan terkendali.
                 </p>
               </div>
             )}
@@ -563,14 +607,14 @@ export default async function HomePage() {
               <div className="flex items-center gap-2 mb-1.5">
                 <Layers className="h-4 w-4 text-orange-400" />
                 <span className="text-xs font-mono font-bold tracking-widest text-orange-400 uppercase">
-                  DIREKTORI LENGKAP
+                  PILIH JENIS BENCANA
                 </span>
               </div>
               <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#E8ECF1]">
-                10 Kategori Bencana Nasional
+                10 Jenis Bencana yang Dipantau
               </h2>
               <p className="text-sm text-[#94A3B8] mt-1">
-                Klasifikasi terpadu risiko geologi, hidrometeorologi, dan oseanografi Indonesia.
+                Pilih jenis bencana untuk melihat titik lokasi kejadian terkini dan tips keselamatan.
               </p>
             </div>
 
@@ -578,7 +622,7 @@ export default async function HomePage() {
               href="/disasters"
               className="inline-flex items-center gap-1.5 text-xs font-semibold text-orange-400 hover:text-orange-300 transition-colors"
             >
-              <span>Semua Modul Bencana</span>
+              <span>Lihat Semua Jenis Bencana</span>
               <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
@@ -589,7 +633,7 @@ export default async function HomePage() {
               <div className="flex items-center gap-2 mb-3">
                 <div className="h-2 w-2 rounded-full bg-red-400" />
                 <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-[#E8ECF1]">
-                  Klaster Bahaya Geologis & Vulkanik
+                  Gempa Bumi & Gunung Berapi
                 </h3>
               </div>
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
@@ -617,7 +661,7 @@ export default async function HomePage() {
                               {activeCount} Aktif
                             </span>
                           ) : (
-                            <span className="text-[10px] font-mono text-[#64748B]">Nihil</span>
+                            <span className="text-[10px] font-mono text-[#64748B]">Aman</span>
                           )}
                         </div>
                         <h4 className="text-sm font-bold text-[#E8ECF1] group-hover:text-white transition-colors">
@@ -642,7 +686,7 @@ export default async function HomePage() {
               <div className="flex items-center gap-2 mb-3">
                 <div className="h-2 w-2 rounded-full bg-blue-400" />
                 <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-[#E8ECF1]">
-                  Klaster Bahaya Hidrometeorologis & Iklim
+                  Banjir, Cuaca & Kebakaran Hutan
                 </h3>
               </div>
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -670,7 +714,7 @@ export default async function HomePage() {
                               {activeCount} Aktif
                             </span>
                           ) : (
-                            <span className="text-[10px] font-mono text-[#64748B]">Nihil</span>
+                            <span className="text-[10px] font-mono text-[#64748B]">Aman</span>
                           )}
                         </div>
                         <h4 className="text-sm font-bold text-[#E8ECF1] group-hover:text-white transition-colors">
@@ -695,7 +739,7 @@ export default async function HomePage() {
               <div className="flex items-center gap-2 mb-3">
                 <div className="h-2 w-2 rounded-full bg-cyan-400" />
                 <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-[#E8ECF1]">
-                  Klaster Bahaya Pesisir & Kelautan
+                  Gelombang Laut & Pesisir Pantai
                 </h3>
               </div>
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -723,7 +767,7 @@ export default async function HomePage() {
                               {activeCount} Aktif
                             </span>
                           ) : (
-                            <span className="text-[10px] font-mono text-[#64748B]">Nihil</span>
+                            <span className="text-[10px] font-mono text-[#64748B]">Aman</span>
                           )}
                         </div>
                         <h4 className="text-sm font-bold text-[#E8ECF1] group-hover:text-white transition-colors">
@@ -756,13 +800,13 @@ export default async function HomePage() {
             <div className="max-w-xl">
               <div className="inline-flex items-center gap-1.5 text-xs font-mono font-bold tracking-wider text-red-400 mb-2 uppercase">
                 <Phone className="h-3.5 w-3.5" />
-                RESPONS DARURAT NASIONAL
+                NOMOR TELEPON DARURAT
               </div>
               <h2 className="text-xl sm:text-2xl font-bold text-[#E8ECF1]">
-                Menghadapi Situasi Bencana Kritis?
+                Sedang Mengalami Keadaan Darurat?
               </h2>
               <p className="mt-2 text-xs sm:text-sm text-[#94A3B8] leading-relaxed">
-                Hubungi saluran darurat resmi terpadu di bawah ini, atau pelajari langkah keselamatan mandiri Golden Time sebelum tim penyelamat tiba di lokasi.
+                Segera hubungi nomor darurat bebas pulsa di bawah ini atau baca panduan praktis untuk menyelamatkan diri dan keluarga.
               </p>
 
               {/* Action Buttons for hotlines */}
@@ -801,7 +845,7 @@ export default async function HomePage() {
                 className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-xs font-bold text-[#080C14] transition-all hover:bg-white/90 shadow-lg"
               >
                 <BookOpen className="h-4 w-4 text-red-600" />
-                <span>Pelajari Panduan Evakuasi</span>
+                <span>Baca Panduan Keselamatan</span>
                 <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </div>
@@ -815,11 +859,11 @@ export default async function HomePage() {
       <section className="border-t border-white/[0.06] bg-[#070A10] py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-10">
-            <h2 className="text-xl sm:text-2xl font-bold text-[#E8ECF1] uppercase tracking-wider">
-              Sumber Data Resmi Terintegrasi
+            <h2 className="text-xl sm:text-2xl font-bold text-[#E8ECF1]">
+              Data Resmi Langsung dari Lembaga Pemerintah
             </h2>
             <p className="text-xs sm:text-sm text-[#94A3B8] mt-1.5 max-w-2xl">
-              Seluruh telemetri dipetakan langsung dari feed terbuka resmi instansi pemerintah berwenang tanpa modifikasi parameter data.
+              Semua informasi diambil langsung dari sistem resmi BMKG, BNPB, dan PVMBG tanpa rekayasa, sehingga Anda selalu mendapatkan data yang valid dan terpercaya.
             </p>
           </div>
 
@@ -845,7 +889,7 @@ export default async function HomePage() {
                       </span>
                       <div className="flex items-center gap-1.5 text-[10px] font-mono text-emerald-400">
                         <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                        <span>ONLINE</span>
+                        <span>AKTIF</span>
                       </div>
                     </div>
 
@@ -855,7 +899,7 @@ export default async function HomePage() {
 
                   <div className="pt-3 border-t border-white/[0.05] flex items-center justify-between text-xs">
                     <span className="text-[#64748B] font-mono text-[11px] tabular-nums">
-                      {src.eventsCount} insiden dipetakan
+                      {src.eventsCount} data terpetakan
                     </span>
                     <a
                       href={src.url}
@@ -864,7 +908,7 @@ export default async function HomePage() {
                       className="text-[#94A3B8] hover:text-white transition-colors flex items-center gap-1 text-[11px]"
                       aria-label={`Buka portal resmi ${src.name}`}
                     >
-                      <span>Portal</span>
+                      <span>Situs Resmi</span>
                       <ExternalLink className="h-3 w-3" />
                     </a>
                   </div>
@@ -877,7 +921,7 @@ export default async function HomePage() {
           <div className="mt-8 flex items-start gap-3 rounded-xl border border-amber-500/20 bg-amber-950/20 p-4 text-xs text-[#94A3B8]">
             <ShieldAlert className="h-4 w-4 text-amber-400 shrink-0 mt-0.5" />
             <p className="leading-relaxed">
-              <strong className="text-[#E8ECF1]">Penafian Independensi:</strong> Platform Disaster Radar Indonesia adalah inisiatif independen untuk visualisasi geospasial informasi publik. Data di situs ini tidak menggantikan arahan dan komando resmi dari Badan Penanggulangan Bencana Daerah (BPBD) atau aparat kedaruratan di wilayah Anda.
+              <strong className="text-[#E8ECF1]">Catatan Keselamatan:</strong> Platform Disaster Radar Indonesia adalah inisiatif independen yang merangkum data resmi pemerintah agar mudah dipahami semua orang. Jika terjadi bencana di wilayah Anda, selalu utamakan arahan resmi dari petugas BPBD, aparat desa/kelurahan, dan tim penyelamat di lapangan.
             </p>
           </div>
         </div>

@@ -42,9 +42,9 @@ export function TacticalRadarHud({ events, criticalCount }: TacticalRadarHudProp
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-80" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
           </span>
-          <span className="font-semibold text-[#E8ECF1] truncate">SEKTOR NUSANTARA</span>
+          <span className="font-semibold text-[#E8ECF1] truncate">WILAYAH INDONESIA</span>
           <span className="hidden sm:inline text-white/30">•</span>
-          <span className="hidden sm:inline text-emerald-400">SWEEP 360° AKTIF</span>
+          <span className="hidden sm:inline text-emerald-400">PANTAUAN LANGSUNG</span>
         </div>
 
         <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
@@ -197,9 +197,9 @@ export function TacticalRadarHud({ events, criticalCount }: TacticalRadarHudProp
         <div className="absolute top-3 left-3 rounded-lg border border-white/[0.08] bg-[#0A0E17]/85 p-2 px-2.5 backdrop-blur-md">
           <div className="flex items-center gap-1.5 text-[10px] font-mono text-[#E8ECF1]">
             <Radar className="h-3 w-3 text-cyan-400" />
-            <span className="font-semibold">{events.length} INSIDEN</span>
+            <span className="font-semibold">{events.length} Kejadian</span>
             <span className="text-white/40">|</span>
-            <span className="text-red-400 font-bold">{criticalCount} KRITIS</span>
+            <span className="text-red-400 font-bold">{criticalCount} Kritis</span>
           </div>
         </div>
 
@@ -209,7 +209,7 @@ export function TacticalRadarHud({ events, criticalCount }: TacticalRadarHudProp
             href="/map"
             className="flex items-center gap-1.5 rounded-lg border border-cyan-500/30 bg-[#080C14]/90 px-3 py-1.5 text-[11px] font-semibold text-cyan-300 backdrop-blur-md transition-all hover:border-cyan-400 hover:bg-cyan-950/40 hover:text-white shadow-lg"
           >
-            <span>Buka Peta GIS</span>
+            <span>Buka Peta Lengkap</span>
             <ArrowUpRight className="h-3.5 w-3.5" />
           </Link>
         </div>
@@ -219,9 +219,9 @@ export function TacticalRadarHud({ events, criticalCount }: TacticalRadarHudProp
       <div className="mt-3 flex flex-wrap items-center justify-between gap-1.5 text-[10px] text-[#8B95A7]">
         <span className="flex items-center gap-1 min-w-0">
           <ShieldAlert className="h-3 w-3 text-red-400/80 shrink-0" />
-          <span className="truncate">Deteksi Spasial BMKG • PVMBG • BNPB</span>
+          <span className="truncate">Data Terkini BMKG • PVMBG • BNPB</span>
         </span>
-        <span className="font-mono text-white/50 hidden sm:inline">WGS-84 / GIS PROJECTION</span>
+        <span className="font-mono text-white/50 hidden sm:inline">Pembaruan Real-Time</span>
       </div>
     </div>
   );

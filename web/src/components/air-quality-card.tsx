@@ -47,6 +47,10 @@ export function AirQualityCard({
   const [needsGpsPrompt, setNeedsGpsPrompt] = useState(false);
   const [userLoc, setUserLoc] = useState<CachedUserLocation | null>(null);
   const [showHistory, setShowHistory] = useState(!compact);
+  const [selectedHourIndex, setSelectedHourIndex] = useState<number | null>(null);
+  const [timeRange, setTimeRange] = useState<'1d' | '7d' | '30d'>('1d');
+  const [rangeCache, setRangeCache] = useState<Record<string, AirQualityReading>>({});
+  const [rangeLoading, setRangeLoading] = useState(false);
   const [notifPermission, setNotifPermission] = useState<NotificationPermission>('default');
 
   // Check initial notification status
@@ -57,25 +61,37 @@ export function AirQualityCard({
   }, []);
 
   // Fetch AQI from backend API
-  const fetchAqi = useCallback(async (lat: number, lng: number, labelName?: string) => {
-    setLoading(true);
-    try {
-      const res = await fetch(`/api/air-quality?lat=${lat}&lng=${lng}`);
-      if (res.ok) {
-        const json: AirQualityReading = await res.json();
-        setData(json);
+  const fetchAqi = useCallback(
+    async (
+      lat: number,
+      lng: number,
+      labelName?: string,
+      range: '1d' | '7d' | '30d' = '1d'
+    ) => {
+      setLoading(true);
+      try {
+        const res = await fetch(`/api/air-quality?lat=${lat}&lng=${lng}&range=${range}`);
+        if (res.ok) {
+          const json: AirQualityReading = await res.json();
+          setData(json);
+          setSelectedHourIndex(null);
+          setTimeRange(range);
+          const cacheKey = `${lat.toFixed(3)}_${lng.toFixed(3)}_${range}`;
+          setRangeCache((prev) => ({ ...prev, [cacheKey]: json }));
 
-        // If unhealthy and notification granted, fire web notification
-        if (isAirQualityUnhealthy(json.ispu)) {
-          dispatchAirQualityNotification(json, labelName || 'Lokasi Anda');
+          // If unhealthy and notification granted, fire web notification
+          if (isAirQualityUnhealthy(json.ispu)) {
+            dispatchAirQualityNotification(json, labelName || 'Lokasi Anda');
+          }
         }
+      } catch (e) {
+        console.warn('Failed to fetch air quality:', e);
+      } finally {
+        setLoading(false);
       }
-    } catch (e) {
-      console.warn('Failed to fetch air quality:', e);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+    },
+    []
+  );
 
   // Unified location resolution flow
   const runLocationDetection = useCallback(async () => {
@@ -156,6 +172,40 @@ export function AirQualityCard({
     };
   }, [runLocationDetection, initialLat]);
 
+  // Determine effective coordinates & label
+  const effectiveLat = initialLat ?? userLoc?.latitude ?? -6.2088;
+  const effectiveLng = initialLng ?? userLoc?.longitude ?? 106.8456;
+  const effectiveLabel = locationLabel ?? userLoc?.label ?? 'Lokasi Terpilih';
+
+  // Handler: Switch time range (1d, 7d, 30d)
+  const handleRangeChange = async (newRange: '1d' | '7d' | '30d') => {
+    if (newRange === timeRange || rangeLoading) return;
+    setTimeRange(newRange);
+    setSelectedHourIndex(null);
+
+    const cacheKey = `${effectiveLat.toFixed(3)}_${effectiveLng.toFixed(3)}_${newRange}`;
+    if (rangeCache[cacheKey]) {
+      setData(rangeCache[cacheKey]);
+      return;
+    }
+
+    setRangeLoading(true);
+    try {
+      const res = await fetch(
+        `/api/air-quality?lat=${effectiveLat}&lng=${effectiveLng}&range=${newRange}`
+      );
+      if (res.ok) {
+        const json: AirQualityReading = await res.json();
+        setRangeCache((prev) => ({ ...prev, [cacheKey]: json }));
+        setData(json);
+      }
+    } catch (e) {
+      console.warn('Failed to switch air quality range:', e);
+    } finally {
+      setRangeLoading(false);
+    }
+  };
+
   // Handler: User explicitly requests GPS activation
   const handleRequestGps = async () => {
     setLocating(true);
@@ -165,11 +215,11 @@ export function AirQualityCard({
     if (res.location) {
       setUserLoc(res.location);
       setNeedsGpsPrompt(false);
-      fetchAqi(res.location.latitude, res.location.longitude, res.location.label);
+      fetchAqi(res.location.latitude, res.location.longitude, res.location.label, timeRange);
     } else {
       alert(
         res.error ||
-          'GPS tidak aktif atau izin akses lokasi belum diberikan. Silakan aktifkan GPS atau pilih salah satu kota di bawah.'
+          'GPS belum aktif atau izin akses lokasi belum diberikan. Silakan aktifkan GPS atau pilih salah satu kota di bawah.'
       );
     }
   };
@@ -179,7 +229,7 @@ export function AirQualityCard({
     const saved = saveUserLocation({ latitude: city.latitude, longitude: city.longitude }, city.label, false);
     setUserLoc(saved);
     setNeedsGpsPrompt(false);
-    fetchAqi(saved.latitude, saved.longitude, saved.label);
+    fetchAqi(saved.latitude, saved.longitude, saved.label, timeRange);
   };
 
   // Handler: Toggle browser notification permission
@@ -191,11 +241,6 @@ export function AirQualityCard({
     }
   };
 
-  // Determine effective coordinates & label
-  const effectiveLat = initialLat ?? userLoc?.latitude ?? -6.2088;
-  const effectiveLng = initialLng ?? userLoc?.longitude ?? 106.8456;
-  const effectiveLabel = locationLabel ?? userLoc?.label ?? 'Lokasi Terpilih';
-
   // -------------------------------------------------------------
   // STATE 1: Prompt to turn on GPS if GPS is off and no cache exists
   // -------------------------------------------------------------
@@ -203,7 +248,7 @@ export function AirQualityCard({
     return (
       <div
         role="region"
-        aria-label="Aktivasi Lokasi Kualitas Udara"
+        aria-label="Cek Kualitas Udara di Lokasi Anda"
         className="relative rounded-2xl border border-white/[0.12] bg-gradient-to-b from-[#111726] via-[#0D121F] to-[#080C14] p-5 sm:p-6 shadow-2xl shadow-black/80 backdrop-blur-xl overflow-hidden"
       >
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
@@ -214,14 +259,14 @@ export function AirQualityCard({
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
               <span className="font-mono text-xs font-bold uppercase tracking-wider text-cyan-400">
-                LOKASI BELUM TERDETEKSI
+                LOKASI BELUM DIKETAHUI
               </span>
             </div>
             <h3 className="text-base font-bold text-white mt-0.5">
-              Pantau Kualitas Udara di Sekitar Anda
+              Cek Kualitas Udara di Sekitar Anda
             </h3>
             <p className="text-xs text-[#94A3B8] mt-1 leading-relaxed max-w-xl">
-              Nyalakan GPS perangkat Anda atau izinkan akses lokasi agar sistem dapat menampilkan data ISPU & partikulat udara real-time serta mengirimkan notifikasi saat udara tidak sehat.
+              Nyalakan GPS atau pilih kota Anda untuk mengetahui seberapa bersih udara hari ini dan menerima peringatan otomatis bila udara sedang tidak sehat.
             </p>
           </div>
 
@@ -232,7 +277,7 @@ export function AirQualityCard({
             className="w-full sm:w-auto shrink-0 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-cyan-500/50 bg-cyan-500/20 hover:bg-cyan-500/30 active:scale-95 text-cyan-300 font-bold text-xs tracking-wide transition shadow-lg shadow-cyan-950/50"
           >
             <Navigation className={`h-4 w-4 ${locating ? 'animate-spin' : ''}`} />
-            <span>{locating ? 'Mendeteksi GPS...' : 'Aktifkan GPS'}</span>
+            <span>{locating ? 'Mencari Lokasi...' : 'Nyalakan GPS'}</span>
           </button>
         </div>
 
@@ -283,9 +328,14 @@ export function AirQualityCard({
   if (!data) return null;
 
   const isUnhealthy = isAirQualityUnhealthy(data.ispu);
+  const historyList = data.history || data.hourlyHistory || [];
+  const selectedPoint =
+    selectedHourIndex !== null && historyList[selectedHourIndex]
+      ? historyList[selectedHourIndex]
+      : null;
 
   // -------------------------------------------------------------
-  // STATE 3: Ready with ISPU Telemetry, 24h Trend & Notification
+  // STATE 3: Ready with ISPU Telemetry, Clickable 24h Trend & Notification
   // -------------------------------------------------------------
   return (
     <div
@@ -317,7 +367,7 @@ export function AirQualityCard({
               <span className="font-mono font-bold tracking-wider text-[#E8ECF1] uppercase text-[11px]">
                 KUALITAS UDARA
               </span>
-              <span className="text-[10px] font-mono text-[#64748B] hidden sm:inline">(ISPU KLHK)</span>
+              <span className="text-[10px] font-mono text-[#64748B] hidden sm:inline">(Indeks ISPU)</span>
             </div>
             <div className="flex items-center gap-1 text-[11px] text-[#8B95A7] truncate">
               <MapPin className="h-3 w-3 shrink-0 text-[#64748B]" />
@@ -343,8 +393,8 @@ export function AirQualityCard({
             }`}
             title={
               notifPermission === 'granted'
-                ? 'Notifikasi Udara Tidak Sehat Aktif'
-                : 'Aktifkan Notifikasi Udara Tidak Sehat'
+                ? 'Notifikasi Udara Tidak Sehat Sudah Aktif'
+                : 'Nyalakan Notifikasi Jika Udara Tidak Sehat'
             }
             aria-label="Pengaturan Notifikasi Kualitas Udara"
           >
@@ -361,7 +411,7 @@ export function AirQualityCard({
             onClick={() => fetchAqi(effectiveLat, effectiveLng, effectiveLabel)}
             disabled={loading}
             className="p-1.5 rounded-lg border border-white/[0.08] text-[#8B95A7] hover:text-white hover:bg-white/[0.04] transition"
-            title="Muat Ulang Kualitas Udara"
+            title="Perbarui Data Kualitas Udara"
             aria-label="Refresh Kualitas Udara"
           >
             <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin text-cyan-400' : ''}`} />
@@ -375,16 +425,16 @@ export function AirQualityCard({
           <div className="flex items-center gap-2 min-w-0">
             <AlertTriangle className="h-4 w-4 text-amber-400 shrink-0" />
             <span className="text-[11px] text-amber-200 truncate">
-              Kualitas udara melewati batas aman ({data.category})!
+              Perhatian: Udara sedang kurang sehat ({data.category})!
             </span>
           </div>
           <button
             type="button"
             onClick={handleToggleNotification}
-            className="shrink-0 px-2 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 font-bold text-[10px] border border-amber-500/40 transition active:scale-95 flex items-center gap-1"
+            className="shrink-0 px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 font-bold text-[10px] border border-amber-500/40 transition active:scale-95 flex items-center gap-1"
           >
             <Bell className="h-3 w-3" />
-            <span>Aktifkan Notif</span>
+            <span>Nyalakan Peringatan</span>
           </button>
         </div>
       )}
@@ -427,19 +477,19 @@ export function AirQualityCard({
         {/* Quick pollutant pills */}
         <div className="grid grid-cols-3 sm:grid-cols-3 gap-2 rounded-xl border border-white/[0.06] bg-[#070A10]/70 p-2 text-center text-xs font-mono shrink-0">
           <div>
-            <span className="text-[9px] text-[#64748B] block">PM2.5</span>
+            <span className="text-[9px] text-[#64748B] block">Debu PM2.5</span>
             <span className="font-bold text-[#E8ECF1] tabular-nums">
-              {data.pm25.toFixed(1)} <span className="text-[9px] text-[#64748B] font-normal">µg</span>
+              {data.pm25.toFixed(1)} <span className="text-[9px] text-[#64748B] font-normal">µg/m³</span>
             </span>
           </div>
           <div>
-            <span className="text-[9px] text-[#64748B] block">PM10</span>
+            <span className="text-[9px] text-[#64748B] block">Debu PM10</span>
             <span className="font-bold text-[#E8ECF1] tabular-nums">
-              {data.pm10.toFixed(1)} <span className="text-[9px] text-[#64748B] font-normal">µg</span>
+              {data.pm10.toFixed(1)} <span className="text-[9px] text-[#64748B] font-normal">µg/m³</span>
             </span>
           </div>
           <div>
-            <span className="text-[9px] text-[#64748B] block">US AQI</span>
+            <span className="text-[9px] text-[#64748B] block">Standar AQI</span>
             <span className="font-bold text-amber-400 tabular-nums">
               {data.usAqi}
             </span>
@@ -447,33 +497,85 @@ export function AirQualityCard({
         </div>
       </div>
 
-      {/* 24-Hour History Toggle & Interactive Visual Bar Graph */}
-      {data.hourlyHistory && data.hourlyHistory.length > 0 && (
+      {/* History Toggle & Interactive Clickable Bar Graph with 1D, 7D, 30D Selector */}
+      {historyList && historyList.length > 0 && (
         <div className="mt-4 pt-3 border-t border-white/[0.06]">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-[10px] font-mono tracking-wider text-[#8B95A7] uppercase flex items-center gap-1.5">
-              <Activity className="h-3 w-3 text-cyan-400" />
-              <span>Tren 24 Jam Terakhir</span>
-            </span>
+          <div className="flex flex-wrap items-center justify-between gap-2 mb-2.5">
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-mono tracking-wider text-[#8B95A7] uppercase flex items-center gap-1.5">
+                <Activity className="h-3 w-3 text-cyan-400" />
+                <span>Riwayat ISPU</span>
+              </span>
+
+              {/* Time Range Selector: 24 Jam (1D), 7 Hari (1W), 30 Hari (1M) */}
+              <div className="flex items-center rounded-lg bg-[#060A12] p-0.5 border border-white/[0.08] shadow-inner">
+                <button
+                  type="button"
+                  onClick={() => handleRangeChange('1d')}
+                  disabled={rangeLoading}
+                  className={`px-2 py-0.5 rounded text-[10px] font-mono transition-all ${
+                    timeRange === '1d'
+                      ? 'bg-cyan-500 text-black font-bold shadow-sm'
+                      : 'text-[#94A3B8] hover:text-white'
+                  }`}
+                  title="Riwayat 24 jam terakhir (per jam)"
+                >
+                  24 Jam
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleRangeChange('7d')}
+                  disabled={rangeLoading}
+                  className={`px-2 py-0.5 rounded text-[10px] font-mono transition-all ${
+                    timeRange === '7d'
+                      ? 'bg-cyan-500 text-black font-bold shadow-sm'
+                      : 'text-[#94A3B8] hover:text-white'
+                  }`}
+                  title="Riwayat 7 hari terakhir (1 minggu)"
+                >
+                  7 Hari
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleRangeChange('30d')}
+                  disabled={rangeLoading}
+                  className={`px-2 py-0.5 rounded text-[10px] font-mono transition-all ${
+                    timeRange === '30d'
+                      ? 'bg-cyan-500 text-black font-bold shadow-sm'
+                      : 'text-[#94A3B8] hover:text-white'
+                  }`}
+                  title="Riwayat 30 hari terakhir (1 bulan)"
+                >
+                  30 Hari
+                </button>
+              </div>
+            </div>
 
             <button
               type="button"
               onClick={() => setShowHistory(!showHistory)}
               className="text-[10px] font-mono text-cyan-400 hover:text-cyan-300 flex items-center gap-1"
             >
-              <span>{showHistory ? 'Sembunyikan' : 'Lihat Detail'}</span>
+              <span>{showHistory ? 'Tutup' : 'Buka Grafik'}</span>
               {showHistory ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
             </button>
           </div>
 
           {showHistory && (
             <div className="space-y-2 animate-in fade-in duration-200">
-              {/* Hourly Bars */}
-              <div className="flex items-end justify-between gap-1 h-14 pt-2 px-1 rounded-lg bg-[#060910] border border-white/[0.04]">
-                {data.hourlyHistory.map((h, i) => {
+              {/* Bars container */}
+              <div
+                className={`flex items-end justify-between gap-1 h-14 pt-2 px-1 rounded-lg bg-[#060910] border border-white/[0.04] transition-opacity ${
+                  rangeLoading ? 'opacity-50' : 'opacity-100'
+                }`}
+                role="group"
+                aria-label={`Grafik Kualitas Udara ${timeRange === '1d' ? '24 Jam' : timeRange === '7d' ? '7 Hari' : '30 Hari'}`}
+              >
+                {historyList.map((h, i) => {
                   const maxIspu = 250;
-                  const heightPercent = Math.min(100, Math.max(12, (h.ispu / maxIspu) * 100));
-                  const hourLabel = new Date(h.time).getHours().toString().padStart(2, '0');
+                  const heightPercent = Math.min(100, Math.max(14, (h.ispu / maxIspu) * 100));
+                  const isSelected = selectedHourIndex === i;
+                  const isCurrent = i === historyList.length - 1;
                   const barColor =
                     h.ispu <= 50
                       ? '#10B981'
@@ -484,35 +586,80 @@ export function AirQualityCard({
                       : '#EF4444';
 
                   return (
-                    <div
+                    <button
                       key={i}
-                      className="flex-1 flex flex-col items-center justify-end h-full group/bar relative"
+                      type="button"
+                      onClick={() => setSelectedHourIndex(isSelected ? null : i)}
+                      className="flex-1 flex flex-col items-center justify-end h-full relative cursor-pointer group/bar focus:outline-none"
+                      title={`${h.label} — ISPU ${h.ispu} (${h.category})`}
+                      aria-label={`${h.label}, ISPU ${h.ispu}`}
                     >
                       <div
-                        className="w-full rounded-t transition-all duration-200 group-hover/bar:brightness-125"
+                        className={`w-full rounded-t transition-all duration-150 ${
+                          isSelected
+                            ? 'ring-2 ring-white brightness-150 scale-x-110 shadow-lg'
+                            : 'hover:brightness-125'
+                        }`}
                         style={{
                           height: `${heightPercent}%`,
                           backgroundColor: barColor,
-                          opacity: i === data.hourlyHistory.length - 1 ? 1 : 0.75,
+                          opacity: isSelected ? 1 : isCurrent ? 1 : 0.75,
                         }}
                       />
-                      {/* Tooltip on hover */}
+
+                      {/* Small current dot */}
+                      {isCurrent && !isSelected && (
+                        <span className="absolute -bottom-1 h-1 w-1 rounded-full bg-cyan-400" />
+                      )}
+
+                      {/* Hover Tooltip for desktop */}
                       <div className="absolute bottom-full mb-1 hidden group-hover/bar:flex flex-col items-center pointer-events-none z-30">
                         <div className="rounded bg-[#0A0E17] border border-white/20 p-1 px-1.5 text-[9px] font-mono whitespace-nowrap shadow-xl">
-                          <span className="font-bold text-white">{hourLabel}:00</span> — ISPU {h.ispu}
+                          <span className="font-bold text-white">{h.label}</span> — {h.ispu}
                         </div>
                       </div>
-                    </div>
+                    </button>
                   );
                 })}
               </div>
 
               {/* Ticker labels below chart */}
               <div className="flex items-center justify-between text-[9px] font-mono text-[#5A6478] px-1">
-                <span>24j lalu</span>
-                <span>12j lalu</span>
-                <span className="text-cyan-400 font-bold">Saat ini</span>
+                <span>{timeRange === '1d' ? '24 jam lalu' : timeRange === '7d' ? '7 hari lalu' : '30 hari lalu'}</span>
+                <span>{timeRange === '1d' ? '12 jam lalu' : timeRange === '7d' ? '3 hari lalu' : '15 hari lalu'}</span>
+                <span className="text-cyan-400 font-bold">{timeRange === '1d' ? 'Saat ini' : 'Hari ini'}</span>
               </div>
+
+              {/* Click Detail Callout: Displays the exact number when clicked */}
+              {selectedPoint ? (
+                <div className="mt-2.5 p-2.5 rounded-xl border border-cyan-500/30 bg-cyan-950/20 flex items-center justify-between gap-3 text-xs backdrop-blur-sm animate-in fade-in slide-in-from-top-1">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="font-mono text-[11px] font-bold text-cyan-300 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/20 shrink-0">
+                      {timeRange === '1d' ? `Jam ${selectedPoint.label}` : selectedPoint.label}
+                    </span>
+                    <span className="text-[#CBD5E1] text-[11px] truncate">
+                      ISPU: <strong className="text-white font-mono text-sm">{selectedPoint.ispu}</strong>{' '}
+                      <span className="text-[#94A3B8]">({selectedPoint.category})</span>
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <span className="text-[11px] font-mono text-[#94A3B8]">
+                      PM2.5: <strong className="text-white">{selectedPoint.pm25.toFixed(1)}</strong> µg/m³
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedHourIndex(null)}
+                      className="px-2 py-0.5 rounded bg-white/[0.06] hover:bg-white/10 text-[10px] font-mono text-cyan-300 transition"
+                    >
+                      Tutup
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <p className="text-[10px] text-[#64748B] text-center font-mono py-0.5">
+                  👆 Sentuh atau klik batang mana saja untuk melihat angka detail {timeRange === '1d' ? 'jam' : 'hari'} tersebut
+                </p>
+              )}
             </div>
           )}
         </div>

@@ -5,16 +5,24 @@ import { Database, Map, ExternalLink, Radio, Wind, Server, Lock } from 'lucide-r
 import { SITE_URL } from '@/config/site';
 
 export const metadata: Metadata = {
-  title: 'Sumber Data Resmi Kebencanaan | Disaster Radar Indonesia',
+  title: 'Sumber Data Resmi Bencana Alam — BMKG, BNPB, & PVMBG | Disaster Radar',
   description:
-    'Pelajari sumber data resmi yang digunakan oleh Disaster Radar Indonesia, termasuk BMKG, BNPB, PVMBG / MAGMA Indonesia, Darwin VAAC, dan OpenStreetMap.',
+    'Daftar sumber data resmi terpercaya yang digunakan Disaster Radar Indonesia: BMKG (gempa bumi & cuaca), BNPB (banjir & karhutla), PVMBG (gunung api), dan Darwin VAAC (abu vulkanik).',
+  keywords: [
+    'sumber data bmkg',
+    'portal data bnpb',
+    'magma esdm pvmbg',
+    'darwin vaac abu vulkanik',
+    'api gempa bumi bmkg',
+    'inarisk bnpb',
+  ],
   alternates: {
     canonical: `${SITE_URL}/data-sources`,
   },
   openGraph: {
-    title: 'Sumber Data Resmi Kebencanaan | Disaster Radar Indonesia',
+    title: 'Sumber Data Resmi Bencana Alam — BMKG, BNPB, & PVMBG | Disaster Radar',
     description:
-      'Pelajari sumber data resmi yang digunakan oleh Disaster Radar Indonesia, termasuk BMKG, BNPB, PVMBG / MAGMA Indonesia, Darwin VAAC, dan OpenStreetMap.',
+      'Daftar sumber data resmi terpercaya yang digunakan Disaster Radar Indonesia: BMKG (gempa bumi & cuaca), BNPB (banjir & karhutla), PVMBG (gunung api), dan Darwin VAAC (abu vulkanik).',
     url: `${SITE_URL}/data-sources`,
     siteName: 'Disaster Radar Indonesia',
     type: 'website',
@@ -111,7 +119,7 @@ export default function DataSourcesPage() {
         <div className="relative z-10 max-w-2xl">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.1] bg-[#141B26]/80 px-3 py-1 text-[11px] font-mono font-semibold tracking-wider text-blue-400 uppercase mb-3 backdrop-blur-md">
             <Server className="h-3 w-3" />
-            <span>TATA KELOLA & INTEGRITAS DATA PUBLIK</span>
+            <span>SUMBER RESMI & TERPERCAYA</span>
           </div>
 
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[#E8ECF1] leading-[1.1]">
@@ -119,7 +127,7 @@ export default function DataSourcesPage() {
           </h1>
 
           <p className="mt-3 text-sm sm:text-base text-[#94A3B8] leading-relaxed">
-            Disaster Radar Indonesia memetakan dan mengagregasi data buletin resmi dari lembaga pemerintah dan badan meteorologi terverifikasi tanpa mengubah substansi atau parameter informasi aslinya.
+            Disaster Radar Indonesia menampilkan data langsung dari lembaga resmi pemerintah seperti BMKG, BNPB, dan PVMBG tanpa mengubah isi aslinya, sehingga data selalu akurat dan dapat dipercaya.
           </p>
         </div>
       </div>

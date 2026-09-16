@@ -16,16 +16,25 @@ import {
 } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Panduan Keselamatan & Evakuasi Bencana | Disaster Radar Indonesia',
+  title: 'Panduan Keselamatan & Evakuasi Bencana Alam — Gempa, Banjir, & Gunung Meletus | Disaster Radar',
   description:
-    'Panduan resmi tanggap darurat, penyelamatan mandiri, dan prosedur evakuasi saat menghadapi gempa bumi, banjir, letusan gunung api, abu vulkanik, tsunami, dan karhutla di Indonesia.',
+    'Panduan praktis cara menghadapi gempa bumi, banjir, letusan gunung api, tsunami, dan kebakaran hutan di Indonesia. Pahami langkah penyelamatan diri dan nomor darurat bebas pulsa 112.',
+  keywords: [
+    'cara menghadapi gempa bumi',
+    'apa yang harus dilakukan saat gempa',
+    'cara menyelamatkan diri saat banjir',
+    'panduan evakuasi gunung meletus',
+    'nomor darurat bencana 112',
+    'tas siaga bencana bnpb',
+    'mitigasi bencana indonesia',
+  ],
   alternates: {
     canonical: `${SITE_URL}/safety-guide`,
   },
   openGraph: {
-    title: 'Panduan Keselamatan & Evakuasi Bencana | Disaster Radar Indonesia',
+    title: 'Panduan Keselamatan & Evakuasi Bencana Alam — Gempa, Banjir, & Gunung Meletus | Disaster Radar',
     description:
-      'Panduan resmi tanggap darurat, penyelamatan mandiri, dan prosedur evakuasi saat menghadapi gempa bumi, banjir, letusan gunung api, abu vulkanik, tsunami, dan karhutla di Indonesia.',
+      'Panduan praktis cara menghadapi gempa bumi, banjir, letusan gunung api, tsunami, dan kebakaran hutan di Indonesia. Pahami langkah penyelamatan diri dan nomor darurat bebas pulsa 112.',
     url: `${SITE_URL}/safety-guide`,
     siteName: 'Disaster Radar Indonesia',
     type: 'article',
@@ -46,7 +55,7 @@ export default function SafetyGuidePage() {
         <div className="relative z-10 max-w-3xl">
           <div className="inline-flex items-center gap-2 rounded-full border border-red-500/20 bg-red-950/40 px-3 py-1 text-[11px] font-mono font-semibold tracking-wider text-red-400 uppercase mb-4 backdrop-blur-md">
             <Radio className="h-3 w-3 animate-pulse" />
-            <span>PROTOKOL EVAKUASI & MITIGASI MANDIRI</span>
+            <span>PANDUAN PRAKTIS PENYELAMATAN DIRI</span>
           </div>
 
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[#E8ECF1] leading-[1.1]">
@@ -54,7 +63,7 @@ export default function SafetyGuidePage() {
           </h1>
 
           <p className="mt-4 text-sm sm:text-base text-[#94A3B8] leading-relaxed">
-            Ketahui langkah cepat penyelamatan mandiri saat Anda berada di dalam atau dekat zona bahaya bencana alam di Indonesia. Pahami tindakan sebelum, saat kejadian (Golden Time), dan sesudah bencana sesuai pedoman standar BNPB.
+            Langkah cepat dan praktis untuk menyelamatkan diri dan keluarga saat terjadi gempa bumi, banjir, letusan gunung api, atau cuaca ekstrem di sekitar Anda. Berdasarkan pedoman resmi BNPB dan BPBD.
           </p>
         </div>
       </div>

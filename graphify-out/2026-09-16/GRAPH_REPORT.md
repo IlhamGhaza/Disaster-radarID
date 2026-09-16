@@ -1,12 +1,12 @@
 # Graph Report - Disaster-radarID  (2026-09-16)
 
 ## Corpus Check
-- 84 files · ~186,252 words
+- 84 files · ~185,616 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 8 file(s) not represented in the graph (top: .ico 3, (none) 2, .webmanifest 2)
 
 ## Summary
-- 518 nodes · 1054 edges · 31 communities (20 shown, 10 thin omitted)
+- 515 nodes · 1050 edges · 30 communities (19 shown, 10 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 3 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
@@ -24,10 +24,10 @@
 - [slug]/page.tsx
 - What You Must Do When Invoked
 - Laporan Audit Komprehensif — Disaster Radar Indonesia
-- disaster-map.tsx
+- disasters/types.ts
 - compilerOptions
 - 🌋 AshWatch Web — Darwin VAAC Volcanic Ash Viewer & Technical SEO
-- user-location-cache.ts
+- disaster-map.tsx
 - graphify reference: extra exports and benchmark
 - vercel.json
 - graphify reference: query, path, explain
@@ -45,7 +45,6 @@
 - AGENTS.md
 - eslint.config.mjs
 - postcss.config.mjs
-- magma-status.ts
 
 ## God Nodes (most connected - your core abstractions)
 1. `react` - 29 edges
@@ -60,8 +59,8 @@
 10. `getAggregatedDisasters()` - 15 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `DisasterIconProps` --references--> `DisasterType`  [EXTRACTED]
-  web/src/components/icons/disaster-icons.tsx → web/src/lib/disasters/types.ts
+- `LiveAdvisoriesListProps` --references--> `VolcanoAdvisory`  [EXTRACTED]
+  web/src/components/live-advisories-list.tsx → web/src/lib/types.ts
 - `AdvisoriesResponse` --references--> `VolcanoAdvisory`  [EXTRACTED]
   web/src/lib/advisories.ts → web/src/lib/types.ts
 - `generateMetadata()` --calls--> `getDarwinAdvisories()`  [EXTRACTED]
@@ -74,15 +73,15 @@
 ## Import Cycles
 - None detected.
 
-## Communities (31 total, 10 thin omitted)
+## Communities (30 total, 10 thin omitted)
 
 ### Community 0 - "react"
 Cohesion: 0.06
-Nodes (49): lucide-react, next, react, nextConfig, metadata, metadata, revalidate, metadata (+41 more)
+Nodes (50): lucide-react, next, react, nextConfig, metadata, metadata, revalidate, metadata (+42 more)
 
 ### Community 1 - "ash-map.tsx"
-Cohesion: 0.13
-Nodes (25): CheckMyAreaCard(), CheckMyAreaCardProps, IndonesiaMiniMapProps, LiveAdvisoriesListProps, getRelativeTime(), LiveAdvisoryTicker(), LiveAdvisoryTickerProps, AshMapProps (+17 more)
+Cohesion: 0.08
+Nodes (42): leaflet, CheckMyAreaCard(), CheckMyAreaCardProps, IndonesiaMiniMap(), initMiniMap(), IndonesiaMiniMapProps, getRelativeTime(), LiveAdvisoryTicker() (+34 more)
 
 ### Community 2 - "test-runner.ts"
 Cohesion: 0.08
@@ -97,8 +96,8 @@ Cohesion: 0.05
 Nodes (37): eslint, eslint-config-next, react-dom, tailwindcss, @tailwindcss/postcss, tsx, @types/leaflet, @types/node (+29 more)
 
 ### Community 5 - "[slug]/page.tsx"
-Cohesion: 0.11
-Nodes (32): leaflet, AdvisoryDetailPage(), generateMetadata(), PageProps, AdvisoriesPage(), dynamic, GET(), metadata (+24 more)
+Cohesion: 0.14
+Nodes (23): AdvisoryDetailPage(), generateMetadata(), PageProps, AdvisoriesPage(), dynamic, GET(), VolcanoesPage(), dynamic (+15 more)
 
 ### Community 6 - "What You Must Do When Invoked"
 Cohesion: 0.07
@@ -108,9 +107,9 @@ Nodes (26): For /graphify add and --watch, For /graphify query, For the commit h
 Cohesion: 0.09
 Nodes (21): 1. Framework & Runtime, 1. Konsep Estetika: *"National Geospatial Defense & Telemetry Command"*, 2. Mesin Pemetaan & Geospasial, 2. Sistem Tipografi Modern, 3. Layer Agregasi & Normalisasi Data, 3. Palet Peringatan Terkalibrasi (WCAG AA), 4. Mesin Kalkulasi Spasial & Cache Klien, 4. Penyempurnaan Kartografi OpenStreetMap (+13 more)
 
-### Community 8 - "disaster-map.tsx"
-Cohesion: 0.10
-Nodes (31): dynamic, GET(), DisastersIndexPage(), CategoryDetailPage(), MapPage(), metadata, revalidate, TacticalRadarHud() (+23 more)
+### Community 8 - "disasters/types.ts"
+Cohesion: 0.09
+Nodes (33): dynamic, GET(), DisastersIndexPage(), MapPage(), metadata, revalidate, sitemap(), TacticalRadarHud() (+25 more)
 
 ### Community 9 - "compilerOptions"
 Cohesion: 0.11
@@ -120,9 +119,9 @@ Nodes (18): compilerOptions, allowJs, esModuleInterop, incremental, isolatedModu
 Cohesion: 0.13
 Nodes (14): 1. Install Dependencies, 2. Run Unit Tests (VAA Parser, Coordinates, Dates), 3. Run Development Server, 4. Production Build Verification, 🌋 AshWatch Web — Darwin VAAC Volcanic Ash Viewer & Technical SEO, ⚙️ Environment Variables, 🔍 Google Search Console Setup, 🚀 Key Features (+6 more)
 
-### Community 11 - "user-location-cache.ts"
-Cohesion: 0.11
-Nodes (32): DAY_NAMES, GET(), MONTH_NAMES, revalidate, AirQualityCard(), AirQualityCardProps, LocationAlertBanner(), LocationAlertBannerProps (+24 more)
+### Community 11 - "disaster-map.tsx"
+Cohesion: 0.13
+Nodes (31): GET(), revalidate, AirQualityCard(), AirQualityCardProps, DisasterIconProps, LocationAlertBanner(), DISASTER_VISUALS, DisasterMap() (+23 more)
 
 ### Community 12 - "graphify reference: extra exports and benchmark"
 Cohesion: 0.22
@@ -152,29 +151,25 @@ Nodes (3): For git commit hook, For native CLAUDE.md integration, graphify refer
 Cohesion: 0.50
 Nodes (3): For --cluster-only, For --update (incremental re-extraction), graphify reference: incremental update and cluster-only
 
-### Community 30 - "magma-status.ts"
-Cohesion: 0.18
-Nodes (13): sitemap(), getPvmbgVolcanoEvents(), getAllMonitoredVolcanoes(), MAGMA_LEVEL_CONFIG, MAGMA_VOLCANOES_DB, MagmaLevel, MagmaLevelMeta, MagmaLevelName (+5 more)
-
 ## Knowledge Gaps
-- **249 isolated node(s):** `eslintConfig`, `nextConfig`, `name`, `version`, `private` (+244 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 287 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **247 isolated node(s):** `eslintConfig`, `nextConfig`, `name`, `version`, `private` (+242 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 285 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
 - **10 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `react` connect `react` to `ash-map.tsx`, `package.json`, `[slug]/page.tsx`, `disaster-map.tsx`, `user-location-cache.ts`?**
-  _High betweenness centrality (0.071) - this node is a cross-community bridge._
-- **Why does `lucide-react` connect `react` to `ash-map.tsx`, `package.json`, `[slug]/page.tsx`, `disaster-map.tsx`, `user-location-cache.ts`?**
+- **Why does `react` connect `react` to `ash-map.tsx`, `package.json`, `[slug]/page.tsx`, `disasters/types.ts`, `disaster-map.tsx`?**
+  _High betweenness centrality (0.070) - this node is a cross-community bridge._
+- **Why does `lucide-react` connect `react` to `ash-map.tsx`, `package.json`, `[slug]/page.tsx`, `disasters/types.ts`, `disaster-map.tsx`?**
   _High betweenness centrality (0.058) - this node is a cross-community bridge._
-- **Why does `next` connect `react` to `disaster-map.tsx`, `package.json`, `[slug]/page.tsx`?**
-  _High betweenness centrality (0.029) - this node is a cross-community bridge._
+- **Why does `next` connect `react` to `disasters/types.ts`, `package.json`, `[slug]/page.tsx`?**
+  _High betweenness centrality (0.030) - this node is a cross-community bridge._
 - **What connects `eslintConfig`, `nextConfig`, `name` to the rest of the system?**
-  _249 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _247 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `react` be split into smaller, more focused modules?**
-  _Cohesion score 0.05860805860805861 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.057911392405063294 - nodes in this community are weakly interconnected._
 - **Should `ash-map.tsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.12762762762762764 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.08246753246753247 - nodes in this community are weakly interconnected._
 - **Should `test-runner.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.07781649245063879 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.07948717948717948 - nodes in this community are weakly interconnected._

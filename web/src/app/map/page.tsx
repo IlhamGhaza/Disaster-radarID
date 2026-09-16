@@ -9,16 +9,27 @@ import Link from 'next/link';
 export const revalidate = 120; // 2 min revalidation
 
 export const metadata: Metadata = {
-  title: 'Peta Bencana Indonesia Terkini | Disaster Radar',
+  title: 'Peta Bencana Alam Indonesia Hari Ini — Gempa BMKG, Banjir, & Gunung Api | Disaster Radar',
   description:
-    'Jelajahi peta interaktif bencana Indonesia dan pantau gempa, banjir, longsor, kebakaran, cuaca ekstrem, tsunami, gunung api, serta abu vulkanik.',
+    'Peta interaktif pantauan bencana alam Indonesia hari ini secara langsung. Cek info gempa bumi BMKG terkini, peta banjir, status gunung api meletus PVMBG, titik api karhutla, dan cuaca ekstrem BMKG.',
+  keywords: [
+    'peta bencana indonesia',
+    'peta gempa hari ini',
+    'info gempa bmkg',
+    'peta banjir hari ini',
+    'status gunung api meletus',
+    'titik api karhutla',
+    'cuaca ekstrem bmkg',
+    'pantauan bencana terkini',
+    'peringatan dini tsunami',
+  ],
   alternates: {
     canonical: `${SITE_URL}/map`,
   },
   openGraph: {
-    title: 'Peta Bencana Indonesia Terkini | Disaster Radar',
+    title: 'Peta Bencana Alam Indonesia Hari Ini — Gempa BMKG, Banjir, & Gunung Api | Disaster Radar',
     description:
-      'Jelajahi peta interaktif bencana Indonesia dan pantau gempa, banjir, longsor, kebakaran, cuaca ekstrem, tsunami, gunung api, serta abu vulkanik.',
+      'Peta interaktif pantauan bencana alam Indonesia hari ini secara langsung. Cek info gempa bumi BMKG terkini, peta banjir, status gunung api meletus PVMBG, titik api karhutla, dan cuaca ekstrem BMKG.',
     url: `${SITE_URL}/map`,
     siteName: 'Disaster Radar Indonesia',
     type: 'website',
@@ -27,15 +38,15 @@ export const metadata: Metadata = {
         url: `${SITE_URL}/opengraph-image`,
         width: 1200,
         height: 630,
-        alt: 'Peta Bencana Indonesia — Disaster Radar',
+        alt: 'Peta Bencana Alam Indonesia Hari Ini — Disaster Radar',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Peta Bencana Indonesia Terkini | Disaster Radar',
+    title: 'Peta Bencana Alam Indonesia Hari Ini — Gempa BMKG, Banjir, & Gunung Api | Disaster Radar',
     description:
-      'Jelajahi peta interaktif bencana Indonesia dan pantau gempa, banjir, longsor, kebakaran, cuaca ekstrem, tsunami, gunung api, serta abu vulkanik.',
+      'Peta interaktif pantauan bencana alam Indonesia hari ini secara langsung. Cek info gempa bumi BMKG terkini, peta banjir, status gunung api meletus PVMBG, titik api karhutla, dan cuaca ekstrem BMKG.',
     images: [`${SITE_URL}/opengraph-image`],
   },
 };
@@ -64,13 +75,13 @@ export default async function MapPage() {
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8 border-t border-white/10">
         <div className="max-w-3xl mb-12">
           <span className="text-xs font-bold uppercase tracking-wider text-[#EF4444]">
-            Informasi Geospasial Bencana
+            Pantauan Bencana Langsung
           </span>
           <h2 className="text-2xl sm:text-3xl font-black text-white mt-1">
-            Tentang Peta Bencana Indonesia
+            Cara Membaca Peta Bencana Indonesia
           </h2>
           <p className="text-sm text-[#8B95A7] mt-3 leading-relaxed">
-            Disaster Radar Indonesia menyediakan platform visualisasi geospasial satu pintu untuk memantau beragam jenis ancaman bencana alam di seluruh nusantara. Informasi dihimpun secara objektif dari badan resmi nasional dan regional.
+            Peta ini mengumpulkan laporan resmi dari BMKG, BNPB, dan PVMBG ke dalam satu tampilan. Anda bisa melihat lokasi kejadian bencana yang sedang berlangsung, wilayah yang berisiko, serta peringatan cuaca di sekitar Anda.
           </p>
         </div>
 
@@ -80,9 +91,9 @@ export default async function MapPage() {
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-500/10 text-red-400">
               <Layers className="h-5 w-5" />
             </div>
-            <h3 className="text-base font-bold text-white">Kategori Bencana Terintegrasi</h3>
+            <h3 className="text-base font-bold text-white">Semua Jenis Bencana Terpantau</h3>
             <p className="text-xs text-[#8B95A7] leading-relaxed">
-              Memantau gempa tektonik terkini, banjir dan genangan luapan air, tanah longsor, kebakaran hutan & lahan (karhutla), cuaca ekstrem, tsunami, aktivitas kawah gunung api, hingga pemodelan sebaran abu vulkanik di ruang udara Indonesia.
+              Mulai dari gempa bumi terkini BMKG, lokasi genangan banjir, tanah longsor, titik api kebakaran hutan (karhutla), cuaca ekstrem, peringatan tsunami, hingga status gunung api aktif dan abu vulkanik.
             </p>
           </div>
 
@@ -91,9 +102,9 @@ export default async function MapPage() {
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/10 text-amber-400">
               <Info className="h-5 w-5" />
             </div>
-            <h3 className="text-base font-bold text-white">Kejadian, Peringatan & Risiko</h3>
+            <h3 className="text-base font-bold text-white">Kejadian Nyata vs Wilayah Berisiko</h3>
             <p className="text-xs text-[#8B95A7] leading-relaxed">
-              Platform secara tegas membedakan antara <strong>Kejadian Nyata (Live Events)</strong>, <strong>Peringatan Dini Resmi (Official Warnings)</strong>, serta <strong>Zona Bahaya / Kerentanan Jangka Panjang (Hazard & Risk Zones)</strong> agar masyarakat tidak salah memahami tingkat kedaruratan.
+              Titik berwarna merah menunjukkan <strong>kejadian yang baru saja terjadi</strong>. Garis atau arsiran warna menunjukkan <strong>wilayah potensi rawan bencana</strong> agar warga sekitar tetap waspada.
             </p>
           </div>
 
@@ -102,9 +113,9 @@ export default async function MapPage() {
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-500/10 text-blue-400">
               <Database className="h-5 w-5" />
             </div>
-            <h3 className="text-base font-bold text-white">Transparansi Sumber Resmi</h3>
+            <h3 className="text-base font-bold text-white">Langsung dari Sumber Resmi</h3>
             <p className="text-xs text-[#8B95A7] leading-relaxed">
-              Semua data terhubung langsung ke sumber aslinya: <strong>BMKG</strong> untuk gempa dan cuaca, <strong>BNPB & InaRISK</strong> untuk bencana hidrometeorologi, <strong>PVMBG</strong> untuk status gunung api, dan <strong>Darwin VAAC</strong> untuk advisori abu vulkanik.
+              Data terhubung otomatis dengan <strong>BMKG</strong> (gempa & cuaca), <strong>BNPB</strong> (bencana hidrometeorologi), <strong>PVMBG</strong> (gunung api), dan <strong>VAAC</strong> (abu vulkanik penerbangan).
             </p>
           </div>
         </div>
@@ -113,9 +124,9 @@ export default async function MapPage() {
         <div className="mt-8 p-5 rounded-2xl bg-amber-950/20 border border-amber-500/30 flex items-start gap-3 text-xs text-[#CBD5E1]">
           <ShieldAlert className="h-5 w-5 text-amber-400 shrink-0 mt-0.5" />
           <div className="space-y-1">
-            <span className="font-bold text-white">Penafian Keselamatan Penting:</span>
+            <span className="font-bold text-white">Penting untuk Diketahui:</span>
             <p className="leading-relaxed">
-              Disaster Radar Indonesia adalah platform independen untuk tujuan agregasi dan visualisasi informasi publik. Platform ini <strong>bukan</strong> badan pemerintah penanggulangan darurat. Untuk tindakan evakuasi dan keputusan darurat bencana, selalu ikuti komando resmi dari <strong>BNPB, BPBD setempat, BMKG, dan PVMBG</strong>.
+              Peta ini bertujuan membantu masyarakat memantau kondisi lingkungan secara cepat dan mudah. Jika terjadi kondisi darurat atau instruksi evakuasi, selalu ikuti arahan resmi dari <strong>BPBD, SAR, aparat desa setempat, dan BMKG/PVMBG</strong>.
             </p>
           </div>
         </div>

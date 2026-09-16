@@ -34,7 +34,7 @@ export default function AboutPage() {
         <div className="relative z-10 max-w-2xl">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.1] bg-[#141B26]/80 px-3 py-1 text-[11px] font-mono font-semibold tracking-wider text-cyan-400 uppercase mb-3 backdrop-blur-md">
             <Radar className="h-3 w-3 animate-pulse" />
-            <span>PROFIL PLATFORM INTELIJEN GEOSPASIAL</span>
+            <span>TENTANG KAMI & TUJUAN PLATFORM</span>
           </div>
 
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[#E8ECF1] leading-[1.1]">
@@ -42,7 +42,7 @@ export default function AboutPage() {
           </h1>
 
           <p className="mt-3 text-sm sm:text-base text-[#94A3B8] leading-relaxed">
-            Platform agregasi geospasial publik independen untuk memantau ancaman multi-bencana di seluruh kepulauan Indonesia secara real-time.
+            Platform peta bencana independen yang merangkum data resmi BMKG, BNPB, dan PVMBG ke dalam satu tampilan agar mudah dipantau seluruh masyarakat Indonesia.
           </p>
         </div>
       </div>
@@ -55,10 +55,10 @@ export default function AboutPage() {
             <h2 className="text-lg sm:text-xl font-bold text-[#E8ECF1]">Misi & Latar Belakang</h2>
           </div>
           <p className="text-[#94A3B8] leading-relaxed">
-            Indonesia terletak di kawasan Cincin Api Pasifik (*Ring of Fire*) dan pertemuan tiga lempeng tektonik utama dunia, menjadikannya salah satu wilayah paling rentan terhadap bencana alam seperti gempa bumi tektonik, tsunami, letusan gunung api, banjir bandang, tanah longsor, dan cuaca ekstrem.
+            Indonesia berada di jalur Cincin Api Pasifik (*Ring of Fire*) dan pertemuan lempeng tektonik dunia, sehingga rawan terhadap gempa bumi, letusan gunung api, tsunami, banjir, tanah longsor, dan cuaca ekstrem.
           </p>
           <p className="text-[#94A3B8] leading-relaxed">
-            Tantangan utama yang dihadapi masyarakat adalah fragmentasi informasi: data gempa berada di portal BMKG, data banjir dan bencana hidrometeorologi di BNPB, status kawah gunung api di PVMBG, dan buletin sebaran abu vulkanik aviasi di Darwin VAAC. <strong className="text-[#E8ECF1]">Disaster Radar Indonesia</strong> hadir untuk menyatukan potongan-potongan informasi penting tersebut ke dalam satu kanvas peta geospasial interaktif real-time yang mudah dipahami oleh publik.
+            Seringkali masyarakat kesulitan karena sumber informasi tersebar di banyak tempat: data gempa di BMKG, data banjir di BNPB, status gunung api di PVMBG, dan info sebaran abu di Darwin VAAC. <strong className="text-[#E8ECF1]">Disaster Radar Indonesia</strong> hadir untuk menyatukan seluruh laporan resmi ini ke dalam satu peta interaktif yang cepat, akurat, dan mudah dipahami siapa saja.
           </p>
         </section>
 
@@ -66,10 +66,10 @@ export default function AboutPage() {
         <section className="p-6 sm:p-8 rounded-2xl bg-[#0D1117] border border-white/[0.08] shadow-xl space-y-3.5">
           <div className="flex items-center gap-2.5 text-orange-400">
             <Radio className="h-5 w-5" />
-            <h2 className="text-lg sm:text-xl font-bold text-[#E8ECF1]">Fondasi & Warisan AshWatch</h2>
+            <h2 className="text-lg sm:text-xl font-bold text-[#E8ECF1]">Awal Mula Pengembangan</h2>
           </div>
           <p className="text-[#94A3B8] leading-relaxed">
-            Platform ini berakar dan berevolusi dari proyek <strong className="text-[#E8ECF1]">AshWatch Web</strong>, sebuah modul pemantau sebaran abu vulkanik aviasi berpresisi tinggi. Teknologi penguraian poligon koordinat batas buletin ICAO Darwin VAAC dan pemantauan 127+ gunung api aktif PVMBG dari AshWatch tetap dipertahankan seutuhnya dan kini menjadi salah satu pilar inti dalam Disaster Radar Indonesia.
+            Platform ini awalnya dikembangkan dari proyek <strong className="text-[#E8ECF1]">AshWatch</strong>, modul khusus pemantau sebaran abu vulkanik untuk jalur penerbangan. Fitur pemantauan 127+ gunung api aktif dan pergerakan abu dari buletin resmi Darwin VAAC tetap dipertahankan dan kini disempurnakan menjadi bagian dari Disaster Radar Indonesia.
           </p>
         </section>
 
@@ -77,27 +77,27 @@ export default function AboutPage() {
         <section className="p-6 sm:p-8 rounded-2xl bg-[#0D1117] border border-white/[0.08] shadow-xl space-y-3.5">
           <div className="flex items-center gap-2.5 text-blue-400">
             <Code2 className="h-5 w-5" />
-            <h2 className="text-lg sm:text-xl font-bold text-[#E8ECF1]">Arsitektur & Rekayasa Teknologi</h2>
+            <h2 className="text-lg sm:text-xl font-bold text-[#E8ECF1]">Teknologi yang Digunakan</h2>
           </div>
           <p className="text-[#94A3B8] leading-relaxed">
-            Platform ini dibangun dengan standar arsitektur web modern berkinerja tinggi:
+            Platform ini dirancang agar ringan dan dapat diakses cepat bahkan di ponsel dengan jaringan lambat:
           </p>
           <ul className="grid sm:grid-cols-2 gap-3 pt-1 text-xs">
             <li className="p-3 rounded-xl bg-[#141B26] border border-white/[0.05]">
-              <strong className="text-[#E8ECF1] block mb-1">Next.js App Router & React 19</strong>
-              <span className="text-[#94A3B8]">Server-side rendering (SSR) kilat, nol hydration waterfall, dan performa tinggi di Edge serverless.</span>
+              <strong className="text-[#E8ECF1] block mb-1">Next.js & React Cepat</strong>
+              <span className="text-[#94A3B8]">Halaman dimuat seketika dan hemat kuota data internet saat dibuka di berbagai perangkat.</span>
             </li>
             <li className="p-3 rounded-xl bg-[#141B26] border border-white/[0.05]">
-              <strong className="text-[#E8ECF1] block mb-1">Leaflet & OpenStreetMap (OSM)</strong>
-              <span className="text-[#94A3B8]">Mesin kartografi geospasial interaktif bebas lisensi proprietary dengan filter dark theme terkalibrasi.</span>
+              <strong className="text-[#E8ECF1] block mb-1">Peta Interaktif Ringan</strong>
+              <span className="text-[#94A3B8]">Menggunakan OpenStreetMap bertema gelap yang nyaman di mata dan lancar digeser atau diperbesar.</span>
             </li>
             <li className="p-3 rounded-xl bg-[#141B26] border border-white/[0.05]">
-              <strong className="text-[#E8ECF1] block mb-1">Unified Multi-Source Aggregator</strong>
-              <span className="text-[#94A3B8]">Mengintegrasikan feed BMKG (AutoGempa), BNPB InaRISK, PVMBG MAGMA, dan bulletin ICAO Darwin VAAC.</span>
+              <strong className="text-[#E8ECF1] block mb-1">Penyatuan Data Otomatis</strong>
+              <span className="text-[#94A3B8]">Mengambil data terbaru secara berkala dari BMKG, BNPB, PVMBG MAGMA, dan Darwin VAAC.</span>
             </li>
             <li className="p-3 rounded-xl bg-[#141B26] border border-white/[0.05]">
-              <strong className="text-[#E8ECF1] block mb-1">Spatial Proximity & Ray-Casting</strong>
-              <span className="text-[#94A3B8]">Kalkulasi jarak Haversine dan deteksi deterministik Point-in-Polygon langsung di browser pengguna.</span>
+              <strong className="text-[#E8ECF1] block mb-1">Deteksi Jarak Otomatis</strong>
+              <span className="text-[#94A3B8]">Menghitung jarak lokasi pengguna ke pusat gempa atau letusan gunung api secara instan di peramban.</span>
             </li>
           </ul>
         </section>

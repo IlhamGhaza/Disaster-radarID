@@ -3,6 +3,14 @@
  * Standard based on Permen LHK No. 14 Tahun 2020
  */
 
+export interface AirQualityHistoryPoint {
+  time: string;
+  label: string;
+  ispu: number;
+  pm25: number;
+  category: string;
+}
+
 export interface AirQualityReading {
   ispu: number;
   category: 'BAIK' | 'SEDANG' | 'TIDAK SEHAT' | 'SANGAT TIDAK SEHAT' | 'BERBAHAYA';
@@ -18,12 +26,9 @@ export interface AirQualityReading {
   usAqi: number;
   advice: string;
   updatedAt: string;
-  hourlyHistory: Array<{
-    time: string;
-    ispu: number;
-    pm25: number;
-    category: string;
-  }>;
+  range?: '1d' | '7d' | '30d';
+  history: AirQualityHistoryPoint[];
+  hourlyHistory: AirQualityHistoryPoint[];
 }
 
 export function calculateIspuFromPm25(pm25: number): number {
@@ -61,7 +66,7 @@ export function getIspuCategory(ispu: number): {
       color: '#10B981',
       bgColor: 'rgba(16, 185, 129, 0.15)',
       borderColor: 'rgba(16, 185, 129, 0.35)',
-      advice: 'Kualitas udara sangat baik. Aman untuk seluruh aktivitas luar ruangan.',
+      advice: 'Udara sangat bersih dan segar. Sangat aman untuk olahraga dan aktivitas luar ruangan.',
     };
   }
   if (ispu <= 100) {
@@ -70,7 +75,7 @@ export function getIspuCategory(ispu: number): {
       color: '#3B82F6',
       bgColor: 'rgba(59, 130, 246, 0.15)',
       borderColor: 'rgba(59, 130, 246, 0.35)',
-      advice: 'Kualitas udara masih dapat diterima. Kelompok sangat sensitif perlu waspada.',
+      advice: 'Kualitas udara tergolong lumayan. Aman untuk sebagian besar orang beraktivitas normal.',
     };
   }
   if (ispu <= 200) {
@@ -79,7 +84,7 @@ export function getIspuCategory(ispu: number): {
       color: '#F59E0B',
       bgColor: 'rgba(245, 158, 11, 0.15)',
       borderColor: 'rgba(245, 158, 11, 0.35)',
-      advice: 'Kelompok sensitif (lansia, anak, asma) sebaiknya mengurangi aktivitas fisik di luar.',
+      advice: 'Udara mulai kotor. Anak-anak, lansia, dan penderita pernapasan disarankan kurangi kegiatan di luar.',
     };
   }
   if (ispu <= 300) {
@@ -88,7 +93,7 @@ export function getIspuCategory(ispu: number): {
       color: '#EF4444',
       bgColor: 'rgba(239, 68, 68, 0.15)',
       borderColor: 'rgba(239, 68, 68, 0.35)',
-      advice: 'Masyarakat umum disarankan memakai masker dan menghindari aktivitas luar ruang.',
+      advice: 'Kondisi udara buruk bagi kesehatan. Sebaiknya kenakan masker dan kurangi bepergian keluar rumah.',
     };
   }
   return {
@@ -96,7 +101,7 @@ export function getIspuCategory(ispu: number): {
     color: '#8B5CF6',
     bgColor: 'rgba(139, 92, 246, 0.15)',
     borderColor: 'rgba(139, 92, 246, 0.35)',
-    advice: 'Tingkat bahaya serius! Seluruh warga wajib berada di dalam ruangan bertapis udara.',
+    advice: 'Udara sangat berbahaya! Tetaplah berada di dalam ruangan dan tutup ventilasi rumah rapat-rapat.',
   };
 }
 

@@ -11,16 +11,25 @@ import { SITE_URL } from '@/config/site';
 export const revalidate = 300;
 
 export const metadata: Metadata = {
-  title: 'Gunung Api Indonesia | Aktivitas & Wilayah Abu Aktif | Disaster Radar',
+  title: 'Status Gunung Api Aktif & Sebaran Abu Vulkanik Hari Ini | Disaster Radar',
   description:
-    'Pantau gunung api aktif dan sebaran abu vulkanik di Indonesia dengan status MAGMA PVMBG, ketinggian plume, dan arah pergerakan.',
+    'Pantau status gunung api aktif dan sebaran abu vulkanik di Indonesia hari ini. Data resmi MAGMA ESDM / PVMBG level aktivitas (Normal, Waspada, Siaga, Awas) serta peringatan abu vulkanik Darwin VAAC.',
+  keywords: [
+    'gunung api meletus hari ini',
+    'status gunung api aktif',
+    'status gunung merapi hari ini',
+    'gunung lewotobi meletus',
+    'gunung semeru hari ini',
+    'abu vulkanik hari ini',
+    'magma indonesia esdm',
+  ],
   alternates: {
     canonical: `${SITE_URL}/volcanoes`,
   },
   openGraph: {
-    title: 'Gunung Api Indonesia | Aktivitas & Wilayah Abu Aktif | Disaster Radar',
+    title: 'Status Gunung Api Aktif & Sebaran Abu Vulkanik Hari Ini | Disaster Radar',
     description:
-      'Pantau gunung api aktif dan sebaran abu vulkanik di Indonesia dengan status MAGMA PVMBG, ketinggian plume, dan arah pergerakan.',
+      'Pantau status gunung api aktif dan sebaran abu vulkanik di Indonesia hari ini. Data resmi MAGMA ESDM / PVMBG dan buletin penerbangan Darwin VAAC.',
     url: `${SITE_URL}/volcanoes`,
     siteName: 'Disaster Radar Indonesia',
     type: 'website',
@@ -35,9 +44,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Gunung Api Indonesia | Aktivitas & Wilayah Abu Aktif | Disaster Radar',
+    title: 'Status Gunung Api Aktif & Sebaran Abu Vulkanik Hari Ini | Disaster Radar',
     description:
-      'Pantau gunung api aktif dan sebaran abu vulkanik di Indonesia dengan status MAGMA PVMBG.',
+      'Pantau status gunung api aktif dan sebaran abu vulkanik di Indonesia hari ini dengan status MAGMA PVMBG.',
     images: [`${SITE_URL}/opengraph-image`],
   },
 };
@@ -54,7 +63,7 @@ export default async function VolcanoesPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 bg-[#080C14] text-[#E8ECF1]">
-      <Breadcrumbs items={[{ name: 'Wilayah Abu Aktif', url: '/volcanoes' }]} />
+      <Breadcrumbs items={[{ name: 'Gunung Api & Abu Vulkanik', url: '/volcanoes' }]} />
 
       {/* Hero Header */}
       <div className="relative mt-4 mb-10 rounded-2xl border border-white/[0.08] bg-gradient-to-b from-[#140E16] via-[#0D1017] to-[#070A10] p-6 sm:p-8 overflow-hidden shadow-2xl">
@@ -67,15 +76,15 @@ export default async function VolcanoesPage() {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-orange-400 opacity-75" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-orange-500" />
               </span>
-              <span>TELEMETRI ABU VULKANIK & PVMBG</span>
+              <span>PANTAUAN GUNUNG API & ABU VULKANIK</span>
             </div>
 
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[#E8ECF1] leading-[1.1]">
-              Active Ash Areas
+              Gunung Api & Sebaran Abu Vulkanik
             </h1>
 
             <p className="mt-3 text-sm sm:text-base text-[#94A3B8] leading-relaxed">
-              Monitoring sebaran abu vulkanik aviasi aktif teramati dari buletin resmi <span className="text-[#E8ECF1] font-semibold">Darwin VAAC</span> dan status aktivitas 127 gunung api dari <span className="text-[#E8ECF1] font-semibold">MAGMA ESDM / PVMBG</span>.
+              Pantau sebaran abu vulkanik yang sedang aktif teramati dari buletin resmi <span className="text-[#E8ECF1] font-semibold">Darwin VAAC</span> serta status aktivitas 127 gunung api dari <span className="text-[#E8ECF1] font-semibold">MAGMA ESDM / PVMBG</span>.
             </p>
           </div>
 

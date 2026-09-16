@@ -1,12 +1,31 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { calculateIspuFromPm25, getIspuCategory, AirQualityReading } from '@/lib/air-quality';
+import {
+  calculateIspuFromPm25,
+  getIspuCategory,
+  AirQualityReading,
+  AirQualityHistoryPoint,
+} from '@/lib/air-quality';
 
 export const revalidate = 600; // Cache for 10 minutes
+
+const MONTH_NAMES = [
+  'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
+  'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'
+];
+const DAY_NAMES = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const latStr = searchParams.get('lat');
   const lngStr = searchParams.get('lng');
+  const rangeParam = (searchParams.get('range') || '1d').toLowerCase();
+
+  const range: '1d' | '7d' | '30d' =
+    rangeParam === '30d' || rangeParam === '1m'
+      ? '30d'
+      : rangeParam === '7d' || rangeParam === '1w'
+      ? '7d'
+      : '1d';
 
   // Default to Jakarta Monas coordinates if not supplied
   const lat = latStr ? parseFloat(latStr) : -6.1754;
@@ -19,8 +38,10 @@ export async function GET(request: NextRequest) {
     );
   }
 
+  const pastDays = range === '30d' ? 30 : range === '7d' ? 7 : 1;
+
   try {
-    const url = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat.toFixed(4)}&longitude=${lng.toFixed(4)}&current=european_aqi,us_aqi,pm10,pm2_5,carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,ozone&hourly=pm2_5,pm10,us_aqi&timezone=Asia%2FJakarta&past_days=1&forecast_days=1`;
+    const url = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat.toFixed(4)}&longitude=${lng.toFixed(4)}&current=european_aqi,us_aqi,pm10,pm2_5,carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,ozone&hourly=pm2_5,pm10,us_aqi&timezone=Asia%2FJakarta&past_days=${pastDays}&forecast_days=1`;
 
     const res = await fetch(url, {
       next: { revalidate: 600 },
@@ -41,31 +62,88 @@ export async function GET(request: NextRequest) {
     const ispu = calculateIspuFromPm25(pm25);
     const categoryInfo = getIspuCategory(ispu);
 
-    // Build past 24 hours history (taking the last 24 entries up to current hour)
     const times: string[] = hourly.time || [];
     const pm25Values: number[] = hourly.pm2_5 || [];
     const currentTimeIso = current.time || '';
 
-    let currentIndex = times.indexOf(currentTimeIso);
-    if (currentIndex === -1) {
-      currentIndex = times.length - 1;
+    let history: AirQualityHistoryPoint[] = [];
+
+    if (range === '1d') {
+      // Past 24 hours history up to current hour
+      let currentIndex = times.indexOf(currentTimeIso);
+      if (currentIndex === -1) {
+        currentIndex = times.length - 1;
+      }
+
+      const startIndex = Math.max(0, currentIndex - 23);
+      const sliceTimes = times.slice(startIndex, currentIndex + 1);
+      const slicePm25 = pm25Values.slice(startIndex, currentIndex + 1);
+
+      history = sliceTimes.map((t, idx) => {
+        const pVal = slicePm25[idx] ?? pm25;
+        const hIspu = calculateIspuFromPm25(pVal);
+        const hCat = getIspuCategory(hIspu);
+        const dateObj = new Date(t);
+        const hourLabel = isNaN(dateObj.getTime())
+          ? t.slice(11, 16) || `${idx}:00`
+          : dateObj.getHours().toString().padStart(2, '0') + ':00';
+
+        return {
+          time: t,
+          label: hourLabel,
+          ispu: hIspu,
+          pm25: pVal,
+          category: hCat.category,
+        };
+      });
+    } else {
+      // For 7d (1w) and 30d (1m), group hourly readings by day (YYYY-MM-DD)
+      const dayBuckets = new Map<string, number[]>();
+
+      for (let i = 0; i < times.length; i++) {
+        const timeStr = times[i];
+        const val = pm25Values[i];
+        if (!timeStr || typeof val !== 'number') continue;
+
+        // Skip future forecast hours beyond current timestamp
+        if (currentTimeIso && timeStr > currentTimeIso) continue;
+
+        const dayKey = timeStr.slice(0, 10); // 'YYYY-MM-DD'
+        if (!dayBuckets.has(dayKey)) {
+          dayBuckets.set(dayKey, []);
+        }
+        dayBuckets.get(dayKey)!.push(val);
+      }
+
+      const sortedDayKeys = Array.from(dayBuckets.keys()).sort();
+      const targetDays = range === '7d' ? 7 : 30;
+      const slicedDayKeys = sortedDayKeys.slice(-targetDays);
+
+      history = slicedDayKeys.map((dayKey) => {
+        const vals = dayBuckets.get(dayKey) || [pm25];
+        const avgPm25 = vals.reduce((a, b) => a + b, 0) / vals.length;
+        const dIspu = calculateIspuFromPm25(avgPm25);
+        const dCat = getIspuCategory(dIspu);
+
+        const [y, m, d] = dayKey.split('-').map((v) => parseInt(v, 10));
+        const monthLabel = MONTH_NAMES[(m || 1) - 1] || '';
+        const dayDate = new Date(dayKey);
+        const dayName = isNaN(dayDate.getTime()) ? '' : DAY_NAMES[dayDate.getDay()];
+
+        const label =
+          range === '7d'
+            ? `${dayName}, ${d} ${monthLabel}`
+            : `${d} ${monthLabel}`;
+
+        return {
+          time: dayKey,
+          label,
+          ispu: dIspu,
+          pm25: Number(avgPm25.toFixed(1)),
+          category: dCat.category,
+        };
+      });
     }
-
-    const startIndex = Math.max(0, currentIndex - 23);
-    const sliceTimes = times.slice(startIndex, currentIndex + 1);
-    const slicePm25 = pm25Values.slice(startIndex, currentIndex + 1);
-
-    const hourlyHistory = sliceTimes.map((t, idx) => {
-      const pVal = slicePm25[idx] ?? pm25;
-      const hIspu = calculateIspuFromPm25(pVal);
-      const hCat = getIspuCategory(hIspu);
-      return {
-        time: t,
-        ispu: hIspu,
-        pm25: pVal,
-        category: hCat.category,
-      };
-    });
 
     const response: AirQualityReading = {
       ispu,
@@ -82,7 +160,9 @@ export async function GET(request: NextRequest) {
       usAqi: typeof current.us_aqi === 'number' ? current.us_aqi : 80,
       advice: categoryInfo.advice,
       updatedAt: current.time || new Date().toISOString(),
-      hourlyHistory,
+      range,
+      history,
+      hourlyHistory: history,
     };
 
     return NextResponse.json(response, {
@@ -92,7 +172,6 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     console.error('Failed to fetch Air Quality API:', error);
-    // Graceful fallback with standard estimate
     const ispu = 65;
     const categoryInfo = getIspuCategory(ispu);
     const fallback: AirQualityReading = {
@@ -110,6 +189,8 @@ export async function GET(request: NextRequest) {
       usAqi: 67,
       advice: categoryInfo.advice,
       updatedAt: new Date().toISOString(),
+      range,
+      history: [],
       hourlyHistory: [],
     };
     return NextResponse.json(fallback, { status: 200 });

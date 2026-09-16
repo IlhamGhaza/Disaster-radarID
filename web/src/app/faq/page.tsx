@@ -7,16 +7,24 @@ import Link from 'next/link';
 import { HelpCircle, Compass, Shield } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Pertanyaan Umum (FAQ) | Disaster Radar Indonesia',
+  title: 'Pertanyaan yang Sering Ditanyakan (FAQ) — Info Gempa & Bencana | Disaster Radar',
   description:
-    'Jawaban atas pertanyaan seputar Disaster Radar Indonesia: cara membaca peta bencana, sumber data resmi BMKG/BNPB, status gunung api PVMBG, dan panduan keselamatan.',
+    'Jawaban lengkap pertanyaan umum seputar cara cek info gempa BMKG hari ini, peta banjir, status gunung api meletus, kualitas udara, dan sumber data resmi pemerintah.',
+  keywords: [
+    'faq bencana alam indonesia',
+    'tanya jawab gempa bmkg',
+    'cara cek banjir hari ini',
+    'status gunung meletus',
+    'cara pakai disaster radar',
+    'kualitas udara indonesia',
+  ],
   alternates: {
     canonical: `${SITE_URL}/faq`,
   },
   openGraph: {
-    title: 'Pertanyaan Umum (FAQ) | Disaster Radar Indonesia',
+    title: 'Pertanyaan yang Sering Ditanyakan (FAQ) — Info Gempa & Bencana | Disaster Radar',
     description:
-      'Jawaban atas pertanyaan seputar Disaster Radar Indonesia: cara membaca peta bencana, sumber data resmi BMKG/BNPB, status gunung api PVMBG, dan panduan keselamatan.',
+      'Jawaban lengkap pertanyaan umum seputar cara cek info gempa BMKG hari ini, peta banjir, status gunung api meletus, kualitas udara, dan sumber data resmi pemerintah.',
     url: `${SITE_URL}/faq`,
     siteName: 'Disaster Radar Indonesia',
     type: 'website',
@@ -93,11 +101,11 @@ export default function FaqPage() {
           </div>
 
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[#E8ECF1] leading-[1.1]">
-            Pertanyaan Umum (FAQ)
+            Pertanyaan yang Sering Ditanyakan
           </h1>
 
           <p className="mt-3 text-sm sm:text-base text-[#94A3B8] leading-relaxed">
-            Informasi panduan, interpretasi data peta bencana, metodologi agregasi, serta penjelasan sistem Disaster Radar Indonesia.
+            Jawaban cepat seputar cara membaca peta bencana, sumber data resmi BMKG dan BNPB, serta cara memantau bencana di sekitar Anda.
           </p>
         </div>
       </div>
