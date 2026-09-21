@@ -651,7 +651,7 @@
       "file_type": "code",
       "norm_label": "cachedfirmsresult",
       "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L113"
+      "source_location": "L123"
     },
     {
       "id": "web_src_lib_disasters_firms_adapter_firmshotspot",
@@ -2172,7 +2172,7 @@
       "file_type": "code",
       "norm_label": "clusterhotspots()",
       "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L75"
+      "source_location": "L85"
     },
     {
       "id": "web_src_lib_disasters_firms_adapter_fetchfirmshotspots",
@@ -2184,7 +2184,7 @@
       "file_type": "code",
       "norm_label": "fetchfirmshotspots()",
       "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L122"
+      "source_location": "L132"
     },
     {
       "id": "web_src_lib_disasters_firms_adapter_getfirmsurl",
@@ -2208,7 +2208,7 @@
       "file_type": "code",
       "norm_label": "guessprovince()",
       "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L99"
+      "source_location": "L109"
     },
     {
       "id": "web_src_lib_disasters_firms_adapter_parsecsvline",
@@ -7219,7 +7219,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L137",
+      "source_location": "L147",
       "weight": 1.0
     },
     {
@@ -7231,7 +7231,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L170",
+      "source_location": "L209",
       "weight": 1.0
     },
     {
@@ -7243,7 +7243,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L180",
+      "source_location": "L219",
       "weight": 1.0
     },
     {
@@ -7255,7 +7255,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L197",
+      "source_location": "L236",
       "weight": 1.0
     },
     {
@@ -7879,7 +7879,7 @@
       "confidence_score": 1.0,
       "context": "field",
       "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L114",
+      "source_location": "L124",
       "weight": 1.0
     },
     {
@@ -17028,24 +17028,24 @@
     },
     {
       "source": "web_src_lib_disasters_firms_adapter",
+      "target": "web_src_lib_disasters_firms_adapter_guessprovince",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "web/src/lib/disasters/firms-adapter.ts",
+      "source_location": "L109",
+      "weight": 1.0
+    },
+    {
+      "source": "web_src_lib_disasters_firms_adapter",
       "target": "web_src_lib_disasters_firms_adapter_cachedfirmsresult",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L113",
-      "weight": 1.0
-    },
-    {
-      "source": "web_src_lib_disasters_firms_adapter",
-      "target": "web_src_lib_disasters_firms_adapter_fetchfirmshotspots",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L122",
+      "source_location": "L123",
       "weight": 1.0
     },
     {
@@ -17057,6 +17057,17 @@
       "confidence_score": 1.0,
       "source_file": "web/src/lib/disasters/firms-adapter.ts",
       "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "web_src_lib_disasters_firms_adapter",
+      "target": "web_src_lib_disasters_firms_adapter_fetchfirmshotspots",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "web/src/lib/disasters/firms-adapter.ts",
+      "source_location": "L132",
       "weight": 1.0
     },
     {
@@ -17100,18 +17111,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L75",
-      "weight": 1.0
-    },
-    {
-      "source": "web_src_lib_disasters_firms_adapter",
-      "target": "web_src_lib_disasters_firms_adapter_guessprovince",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L99",
+      "source_location": "L85",
       "weight": 1.0
     },
     {
@@ -18542,5 +18542,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "043762c2888ef8e4997213f9795fd3871c85e546"
+  "built_at_commit": "3643277774ccf9ecb09480fb948ec605a0b5d272"
 }

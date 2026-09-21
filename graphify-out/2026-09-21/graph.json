@@ -4,19 +4,6 @@
   "graph": {},
   "nodes": [
     {
-      "id": "web_src_app_advisories_id_page_pageprops",
-      "label": "PageProps",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "react",
-      "file_type": "code",
-      "norm_label": "pageprops",
-      "source_file": "web/src/app/advisories/[id]/page.tsx",
-      "source_location": "L23"
-    },
-    {
       "id": "web_src_app_disasters_type_page_categorypageprops",
       "label": "CategoryPageProps",
       "_callable": true,
@@ -69,6 +56,19 @@
       "source_location": "L11"
     },
     {
+      "id": "web_src_components_icons_disaster_icons_disastericonprops",
+      "label": "DisasterIconProps",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "react",
+      "file_type": "code",
+      "norm_label": "disastericonprops",
+      "source_file": "web/src/components/icons/disaster-icons.tsx",
+      "source_location": "L4"
+    },
+    {
       "id": "web_src_components_json_ld_jsonldprops",
       "label": "JsonLdProps",
       "_callable": true,
@@ -106,19 +106,6 @@
       "norm_label": "indonesiaminimapprops",
       "source_file": "web/src/components/indonesia-mini-map.tsx",
       "source_location": "L11"
-    },
-    {
-      "id": "web_src_components_live_advisories_list_liveadvisorieslistprops",
-      "label": "LiveAdvisoriesListProps",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "ash-map.tsx",
-      "file_type": "code",
-      "norm_label": "liveadvisorieslistprops",
-      "source_file": "web/src/components/live-advisories-list.tsx",
-      "source_location": "L18"
     },
     {
       "id": "web_src_components_live_advisory_ticker_liveadvisorytickerprops",
@@ -171,6 +158,97 @@
       "norm_label": "indonesiaplace",
       "source_file": "web/src/lib/indonesia-places.ts",
       "source_location": "L3"
+    },
+    {
+      "id": "web_src_lib_magma_status_magmalevel",
+      "label": "MagmaLevel",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "ash-map.tsx",
+      "file_type": "code",
+      "norm_label": "magmalevel",
+      "source_file": "web/src/lib/magma-status.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "web_src_lib_magma_status_magmalevelmeta",
+      "label": "MagmaLevelMeta",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "ash-map.tsx",
+      "file_type": "code",
+      "norm_label": "magmalevelmeta",
+      "source_file": "web/src/lib/magma-status.ts",
+      "source_location": "L30"
+    },
+    {
+      "id": "web_src_lib_magma_status_magmalevelname",
+      "label": "MagmaLevelName",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "ash-map.tsx",
+      "file_type": "code",
+      "norm_label": "magmalevelname",
+      "source_file": "web/src/lib/magma-status.ts",
+      "source_location": "L2"
+    },
+    {
+      "id": "web_src_lib_magma_status_magmalevelroman",
+      "label": "MagmaLevelRoman",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "ash-map.tsx",
+      "file_type": "code",
+      "norm_label": "magmalevelroman",
+      "source_file": "web/src/lib/magma-status.ts",
+      "source_location": "L3"
+    },
+    {
+      "id": "web_src_lib_magma_status_magmavolcanostatus",
+      "label": "MagmaVolcanoStatus",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "ash-map.tsx",
+      "file_type": "code",
+      "norm_label": "magmavolcanostatus",
+      "source_file": "web/src/lib/magma-status.ts",
+      "source_location": "L5"
+    },
+    {
+      "id": "web_src_lib_magma_status_monitoredvolcanoitem",
+      "label": "MonitoredVolcanoItem",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "ash-map.tsx",
+      "file_type": "code",
+      "norm_label": "monitoredvolcanoitem",
+      "source_file": "web/src/lib/magma-status.ts",
+      "source_location": "L23"
+    },
+    {
+      "id": "web_src_lib_magma_status_volcanostatusentry",
+      "label": "VolcanoStatusEntry",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "ash-map.tsx",
+      "file_type": "code",
+      "norm_label": "volcanostatusentry",
+      "source_file": "web/src/lib/magma-status.ts",
+      "source_location": "L103"
     },
     {
       "id": "web_src_lib_types_ashpolygon",
@@ -264,17 +342,30 @@
       "source_location": "L31"
     },
     {
-      "id": "web_src_components_icons_disaster_icons_disastericonprops",
-      "label": "DisasterIconProps",
+      "id": "web_src_lib_air_quality_airqualityhistorypoint",
+      "label": "AirQualityHistoryPoint",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
       "community": 11,
       "community_name": "disaster-map.tsx",
       "file_type": "code",
-      "norm_label": "disastericonprops",
-      "source_file": "web/src/components/icons/disaster-icons.tsx",
-      "source_location": "L4"
+      "norm_label": "airqualityhistorypoint",
+      "source_file": "web/src/lib/air-quality.ts",
+      "source_location": "L6"
+    },
+    {
+      "id": "web_src_lib_air_quality_airqualityreading",
+      "label": "AirQualityReading",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "disaster-map.tsx",
+      "file_type": "code",
+      "norm_label": "airqualityreading",
+      "source_file": "web/src/lib/air-quality.ts",
+      "source_location": "L14"
     },
     {
       "id": "web_src_lib_disasters_types_disastertype",
@@ -355,6 +446,19 @@
       "source_location": "L17"
     },
     {
+      "id": "web_src_lib_advisories_advisoriesresponse",
+      "label": "AdvisoriesResponse",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "test-runner.ts",
+      "file_type": "code",
+      "norm_label": "advisoriesresponse",
+      "source_file": "web/src/lib/advisories.ts",
+      "source_location": "L8"
+    },
+    {
       "id": "web_src_lib_parser_vaa_parser_vaaparser",
       "label": "vaaParser",
       "_callable": true,
@@ -368,134 +472,30 @@
       "source_location": "L316"
     },
     {
-      "id": "web_src_lib_air_quality_airqualityhistorypoint",
-      "label": "AirQualityHistoryPoint",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "air-quality/route.ts",
-      "file_type": "code",
-      "norm_label": "airqualityhistorypoint",
-      "source_file": "web/src/lib/air-quality.ts",
-      "source_location": "L6"
-    },
-    {
-      "id": "web_src_lib_air_quality_airqualityreading",
-      "label": "AirQualityReading",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "air-quality/route.ts",
-      "file_type": "code",
-      "norm_label": "airqualityreading",
-      "source_file": "web/src/lib/air-quality.ts",
-      "source_location": "L14"
-    },
-    {
-      "id": "web_src_lib_advisories_advisoriesresponse",
-      "label": "AdvisoriesResponse",
+      "id": "web_src_app_advisories_id_page_pageprops",
+      "label": "PageProps",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
       "community": 7,
-      "community_name": "magma-status.ts",
+      "community_name": "[id]/page.tsx",
       "file_type": "code",
-      "norm_label": "advisoriesresponse",
-      "source_file": "web/src/lib/advisories.ts",
-      "source_location": "L8"
-    },
-    {
-      "id": "web_src_lib_magma_status_magmalevel",
-      "label": "MagmaLevel",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "magma-status.ts",
-      "file_type": "code",
-      "norm_label": "magmalevel",
-      "source_file": "web/src/lib/magma-status.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "web_src_lib_magma_status_magmalevelmeta",
-      "label": "MagmaLevelMeta",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "magma-status.ts",
-      "file_type": "code",
-      "norm_label": "magmalevelmeta",
-      "source_file": "web/src/lib/magma-status.ts",
-      "source_location": "L30"
-    },
-    {
-      "id": "web_src_lib_magma_status_magmalevelname",
-      "label": "MagmaLevelName",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "magma-status.ts",
-      "file_type": "code",
-      "norm_label": "magmalevelname",
-      "source_file": "web/src/lib/magma-status.ts",
-      "source_location": "L2"
-    },
-    {
-      "id": "web_src_lib_magma_status_magmalevelroman",
-      "label": "MagmaLevelRoman",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "magma-status.ts",
-      "file_type": "code",
-      "norm_label": "magmalevelroman",
-      "source_file": "web/src/lib/magma-status.ts",
-      "source_location": "L3"
-    },
-    {
-      "id": "web_src_lib_magma_status_magmavolcanostatus",
-      "label": "MagmaVolcanoStatus",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "magma-status.ts",
-      "file_type": "code",
-      "norm_label": "magmavolcanostatus",
-      "source_file": "web/src/lib/magma-status.ts",
-      "source_location": "L5"
-    },
-    {
-      "id": "web_src_lib_magma_status_monitoredvolcanoitem",
-      "label": "MonitoredVolcanoItem",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "magma-status.ts",
-      "file_type": "code",
-      "norm_label": "monitoredvolcanoitem",
-      "source_file": "web/src/lib/magma-status.ts",
+      "norm_label": "pageprops",
+      "source_file": "web/src/app/advisories/[id]/page.tsx",
       "source_location": "L23"
     },
     {
-      "id": "web_src_lib_magma_status_volcanostatusentry",
-      "label": "VolcanoStatusEntry",
+      "id": "web_src_components_live_advisories_list_liveadvisorieslistprops",
+      "label": "LiveAdvisoriesListProps",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
       "community": 7,
-      "community_name": "magma-status.ts",
+      "community_name": "[id]/page.tsx",
       "file_type": "code",
-      "norm_label": "volcanostatusentry",
-      "source_file": "web/src/lib/magma-status.ts",
-      "source_location": "L103"
+      "norm_label": "liveadvisorieslistprops",
+      "source_file": "web/src/components/live-advisories-list.tsx",
+      "source_location": "L18"
     },
     {
       "id": "web_src_components_home_tactical_radar_hud_tacticalradarhudprops",
@@ -639,6 +639,19 @@
       "norm_label": "bnpbqueryresponse",
       "source_file": "web/src/lib/disasters/bnpb-adapter.ts",
       "source_location": "L87"
+    },
+    {
+      "id": "web_src_lib_disasters_firms_adapter_cachedfirmsresult",
+      "label": "CachedFirmsResult",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "disasters/types.ts",
+      "file_type": "code",
+      "norm_label": "cachedfirmsresult",
+      "source_file": "web/src/lib/disasters/firms-adapter.ts",
+      "source_location": "L113"
     },
     {
       "id": "web_src_lib_disasters_firms_adapter_firmshotspot",
@@ -950,6 +963,54 @@
       "source_location": "L36"
     },
     {
+      "id": "web_src_components_icons_disaster_icons_createdisastermarkerhtml",
+      "label": "createDisasterMarkerHtml()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "react",
+      "file_type": "code",
+      "norm_label": "createdisastermarkerhtml()",
+      "source_file": "web/src/components/icons/disaster-icons.tsx",
+      "source_location": "L129"
+    },
+    {
+      "id": "web_src_components_icons_disaster_icons_disastericon",
+      "label": "DisasterIcon()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "react",
+      "file_type": "code",
+      "norm_label": "disastericon()",
+      "source_file": "web/src/components/icons/disaster-icons.tsx",
+      "source_location": "L179"
+    },
+    {
+      "id": "web_src_components_icons_disaster_icons_getdisastersvginner",
+      "label": "getDisasterSvgInner()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "react",
+      "file_type": "code",
+      "norm_label": "getdisastersvginner()",
+      "source_file": "web/src/components/icons/disaster-icons.tsx",
+      "source_location": "L15"
+    },
+    {
+      "id": "web_src_components_icons_disaster_icons_getdisastersvgstring",
+      "label": "getDisasterSvgString()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "react",
+      "file_type": "code",
+      "norm_label": "getdisastersvgstring()",
+      "source_file": "web/src/components/icons/disaster-icons.tsx",
+      "source_location": "L113"
+    },
+    {
       "id": "web_src_components_json_ld_getbreadcrumbjsonld",
       "label": "getBreadcrumbJsonLd()",
       "_callable": true,
@@ -1022,52 +1083,16 @@
       "source_location": "L6"
     },
     {
-      "id": "web_src_app_advisories_id_page_advisorydetailpage",
-      "label": "AdvisoryDetailPage()",
+      "id": "web_src_app_sitemap_sitemap",
+      "label": "sitemap()",
       "_callable": true,
       "_origin": "ast",
       "community": 1,
       "community_name": "ash-map.tsx",
       "file_type": "code",
-      "norm_label": "advisorydetailpage()",
-      "source_file": "web/src/app/advisories/[id]/page.tsx",
-      "source_location": "L68"
-    },
-    {
-      "id": "web_src_app_volcanoes_page_volcanoespage",
-      "label": "VolcanoesPage()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "ash-map.tsx",
-      "file_type": "code",
-      "norm_label": "volcanoespage()",
-      "source_file": "web/src/app/volcanoes/page.tsx",
-      "source_location": "L54"
-    },
-    {
-      "id": "web_src_app_volcanoes_slug_page_generatemetadata",
-      "label": "generateMetadata()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "ash-map.tsx",
-      "file_type": "code",
-      "norm_label": "generatemetadata()",
-      "source_file": "web/src/app/volcanoes/[slug]/page.tsx",
-      "source_location": "L29"
-    },
-    {
-      "id": "web_src_app_volcanoes_slug_page_volcanodetailpage",
-      "label": "VolcanoDetailPage()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "ash-map.tsx",
-      "file_type": "code",
-      "norm_label": "volcanodetailpage()",
-      "source_file": "web/src/app/volcanoes/[slug]/page.tsx",
-      "source_location": "L73"
+      "norm_label": "sitemap()",
+      "source_file": "web/src/app/sitemap.ts",
+      "source_location": "L7"
     },
     {
       "id": "web_src_components_check_my_area_card_checkmyareacard",
@@ -1116,30 +1141,6 @@
       "norm_label": "initminimap()",
       "source_file": "web/src/components/indonesia-mini-map.tsx",
       "source_location": "L29"
-    },
-    {
-      "id": "web_src_components_live_advisories_list_getrelativetime",
-      "label": "getRelativeTime()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "ash-map.tsx",
-      "file_type": "code",
-      "norm_label": "getrelativetime()",
-      "source_file": "web/src/components/live-advisories-list.tsx",
-      "source_location": "L23"
-    },
-    {
-      "id": "web_src_components_live_advisories_list_liveadvisorieslist",
-      "label": "LiveAdvisoriesList()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "ash-map.tsx",
-      "file_type": "code",
-      "norm_label": "liveadvisorieslist()",
-      "source_file": "web/src/components/live-advisories-list.tsx",
-      "source_location": "L35"
     },
     {
       "id": "web_src_components_live_advisory_ticker_getrelativetime",
@@ -1226,40 +1227,16 @@
       "source_location": "L51"
     },
     {
-      "id": "web_src_lib_aviation_format_formataltitudecompact",
-      "label": "formatAltitudeCompact()",
+      "id": "web_src_lib_disasters_pvmbg_adapter_getpvmbgvolcanoevents",
+      "label": "getPvmbgVolcanoEvents()",
       "_callable": true,
       "_origin": "ast",
       "community": 1,
       "community_name": "ash-map.tsx",
       "file_type": "code",
-      "norm_label": "formataltitudecompact()",
-      "source_file": "web/src/lib/aviation-format.ts",
-      "source_location": "L84"
-    },
-    {
-      "id": "web_src_lib_aviation_format_formatflightlevelhuman",
-      "label": "formatFlightLevelHuman()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "ash-map.tsx",
-      "file_type": "code",
-      "norm_label": "formatflightlevelhuman()",
-      "source_file": "web/src/lib/aviation-format.ts",
-      "source_location": "L30"
-    },
-    {
-      "id": "web_src_lib_aviation_format_formatmovementhuman",
-      "label": "formatMovementHuman()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "ash-map.tsx",
-      "file_type": "code",
-      "norm_label": "formatmovementhuman()",
-      "source_file": "web/src/lib/aviation-format.ts",
-      "source_location": "L58"
+      "norm_label": "getpvmbgvolcanoevents()",
+      "source_file": "web/src/lib/disasters/pvmbg-adapter.ts",
+      "source_location": "L4"
     },
     {
       "id": "web_src_lib_geo_checker_checklocationashstatus",
@@ -1298,18 +1275,6 @@
       "source_location": "L70"
     },
     {
-      "id": "web_src_lib_geo_checker_ispointinpolygon",
-      "label": "isPointInPolygon()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "ash-map.tsx",
-      "file_type": "code",
-      "norm_label": "ispointinpolygon()",
-      "source_file": "web/src/lib/geo-checker.ts",
-      "source_location": "L27"
-    },
-    {
       "id": "web_src_lib_indonesia_places_searchindonesiaplaces",
       "label": "searchIndonesiaPlaces()",
       "_callable": true,
@@ -1322,6 +1287,18 @@
       "source_location": "L74"
     },
     {
+      "id": "web_src_lib_magma_status_getallmonitoredvolcanoes",
+      "label": "getAllMonitoredVolcanoes()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "ash-map.tsx",
+      "file_type": "code",
+      "norm_label": "getallmonitoredvolcanoes()",
+      "source_file": "web/src/lib/magma-status.ts",
+      "source_location": "L605"
+    },
+    {
       "id": "web_src_lib_magma_status_getmagmavolcanostatus",
       "label": "getMagmaVolcanoStatus()",
       "_callable": true,
@@ -1332,6 +1309,18 @@
       "norm_label": "getmagmavolcanostatus()",
       "source_file": "web/src/lib/magma-status.ts",
       "source_location": "L543"
+    },
+    {
+      "id": "web_src_lib_magma_status_normalizename",
+      "label": "normalizeName()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "ash-map.tsx",
+      "file_type": "code",
+      "norm_label": "normalizename()",
+      "source_file": "web/src/lib/magma-status.ts",
+      "source_location": "L531"
     },
     {
       "id": "web_src_lib_palette_getpolygonopacity",
@@ -1370,28 +1359,16 @@
       "source_location": "L52"
     },
     {
-      "id": "web_src_lib_parser_date_utils_formatutcdatetime",
-      "label": "formatUtcDateTime()",
+      "id": "web_src_app_api_air_quality_route_get",
+      "label": "GET()",
       "_callable": true,
       "_origin": "ast",
-      "community": 1,
-      "community_name": "ash-map.tsx",
+      "community": 11,
+      "community_name": "disaster-map.tsx",
       "file_type": "code",
-      "norm_label": "formatutcdatetime()",
-      "source_file": "web/src/lib/parser/date-utils.ts",
-      "source_location": "L81"
-    },
-    {
-      "id": "web_src_lib_parser_date_utils_formatwibdatetime",
-      "label": "formatWibDateTime()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "ash-map.tsx",
-      "file_type": "code",
-      "norm_label": "formatwibdatetime()",
-      "source_file": "web/src/lib/parser/date-utils.ts",
-      "source_location": "L99"
+      "norm_label": "get()",
+      "source_file": "web/src/app/api/air-quality/route.ts",
+      "source_location": "L17"
     },
     {
       "id": "web_src_components_air_quality_card_airqualitycard",
@@ -1404,54 +1381,6 @@
       "norm_label": "airqualitycard()",
       "source_file": "web/src/components/air-quality-card.tsx",
       "source_location": "L38"
-    },
-    {
-      "id": "web_src_components_icons_disaster_icons_createdisastermarkerhtml",
-      "label": "createDisasterMarkerHtml()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "disaster-map.tsx",
-      "file_type": "code",
-      "norm_label": "createdisastermarkerhtml()",
-      "source_file": "web/src/components/icons/disaster-icons.tsx",
-      "source_location": "L129"
-    },
-    {
-      "id": "web_src_components_icons_disaster_icons_disastericon",
-      "label": "DisasterIcon()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "disaster-map.tsx",
-      "file_type": "code",
-      "norm_label": "disastericon()",
-      "source_file": "web/src/components/icons/disaster-icons.tsx",
-      "source_location": "L179"
-    },
-    {
-      "id": "web_src_components_icons_disaster_icons_getdisastersvginner",
-      "label": "getDisasterSvgInner()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "disaster-map.tsx",
-      "file_type": "code",
-      "norm_label": "getdisastersvginner()",
-      "source_file": "web/src/components/icons/disaster-icons.tsx",
-      "source_location": "L15"
-    },
-    {
-      "id": "web_src_components_icons_disaster_icons_getdisastersvgstring",
-      "label": "getDisasterSvgString()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "disaster-map.tsx",
-      "file_type": "code",
-      "norm_label": "getdisastersvgstring()",
-      "source_file": "web/src/components/icons/disaster-icons.tsx",
-      "source_location": "L113"
     },
     {
       "id": "web_src_components_location_alert_banner_locationalertbanner",
@@ -1514,6 +1443,18 @@
       "source_location": "L59"
     },
     {
+      "id": "web_src_lib_air_quality_calculateispufrompm25",
+      "label": "calculateIspuFromPm25()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "disaster-map.tsx",
+      "file_type": "code",
+      "norm_label": "calculateispufrompm25()",
+      "source_file": "web/src/lib/air-quality.ts",
+      "source_location": "L34"
+    },
+    {
       "id": "web_src_lib_air_quality_dispatchairqualitynotification",
       "label": "dispatchAirQualityNotification()",
       "_callable": true,
@@ -1524,6 +1465,18 @@
       "norm_label": "dispatchairqualitynotification()",
       "source_file": "web/src/lib/air-quality.ts",
       "source_location": "L118"
+    },
+    {
+      "id": "web_src_lib_air_quality_getispucategory",
+      "label": "getIspuCategory()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "disaster-map.tsx",
+      "file_type": "code",
+      "norm_label": "getispucategory()",
+      "source_file": "web/src/lib/air-quality.ts",
+      "source_location": "L56"
     },
     {
       "id": "web_src_lib_air_quality_isairqualityunhealthy",
@@ -1548,6 +1501,18 @@
       "norm_label": "haversinedistancekm()",
       "source_file": "web/src/lib/geo-checker.ts",
       "source_location": "L52"
+    },
+    {
+      "id": "web_src_lib_geo_checker_ispointinpolygon",
+      "label": "isPointInPolygon()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "disaster-map.tsx",
+      "file_type": "code",
+      "norm_label": "ispointinpolygon()",
+      "source_file": "web/src/lib/geo-checker.ts",
+      "source_location": "L27"
     },
     {
       "id": "web_src_lib_safety_guides_getsafetyguide",
@@ -1694,6 +1659,18 @@
       "source_location": "L60"
     },
     {
+      "id": "web_src_lib_parser_date_utils_formatutcdatetime",
+      "label": "formatUtcDateTime()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "test-runner.ts",
+      "file_type": "code",
+      "norm_label": "formatutcdatetime()",
+      "source_file": "web/src/lib/parser/date-utils.ts",
+      "source_location": "L81"
+    },
+    {
       "id": "web_src_lib_parser_date_utils_parsedtg",
       "label": "parseDtg()",
       "_callable": true,
@@ -1716,6 +1693,30 @@
       "norm_label": "parseforecastdtg()",
       "source_file": "web/src/lib/parser/date-utils.ts",
       "source_location": "L49"
+    },
+    {
+      "id": "web_src_lib_parser_html_extractor_decodehtmlentities",
+      "label": "decodeHtmlEntities()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "test-runner.ts",
+      "file_type": "code",
+      "norm_label": "decodehtmlentities()",
+      "source_file": "web/src/lib/parser/html-extractor.ts",
+      "source_location": "L23"
+    },
+    {
+      "id": "web_src_lib_parser_html_extractor_extractprecontent",
+      "label": "extractPreContent()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "test-runner.ts",
+      "file_type": "code",
+      "norm_label": "extractprecontent()",
+      "source_file": "web/src/lib/parser/html-extractor.ts",
+      "source_location": "L5"
     },
     {
       "id": "web_src_lib_parser_test_runner_assert",
@@ -1826,40 +1827,16 @@
       "source_location": "L53"
     },
     {
-      "id": "web_src_app_api_air_quality_route_get",
-      "label": "GET()",
+      "id": "web_src_app_advisories_id_page_advisorydetailpage",
+      "label": "AdvisoryDetailPage()",
       "_callable": true,
       "_origin": "ast",
-      "community": 5,
-      "community_name": "air-quality/route.ts",
+      "community": 7,
+      "community_name": "[id]/page.tsx",
       "file_type": "code",
-      "norm_label": "get()",
-      "source_file": "web/src/app/api/air-quality/route.ts",
-      "source_location": "L17"
-    },
-    {
-      "id": "web_src_lib_air_quality_calculateispufrompm25",
-      "label": "calculateIspuFromPm25()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "air-quality/route.ts",
-      "file_type": "code",
-      "norm_label": "calculateispufrompm25()",
-      "source_file": "web/src/lib/air-quality.ts",
-      "source_location": "L34"
-    },
-    {
-      "id": "web_src_lib_air_quality_getispucategory",
-      "label": "getIspuCategory()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "air-quality/route.ts",
-      "file_type": "code",
-      "norm_label": "getispucategory()",
-      "source_file": "web/src/lib/air-quality.ts",
-      "source_location": "L56"
+      "norm_label": "advisorydetailpage()",
+      "source_file": "web/src/app/advisories/[id]/page.tsx",
+      "source_location": "L68"
     },
     {
       "id": "web_src_app_advisories_id_page_generatemetadata",
@@ -1867,7 +1844,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 7,
-      "community_name": "magma-status.ts",
+      "community_name": "[id]/page.tsx",
       "file_type": "code",
       "norm_label": "generatemetadata()",
       "source_file": "web/src/app/advisories/[id]/page.tsx",
@@ -1879,7 +1856,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 7,
-      "community_name": "magma-status.ts",
+      "community_name": "[id]/page.tsx",
       "file_type": "code",
       "norm_label": "advisoriespage()",
       "source_file": "web/src/app/advisories/page.tsx",
@@ -1891,23 +1868,71 @@
       "_callable": true,
       "_origin": "ast",
       "community": 7,
-      "community_name": "magma-status.ts",
+      "community_name": "[id]/page.tsx",
       "file_type": "code",
       "norm_label": "get()",
       "source_file": "web/src/app/api/advisories/route.ts",
       "source_location": "L6"
     },
     {
-      "id": "web_src_app_sitemap_sitemap",
-      "label": "sitemap()",
+      "id": "web_src_app_volcanoes_page_volcanoespage",
+      "label": "VolcanoesPage()",
       "_callable": true,
       "_origin": "ast",
       "community": 7,
-      "community_name": "magma-status.ts",
+      "community_name": "[id]/page.tsx",
       "file_type": "code",
-      "norm_label": "sitemap()",
-      "source_file": "web/src/app/sitemap.ts",
-      "source_location": "L7"
+      "norm_label": "volcanoespage()",
+      "source_file": "web/src/app/volcanoes/page.tsx",
+      "source_location": "L54"
+    },
+    {
+      "id": "web_src_app_volcanoes_slug_page_generatemetadata",
+      "label": "generateMetadata()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "[id]/page.tsx",
+      "file_type": "code",
+      "norm_label": "generatemetadata()",
+      "source_file": "web/src/app/volcanoes/[slug]/page.tsx",
+      "source_location": "L29"
+    },
+    {
+      "id": "web_src_app_volcanoes_slug_page_volcanodetailpage",
+      "label": "VolcanoDetailPage()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "[id]/page.tsx",
+      "file_type": "code",
+      "norm_label": "volcanodetailpage()",
+      "source_file": "web/src/app/volcanoes/[slug]/page.tsx",
+      "source_location": "L73"
+    },
+    {
+      "id": "web_src_components_live_advisories_list_getrelativetime",
+      "label": "getRelativeTime()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "[id]/page.tsx",
+      "file_type": "code",
+      "norm_label": "getrelativetime()",
+      "source_file": "web/src/components/live-advisories-list.tsx",
+      "source_location": "L23"
+    },
+    {
+      "id": "web_src_components_live_advisories_list_liveadvisorieslist",
+      "label": "LiveAdvisoriesList()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "[id]/page.tsx",
+      "file_type": "code",
+      "norm_label": "liveadvisorieslist()",
+      "source_file": "web/src/components/live-advisories-list.tsx",
+      "source_location": "L35"
     },
     {
       "id": "web_src_lib_advisories_getdarwinadvisories",
@@ -1915,83 +1940,59 @@
       "_callable": true,
       "_origin": "ast",
       "community": 7,
-      "community_name": "magma-status.ts",
+      "community_name": "[id]/page.tsx",
       "file_type": "code",
       "norm_label": "getdarwinadvisories()",
       "source_file": "web/src/lib/advisories.ts",
       "source_location": "L20"
     },
     {
-      "id": "web_src_lib_disasters_ashwatch_adapter_getashwatchadvisoryevents",
-      "label": "getAshwatchAdvisoryEvents()",
+      "id": "web_src_lib_aviation_format_formataltitudecompact",
+      "label": "formatAltitudeCompact()",
       "_callable": true,
       "_origin": "ast",
       "community": 7,
-      "community_name": "magma-status.ts",
+      "community_name": "[id]/page.tsx",
       "file_type": "code",
-      "norm_label": "getashwatchadvisoryevents()",
-      "source_file": "web/src/lib/disasters/ashwatch-adapter.ts",
-      "source_location": "L5"
+      "norm_label": "formataltitudecompact()",
+      "source_file": "web/src/lib/aviation-format.ts",
+      "source_location": "L84"
     },
     {
-      "id": "web_src_lib_disasters_pvmbg_adapter_getpvmbgvolcanoevents",
-      "label": "getPvmbgVolcanoEvents()",
+      "id": "web_src_lib_aviation_format_formatflightlevelhuman",
+      "label": "formatFlightLevelHuman()",
       "_callable": true,
       "_origin": "ast",
       "community": 7,
-      "community_name": "magma-status.ts",
+      "community_name": "[id]/page.tsx",
       "file_type": "code",
-      "norm_label": "getpvmbgvolcanoevents()",
-      "source_file": "web/src/lib/disasters/pvmbg-adapter.ts",
-      "source_location": "L4"
+      "norm_label": "formatflightlevelhuman()",
+      "source_file": "web/src/lib/aviation-format.ts",
+      "source_location": "L30"
     },
     {
-      "id": "web_src_lib_magma_status_getallmonitoredvolcanoes",
-      "label": "getAllMonitoredVolcanoes()",
+      "id": "web_src_lib_aviation_format_formatmovementhuman",
+      "label": "formatMovementHuman()",
       "_callable": true,
       "_origin": "ast",
       "community": 7,
-      "community_name": "magma-status.ts",
+      "community_name": "[id]/page.tsx",
       "file_type": "code",
-      "norm_label": "getallmonitoredvolcanoes()",
-      "source_file": "web/src/lib/magma-status.ts",
-      "source_location": "L605"
+      "norm_label": "formatmovementhuman()",
+      "source_file": "web/src/lib/aviation-format.ts",
+      "source_location": "L58"
     },
     {
-      "id": "web_src_lib_magma_status_normalizename",
-      "label": "normalizeName()",
+      "id": "web_src_lib_parser_date_utils_formatwibdatetime",
+      "label": "formatWibDateTime()",
       "_callable": true,
       "_origin": "ast",
       "community": 7,
-      "community_name": "magma-status.ts",
+      "community_name": "[id]/page.tsx",
       "file_type": "code",
-      "norm_label": "normalizename()",
-      "source_file": "web/src/lib/magma-status.ts",
-      "source_location": "L531"
-    },
-    {
-      "id": "web_src_lib_parser_html_extractor_decodehtmlentities",
-      "label": "decodeHtmlEntities()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "magma-status.ts",
-      "file_type": "code",
-      "norm_label": "decodehtmlentities()",
-      "source_file": "web/src/lib/parser/html-extractor.ts",
-      "source_location": "L23"
-    },
-    {
-      "id": "web_src_lib_parser_html_extractor_extractprecontent",
-      "label": "extractPreContent()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "magma-status.ts",
-      "file_type": "code",
-      "norm_label": "extractprecontent()",
-      "source_file": "web/src/lib/parser/html-extractor.ts",
-      "source_location": "L5"
+      "norm_label": "formatwibdatetime()",
+      "source_file": "web/src/lib/parser/date-utils.ts",
+      "source_location": "L99"
     },
     {
       "id": "web_src_app_api_disasters_route_get",
@@ -2076,6 +2077,18 @@
       "norm_label": "getaggregateddisasters()",
       "source_file": "web/src/lib/disasters/aggregator.ts",
       "source_location": "L129"
+    },
+    {
+      "id": "web_src_lib_disasters_ashwatch_adapter_getashwatchadvisoryevents",
+      "label": "getAshwatchAdvisoryEvents()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "disasters/types.ts",
+      "file_type": "code",
+      "norm_label": "getashwatchadvisoryevents()",
+      "source_file": "web/src/lib/disasters/ashwatch-adapter.ts",
+      "source_location": "L5"
     },
     {
       "id": "web_src_lib_disasters_bmkg_adapter_fetchbmkgearthquakes",
@@ -2171,7 +2184,7 @@
       "file_type": "code",
       "norm_label": "fetchfirmshotspots()",
       "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L111"
+      "source_location": "L122"
     },
     {
       "id": "web_src_lib_disasters_firms_adapter_getfirmsurl",
@@ -2252,17 +2265,6 @@
       "norm_label": "metadata",
       "source_file": "web/src/app/about/page.tsx",
       "source_location": "L8"
-    },
-    {
-      "id": "web_src_app_advisories_id_page",
-      "label": "[id]/page.tsx",
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "react",
-      "file_type": "code",
-      "norm_label": "[id]/page.tsx",
-      "source_file": "web/src/app/advisories/[id]/page.tsx",
-      "source_location": "L1"
     },
     {
       "id": "web_src_app_advisories_page",
@@ -2573,6 +2575,17 @@
       "source_location": "L18"
     },
     {
+      "id": "web_src_app_sitemap",
+      "label": "sitemap.ts",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "react",
+      "file_type": "code",
+      "norm_label": "sitemap.ts",
+      "source_file": "web/src/app/sitemap.ts",
+      "source_location": "L1"
+    },
+    {
       "id": "web_src_app_volcanoes_slug_page",
       "label": "[slug]/page.tsx",
       "_origin": "ast",
@@ -2648,6 +2661,17 @@
       "norm_label": "nav_links",
       "source_file": "web/src/components/footer.tsx",
       "source_location": "L18"
+    },
+    {
+      "id": "web_src_components_icons_disaster_icons",
+      "label": "disaster-icons.tsx",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "react",
+      "file_type": "code",
+      "norm_label": "disaster-icons.tsx",
+      "source_file": "web/src/components/icons/disaster-icons.tsx",
+      "source_location": "L1"
     },
     {
       "id": "web_src_components_json_ld",
@@ -2782,39 +2806,6 @@
       "source_file": "leaflet"
     },
     {
-      "id": "web_src_app_volcanoes_page",
-      "label": "volcanoes/page.tsx",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "ash-map.tsx",
-      "file_type": "code",
-      "norm_label": "volcanoes/page.tsx",
-      "source_file": "web/src/app/volcanoes/page.tsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "web_src_app_volcanoes_page_metadata",
-      "label": "metadata",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "ash-map.tsx",
-      "file_type": "code",
-      "norm_label": "metadata",
-      "source_file": "web/src/app/volcanoes/page.tsx",
-      "source_location": "L13"
-    },
-    {
-      "id": "web_src_app_volcanoes_page_revalidate",
-      "label": "revalidate",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "ash-map.tsx",
-      "file_type": "code",
-      "norm_label": "revalidate",
-      "source_file": "web/src/app/volcanoes/page.tsx",
-      "source_location": "L11"
-    },
-    {
       "id": "web_src_components_check_my_area_card",
       "label": "check-my-area-card.tsx",
       "_origin": "ast",
@@ -2834,17 +2825,6 @@
       "file_type": "code",
       "norm_label": "indonesia-mini-map.tsx",
       "source_file": "web/src/components/indonesia-mini-map.tsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "web_src_components_live_advisories_list",
-      "label": "live-advisories-list.tsx",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "ash-map.tsx",
-      "file_type": "code",
-      "norm_label": "live-advisories-list.tsx",
-      "source_file": "web/src/components/live-advisories-list.tsx",
       "source_location": "L1"
     },
     {
@@ -2870,26 +2850,15 @@
       "source_location": "L1"
     },
     {
-      "id": "web_src_lib_aviation_format",
-      "label": "aviation-format.ts",
+      "id": "web_src_lib_disasters_pvmbg_adapter",
+      "label": "pvmbg-adapter.ts",
       "_origin": "ast",
       "community": 1,
       "community_name": "ash-map.tsx",
       "file_type": "code",
-      "norm_label": "aviation-format.ts",
-      "source_file": "web/src/lib/aviation-format.ts",
+      "norm_label": "pvmbg-adapter.ts",
+      "source_file": "web/src/lib/disasters/pvmbg-adapter.ts",
       "source_location": "L1"
-    },
-    {
-      "id": "web_src_lib_aviation_format_direction_names",
-      "label": "DIRECTION_NAMES",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "ash-map.tsx",
-      "file_type": "code",
-      "norm_label": "direction_names",
-      "source_file": "web/src/lib/aviation-format.ts",
-      "source_location": "L7"
     },
     {
       "id": "web_src_lib_geo_checker",
@@ -2925,6 +2894,39 @@
       "source_location": "L15"
     },
     {
+      "id": "web_src_lib_magma_status",
+      "label": "magma-status.ts",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "ash-map.tsx",
+      "file_type": "code",
+      "norm_label": "magma-status.ts",
+      "source_file": "web/src/lib/magma-status.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "web_src_lib_magma_status_magma_level_config",
+      "label": "MAGMA_LEVEL_CONFIG",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "ash-map.tsx",
+      "file_type": "code",
+      "norm_label": "magma_level_config",
+      "source_file": "web/src/lib/magma-status.ts",
+      "source_location": "L48"
+    },
+    {
+      "id": "web_src_lib_magma_status_magma_volcanoes_db",
+      "label": "MAGMA_VOLCANOES_DB",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "ash-map.tsx",
+      "file_type": "code",
+      "norm_label": "magma_volcanoes_db",
+      "source_file": "web/src/lib/magma-status.ts",
+      "source_location": "L118"
+    },
+    {
       "id": "web_src_lib_palette",
       "label": "palette.ts",
       "_origin": "ast",
@@ -2956,17 +2958,6 @@
       "norm_label": "layer_colors",
       "source_file": "web/src/lib/palette.ts",
       "source_location": "L8"
-    },
-    {
-      "id": "web_src_lib_parser_date_utils",
-      "label": "date-utils.ts",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "ash-map.tsx",
-      "file_type": "code",
-      "norm_label": "date-utils.ts",
-      "source_file": "web/src/lib/parser/date-utils.ts",
-      "source_location": "L1"
     },
     {
       "id": "web_src_lib_types",
@@ -3171,6 +3162,50 @@
       "source_location": "L79"
     },
     {
+      "id": "web_src_app_api_air_quality_route",
+      "label": "air-quality/route.ts",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "disaster-map.tsx",
+      "file_type": "code",
+      "norm_label": "air-quality/route.ts",
+      "source_file": "web/src/app/api/air-quality/route.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "web_src_app_api_air_quality_route_day_names",
+      "label": "DAY_NAMES",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "disaster-map.tsx",
+      "file_type": "code",
+      "norm_label": "day_names",
+      "source_file": "web/src/app/api/air-quality/route.ts",
+      "source_location": "L15"
+    },
+    {
+      "id": "web_src_app_api_air_quality_route_month_names",
+      "label": "MONTH_NAMES",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "disaster-map.tsx",
+      "file_type": "code",
+      "norm_label": "month_names",
+      "source_file": "web/src/app/api/air-quality/route.ts",
+      "source_location": "L11"
+    },
+    {
+      "id": "web_src_app_api_air_quality_route_revalidate",
+      "label": "revalidate",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "disaster-map.tsx",
+      "file_type": "code",
+      "norm_label": "revalidate",
+      "source_file": "web/src/app/api/air-quality/route.ts",
+      "source_location": "L9"
+    },
+    {
       "id": "web_src_components_air_quality_card",
       "label": "air-quality-card.tsx",
       "_origin": "ast",
@@ -3179,17 +3214,6 @@
       "file_type": "code",
       "norm_label": "air-quality-card.tsx",
       "source_file": "web/src/components/air-quality-card.tsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "web_src_components_icons_disaster_icons",
-      "label": "disaster-icons.tsx",
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "disaster-map.tsx",
-      "file_type": "code",
-      "norm_label": "disaster-icons.tsx",
-      "source_file": "web/src/components/icons/disaster-icons.tsx",
       "source_location": "L1"
     },
     {
@@ -3224,6 +3248,17 @@
       "norm_label": "disaster_visuals",
       "source_file": "web/src/components/map/disaster-map.tsx",
       "source_location": "L75"
+    },
+    {
+      "id": "web_src_lib_air_quality",
+      "label": "air-quality.ts",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "disaster-map.tsx",
+      "file_type": "code",
+      "norm_label": "air-quality.ts",
+      "source_file": "web/src/lib/air-quality.ts",
+      "source_location": "L1"
     },
     {
       "id": "web_src_lib_safety_guides",
@@ -3762,6 +3797,17 @@
       "source_location": "L5"
     },
     {
+      "id": "web_src_lib_advisories",
+      "label": "advisories.ts",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "test-runner.ts",
+      "file_type": "code",
+      "norm_label": "advisories.ts",
+      "source_file": "web/src/lib/advisories.ts",
+      "source_location": "L1"
+    },
+    {
       "id": "web_src_lib_fixtures",
       "label": "fixtures.ts",
       "_origin": "ast",
@@ -3803,6 +3849,28 @@
       "file_type": "code",
       "norm_label": "coordinate-parser.ts",
       "source_file": "web/src/lib/parser/coordinate-parser.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "web_src_lib_parser_date_utils",
+      "label": "date-utils.ts",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "test-runner.ts",
+      "file_type": "code",
+      "norm_label": "date-utils.ts",
+      "source_file": "web/src/lib/parser/date-utils.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "web_src_lib_parser_html_extractor",
+      "label": "html-extractor.ts",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "test-runner.ts",
+      "file_type": "code",
+      "norm_label": "html-extractor.ts",
+      "source_file": "web/src/lib/parser/html-extractor.ts",
       "source_location": "L1"
     },
     {
@@ -5167,61 +5235,6 @@
       "source_location": "L29"
     },
     {
-      "id": "web_src_app_api_air_quality_route",
-      "label": "air-quality/route.ts",
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "air-quality/route.ts",
-      "file_type": "code",
-      "norm_label": "air-quality/route.ts",
-      "source_file": "web/src/app/api/air-quality/route.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "web_src_app_api_air_quality_route_day_names",
-      "label": "DAY_NAMES",
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "air-quality/route.ts",
-      "file_type": "code",
-      "norm_label": "day_names",
-      "source_file": "web/src/app/api/air-quality/route.ts",
-      "source_location": "L15"
-    },
-    {
-      "id": "web_src_app_api_air_quality_route_month_names",
-      "label": "MONTH_NAMES",
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "air-quality/route.ts",
-      "file_type": "code",
-      "norm_label": "month_names",
-      "source_file": "web/src/app/api/air-quality/route.ts",
-      "source_location": "L11"
-    },
-    {
-      "id": "web_src_app_api_air_quality_route_revalidate",
-      "label": "revalidate",
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "air-quality/route.ts",
-      "file_type": "code",
-      "norm_label": "revalidate",
-      "source_file": "web/src/app/api/air-quality/route.ts",
-      "source_location": "L9"
-    },
-    {
-      "id": "web_src_lib_air_quality",
-      "label": "air-quality.ts",
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "air-quality/route.ts",
-      "file_type": "code",
-      "norm_label": "air-quality.ts",
-      "source_file": "web/src/lib/air-quality.ts",
-      "source_location": "L1"
-    },
-    {
       "id": "claude_skills_graphify_skill",
       "label": "SKILL.md",
       "_origin": "ast",
@@ -5550,11 +5563,22 @@
       "source_location": "L49"
     },
     {
+      "id": "web_src_app_advisories_id_page",
+      "label": "[id]/page.tsx",
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "[id]/page.tsx",
+      "file_type": "code",
+      "norm_label": "[id]/page.tsx",
+      "source_file": "web/src/app/advisories/[id]/page.tsx",
+      "source_location": "L1"
+    },
+    {
       "id": "web_src_app_api_advisories_route",
       "label": "advisories/route.ts",
       "_origin": "ast",
       "community": 7,
-      "community_name": "magma-status.ts",
+      "community_name": "[id]/page.tsx",
       "file_type": "code",
       "norm_label": "advisories/route.ts",
       "source_file": "web/src/app/api/advisories/route.ts",
@@ -5565,99 +5589,77 @@
       "label": "dynamic",
       "_origin": "ast",
       "community": 7,
-      "community_name": "magma-status.ts",
+      "community_name": "[id]/page.tsx",
       "file_type": "code",
       "norm_label": "dynamic",
       "source_file": "web/src/app/api/advisories/route.ts",
       "source_location": "L4"
     },
     {
-      "id": "web_src_app_sitemap",
-      "label": "sitemap.ts",
+      "id": "web_src_app_volcanoes_page",
+      "label": "volcanoes/page.tsx",
       "_origin": "ast",
       "community": 7,
-      "community_name": "magma-status.ts",
+      "community_name": "[id]/page.tsx",
       "file_type": "code",
-      "norm_label": "sitemap.ts",
-      "source_file": "web/src/app/sitemap.ts",
+      "norm_label": "volcanoes/page.tsx",
+      "source_file": "web/src/app/volcanoes/page.tsx",
       "source_location": "L1"
     },
     {
-      "id": "web_src_lib_advisories",
-      "label": "advisories.ts",
+      "id": "web_src_app_volcanoes_page_metadata",
+      "label": "metadata",
       "_origin": "ast",
       "community": 7,
-      "community_name": "magma-status.ts",
+      "community_name": "[id]/page.tsx",
       "file_type": "code",
-      "norm_label": "advisories.ts",
-      "source_file": "web/src/lib/advisories.ts",
+      "norm_label": "metadata",
+      "source_file": "web/src/app/volcanoes/page.tsx",
+      "source_location": "L13"
+    },
+    {
+      "id": "web_src_app_volcanoes_page_revalidate",
+      "label": "revalidate",
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "[id]/page.tsx",
+      "file_type": "code",
+      "norm_label": "revalidate",
+      "source_file": "web/src/app/volcanoes/page.tsx",
+      "source_location": "L11"
+    },
+    {
+      "id": "web_src_components_live_advisories_list",
+      "label": "live-advisories-list.tsx",
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "[id]/page.tsx",
+      "file_type": "code",
+      "norm_label": "live-advisories-list.tsx",
+      "source_file": "web/src/components/live-advisories-list.tsx",
       "source_location": "L1"
     },
     {
-      "id": "web_src_lib_disasters_ashwatch_adapter",
-      "label": "ashwatch-adapter.ts",
+      "id": "web_src_lib_aviation_format",
+      "label": "aviation-format.ts",
       "_origin": "ast",
       "community": 7,
-      "community_name": "magma-status.ts",
+      "community_name": "[id]/page.tsx",
       "file_type": "code",
-      "norm_label": "ashwatch-adapter.ts",
-      "source_file": "web/src/lib/disasters/ashwatch-adapter.ts",
+      "norm_label": "aviation-format.ts",
+      "source_file": "web/src/lib/aviation-format.ts",
       "source_location": "L1"
     },
     {
-      "id": "web_src_lib_disasters_pvmbg_adapter",
-      "label": "pvmbg-adapter.ts",
+      "id": "web_src_lib_aviation_format_direction_names",
+      "label": "DIRECTION_NAMES",
       "_origin": "ast",
       "community": 7,
-      "community_name": "magma-status.ts",
+      "community_name": "[id]/page.tsx",
       "file_type": "code",
-      "norm_label": "pvmbg-adapter.ts",
-      "source_file": "web/src/lib/disasters/pvmbg-adapter.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "web_src_lib_magma_status",
-      "label": "magma-status.ts",
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "magma-status.ts",
-      "file_type": "code",
-      "norm_label": "magma-status.ts",
-      "source_file": "web/src/lib/magma-status.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "web_src_lib_magma_status_magma_level_config",
-      "label": "MAGMA_LEVEL_CONFIG",
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "magma-status.ts",
-      "file_type": "code",
-      "norm_label": "magma_level_config",
-      "source_file": "web/src/lib/magma-status.ts",
-      "source_location": "L48"
-    },
-    {
-      "id": "web_src_lib_magma_status_magma_volcanoes_db",
-      "label": "MAGMA_VOLCANOES_DB",
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "magma-status.ts",
-      "file_type": "code",
-      "norm_label": "magma_volcanoes_db",
-      "source_file": "web/src/lib/magma-status.ts",
-      "source_location": "L118"
-    },
-    {
-      "id": "web_src_lib_parser_html_extractor",
-      "label": "html-extractor.ts",
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "magma-status.ts",
-      "file_type": "code",
-      "norm_label": "html-extractor.ts",
-      "source_file": "web/src/lib/parser/html-extractor.ts",
-      "source_location": "L1"
+      "norm_label": "direction_names",
+      "source_file": "web/src/lib/aviation-format.ts",
+      "source_location": "L7"
     },
     {
       "id": "web_src_app_api_disasters_route",
@@ -5723,6 +5725,17 @@
       "file_type": "code",
       "norm_label": "aggregator.ts",
       "source_file": "web/src/lib/disasters/aggregator.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "web_src_lib_disasters_ashwatch_adapter",
+      "label": "ashwatch-adapter.ts",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "disasters/types.ts",
+      "file_type": "code",
+      "norm_label": "ashwatch-adapter.ts",
+      "source_file": "web/src/lib/disasters/ashwatch-adapter.ts",
       "source_location": "L1"
     },
     {
@@ -7206,7 +7219,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L117",
+      "source_location": "L137",
       "weight": 1.0
     },
     {
@@ -7218,7 +7231,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L150",
+      "source_location": "L170",
       "weight": 1.0
     },
     {
@@ -7230,7 +7243,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L160",
+      "source_location": "L180",
       "weight": 1.0
     },
     {
@@ -7242,7 +7255,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L177",
+      "source_location": "L197",
       "weight": 1.0
     },
     {
@@ -7855,6 +7868,18 @@
       "context": "field",
       "source_file": "web/src/lib/advisories.ts",
       "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "web_src_lib_disasters_firms_adapter_cachedfirmsresult",
+      "target": "web_src_lib_disasters_types_disasterevent",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "field",
+      "source_file": "web/src/lib/disasters/firms-adapter.ts",
+      "source_location": "L114",
       "weight": 1.0
     },
     {
@@ -17003,13 +17028,24 @@
     },
     {
       "source": "web_src_lib_disasters_firms_adapter",
+      "target": "web_src_lib_disasters_firms_adapter_cachedfirmsresult",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "web/src/lib/disasters/firms-adapter.ts",
+      "source_location": "L113",
+      "weight": 1.0
+    },
+    {
+      "source": "web_src_lib_disasters_firms_adapter",
       "target": "web_src_lib_disasters_firms_adapter_fetchfirmshotspots",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L111",
+      "source_location": "L122",
       "weight": 1.0
     },
     {

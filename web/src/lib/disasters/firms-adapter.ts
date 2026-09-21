@@ -10,10 +10,10 @@ import { DisasterEvent } from './types';
 // https://firms.modaps.eosdis.nasa.gov/api/map_key
 // Set env: FIRMS_MAP_KEY=<your-key>
 // Uses the area endpoint with Indonesia bounding box: 95,-11,141,6
-function getFirmsUrl(): string | null {
+function getFirmsUrl(source = 'VIIRS_NOAA21_NRT', dayRange = 1): string | null {
   const key = process.env.FIRMS_MAP_KEY;
   if (!key) return null;
-  return `https://firms.modaps.eosdis.nasa.gov/api/area/csv/${key}/VIIRS_SNPP_NRT/95,-11,141,6/1`;
+  return `https://firms.modaps.eosdis.nasa.gov/api/area/csv/${key}/${source}/95,-11,141,6/${dayRange}`;
 }
 
 // Indonesia bounding box for validation
@@ -52,6 +52,16 @@ function parseCSVLine(header: string[], line: string): FirmsHotspot | null {
   if (lat < IDN_BOUNDS.minLat || lat > IDN_BOUNDS.maxLat) return null;
   if (lon < IDN_BOUNDS.minLon || lon > IDN_BOUNDS.maxLon) return null;
 
+  // Normalize single-letter VIIRS confidence ('h' -> 'high', 'n' -> 'nominal', 'l' -> 'low')
+  const rawConf = (obj.confidence || '').toLowerCase();
+  const confidence =
+    rawConf === 'h' ? 'high' : rawConf === 'n' ? 'nominal' : rawConf === 'l' ? 'low' : rawConf || 'nominal';
+
+  // Normalize satellite abbreviations (N21 -> NOAA-21, N20 -> NOAA-20, N -> Suomi NPP)
+  const satRaw = (obj.satellite || '').trim();
+  const satellite =
+    satRaw === 'N21' ? 'NOAA-21' : satRaw === 'N20' ? 'NOAA-20' : satRaw === 'N' ? 'Suomi NPP' : satRaw || 'VIIRS';
+
   return {
     latitude: lat,
     longitude: lon,
@@ -60,9 +70,9 @@ function parseCSVLine(header: string[], line: string): FirmsHotspot | null {
     track: parseFloat(obj.track) || 0,
     acq_date: obj.acq_date || '',
     acq_time: obj.acq_time || '',
-    satellite: obj.satellite || 'Suomi NPP',
+    satellite,
     instrument: obj.instrument || 'VIIRS',
-    confidence: obj.confidence || 'nominal',
+    confidence,
     version: obj.version || '',
     bright_ti5: parseFloat(obj.bright_ti5) || 0,
     frp: parseFloat(obj.frp) || 0,
@@ -158,9 +168,38 @@ export async function fetchFirmsHotspots(): Promise<{
     }
 
     const csvText = await res.text();
-    const lines = csvText.trim().split('\n');
+    let lines = csvText.trim().split('\n');
+
+    // If primary source returned only the CSV header (0 active fires right now),
+    // try fallback source (Suomi-NPP 2 days) to ensure active recent hotspots
     if (lines.length < 2) {
-      throw new Error('NASA FIRMS returned empty CSV');
+      const backupUrl = getFirmsUrl('VIIRS_SNPP_NRT', 2);
+      if (backupUrl) {
+        try {
+          const backupRes = await fetch(backupUrl, {
+            signal: controller.signal,
+            next: { revalidate: 600 },
+          });
+          if (backupRes.ok) {
+            const backupText = await backupRes.text();
+            const backupLines = backupText.trim().split('\n');
+            if (backupLines.length >= 2) {
+              lines = backupLines;
+            }
+          }
+        } catch {
+          // Ignore backup fetch failure
+        }
+      }
+    }
+
+    // If still empty after backup check, it's valid: Indonesia currently has 0 detected hotspots
+    if (lines.length < 2) {
+      return {
+        events: [],
+        isLive: true,
+        lastUpdated: new Date().toISOString(),
+      };
     }
 
     const header = lines[0].split(',').map((h) => h.trim());

@@ -1,12 +1,12 @@
 # Graph Report - Disaster-radarID  (2026-09-21)
 
 ## Corpus Check
-- 85 files · ~185,743 words
+- 85 files · ~185,873 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 8 file(s) not represented in the graph (top: .ico 3, (none) 2, .webmanifest 2)
 
 ## Summary
-- 516 nodes · 1070 edges · 30 communities (19 shown, 10 thin omitted)
+- 517 nodes · 1072 edges · 29 communities (18 shown, 10 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 4 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
@@ -21,9 +21,8 @@
 - test-runner.ts
 - seo.md
 - package.json
-- air-quality/route.ts
 - What You Must Do When Invoked
-- magma-status.ts
+- [id]/page.tsx
 - disasters/types.ts
 - compilerOptions
 - 🌋 AshWatch Web — Darwin VAAC Volcanic Ash Viewer & Technical SEO
@@ -50,42 +49,42 @@
 1. `react` - 29 edges
 2. `VolcanoAdvisory` - 29 edges
 3. `lucide-react` - 26 edges
-4. `next` - 18 edges
-5. `getDarwinAdvisories()` - 18 edges
-6. `DisasterEvent` - 18 edges
+4. `DisasterEvent` - 19 edges
+5. `next` - 18 edges
+6. `getDarwinAdvisories()` - 18 edges
 7. `SITE_URL` - 17 edges
 8. `getAggregatedDisasters()` - 17 edges
 9. `formatMovementHuman()` - 16 edges
 10. `compilerOptions` - 16 edges
 
 ## Surprising Connections (you probably didn't know these)
+- `DisasterIconProps` --references--> `DisasterType`  [EXTRACTED]
+  web/src/components/icons/disaster-icons.tsx → web/src/lib/disasters/types.ts
+- `LiveAdvisoriesListProps` --references--> `VolcanoAdvisory`  [EXTRACTED]
+  web/src/components/live-advisories-list.tsx → web/src/lib/types.ts
 - `AdvisoriesResponse` --references--> `VolcanoAdvisory`  [EXTRACTED]
   web/src/lib/advisories.ts → web/src/lib/types.ts
 - `generateMetadata()` --calls--> `getDarwinAdvisories()`  [EXTRACTED]
   web/src/app/advisories/[id]/page.tsx → web/src/lib/advisories.ts
-- `AdvisoryDetailPage()` --calls--> `getDarwinAdvisories()`  [EXTRACTED]
-  web/src/app/advisories/[id]/page.tsx → web/src/lib/advisories.ts
 - `AdvisoriesPage()` --calls--> `getDarwinAdvisories()`  [EXTRACTED]
   web/src/app/advisories/page.tsx → web/src/lib/advisories.ts
-- `GET()` --calls--> `getDarwinAdvisories()`  [EXTRACTED]
-  web/src/app/api/advisories/route.ts → web/src/lib/advisories.ts
 
 ## Import Cycles
 - None detected.
 
-## Communities (30 total, 10 thin omitted)
+## Communities (29 total, 10 thin omitted)
 
 ### Community 0 - "react"
 Cohesion: 0.06
-Nodes (49): lucide-react, next, react, nextConfig, metadata, PageProps, metadata, revalidate (+41 more)
+Nodes (53): lucide-react, next, react, nextConfig, metadata, metadata, revalidate, metadata (+45 more)
 
 ### Community 1 - "ash-map.tsx"
 Cohesion: 0.08
-Nodes (46): leaflet, AdvisoryDetailPage(), metadata, revalidate, VolcanoesPage(), generateMetadata(), VolcanoDetailPage(), CheckMyAreaCard() (+38 more)
+Nodes (44): leaflet, sitemap(), CheckMyAreaCard(), CheckMyAreaCardProps, IndonesiaMiniMap(), initMiniMap(), IndonesiaMiniMapProps, getRelativeTime() (+36 more)
 
 ### Community 2 - "test-runner.ts"
-Cohesion: 0.08
-Nodes (27): MULTIPLE_ADVISORIES_FIXTURE, SINGLE_ADVISORY_FIXTURE, parseAviationComponent(), parseAviationCoordinate(), parsePolygonCoordinates(), parseDtg(), parseForecastDtg(), coord (+19 more)
+Cohesion: 0.07
+Nodes (30): AdvisoriesResponse, MULTIPLE_ADVISORIES_FIXTURE, SINGLE_ADVISORY_FIXTURE, parseAviationComponent(), parseAviationCoordinate(), parsePolygonCoordinates(), parseDtg(), parseForecastDtg() (+22 more)
 
 ### Community 3 - "seo.md"
 Cohesion: 0.05
@@ -95,21 +94,17 @@ Nodes (38): 10. Internal Linking, 11. Sitemap, 12. Robots.txt, 13. Canonical URL
 Cohesion: 0.05
 Nodes (37): eslint, eslint-config-next, react-dom, tailwindcss, @tailwindcss/postcss, tsx, @types/leaflet, @types/node (+29 more)
 
-### Community 5 - "air-quality/route.ts"
-Cohesion: 0.33
-Nodes (8): DAY_NAMES, GET(), MONTH_NAMES, revalidate, AirQualityHistoryPoint, AirQualityReading, calculateIspuFromPm25(), getIspuCategory()
-
 ### Community 6 - "What You Must Do When Invoked"
 Cohesion: 0.07
 Nodes (26): For /graphify add and --watch, For /graphify query, For the commit hook and native CLAUDE.md integration, For --update and --cluster-only, /graphify, Honesty Rules, Interpreter guard for subcommands, Part A - Structural extraction for code files (+18 more)
 
-### Community 7 - "magma-status.ts"
-Cohesion: 0.11
-Nodes (22): generateMetadata(), AdvisoriesPage(), dynamic, GET(), sitemap(), AdvisoriesResponse, getDarwinAdvisories(), getAshwatchAdvisoryEvents() (+14 more)
+### Community 7 - "[id]/page.tsx"
+Cohesion: 0.17
+Nodes (20): AdvisoryDetailPage(), generateMetadata(), PageProps, AdvisoriesPage(), dynamic, GET(), metadata, revalidate (+12 more)
 
 ### Community 8 - "disasters/types.ts"
-Cohesion: 0.07
-Nodes (44): dynamic, GET(), DisastersIndexPage(), MapPage(), TacticalRadarHud(), TacticalRadarHudProps, LocationAlertBannerProps, DisasterMapProps (+36 more)
+Cohesion: 0.06
+Nodes (46): dynamic, GET(), DisastersIndexPage(), MapPage(), TacticalRadarHud(), TacticalRadarHudProps, LocationAlertBannerProps, DisasterMapProps (+38 more)
 
 ### Community 9 - "compilerOptions"
 Cohesion: 0.11
@@ -120,8 +115,8 @@ Cohesion: 0.13
 Nodes (14): 1. Install Dependencies, 2. Run Unit Tests (VAA Parser, Coordinates, Dates), 3. Run Development Server, 4. Production Build Verification, 🌋 AshWatch Web — Darwin VAAC Volcanic Ash Viewer & Technical SEO, ⚙️ Environment Variables, 🔍 Google Search Console Setup, 🚀 Key Features (+6 more)
 
 ### Community 11 - "disaster-map.tsx"
-Cohesion: 0.14
-Nodes (30): AirQualityCard(), AirQualityCardProps, createDisasterMarkerHtml(), DisasterIcon(), DisasterIconProps, getDisasterSvgInner(), getDisasterSvgString(), LocationAlertBanner() (+22 more)
+Cohesion: 0.12
+Nodes (34): DAY_NAMES, GET(), MONTH_NAMES, revalidate, AirQualityCard(), AirQualityCardProps, LocationAlertBanner(), DISASTER_VISUALS (+26 more)
 
 ### Community 12 - "graphify reference: extra exports and benchmark"
 Cohesion: 0.22
@@ -159,17 +154,17 @@ Nodes (3): For --cluster-only, For --update (incremental re-extraction), graphif
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `react` connect `react` to `disasters/types.ts`, `ash-map.tsx`, `disaster-map.tsx`, `package.json`?**
+- **Why does `react` connect `react` to `ash-map.tsx`, `package.json`, `[id]/page.tsx`, `disasters/types.ts`, `disaster-map.tsx`?**
   _High betweenness centrality (0.075) - this node is a cross-community bridge._
-- **Why does `lucide-react` connect `react` to `disasters/types.ts`, `ash-map.tsx`, `disaster-map.tsx`, `package.json`?**
+- **Why does `lucide-react` connect `react` to `ash-map.tsx`, `package.json`, `[id]/page.tsx`, `disasters/types.ts`, `disaster-map.tsx`?**
   _High betweenness centrality (0.062) - this node is a cross-community bridge._
-- **Why does `next` connect `react` to `ash-map.tsx`, `package.json`, `magma-status.ts`?**
+- **Why does `next` connect `react` to `package.json`, `[id]/page.tsx`?**
   _High betweenness centrality (0.032) - this node is a cross-community bridge._
 - **What connects `eslintConfig`, `nextConfig`, `name` to the rest of the system?**
   _239 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `react` be split into smaller, more focused modules?**
-  _Cohesion score 0.05809802012333658 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.055077452667814115 - nodes in this community are weakly interconnected._
 - **Should `ash-map.tsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.08283730158730158 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.07831677381648158 - nodes in this community are weakly interconnected._
 - **Should `test-runner.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.07948717948717948 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.07123034227567067 - nodes in this community are weakly interconnected._
