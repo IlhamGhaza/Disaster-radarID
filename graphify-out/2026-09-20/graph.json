@@ -4,6 +4,19 @@
   "graph": {},
   "nodes": [
     {
+      "id": "web_src_app_advisories_id_page_pageprops",
+      "label": "PageProps",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "react",
+      "file_type": "code",
+      "norm_label": "pageprops",
+      "source_file": "web/src/app/advisories/[id]/page.tsx",
+      "source_location": "L23"
+    },
+    {
       "id": "web_src_app_disasters_type_page_categorypageprops",
       "label": "CategoryPageProps",
       "_callable": true,
@@ -56,19 +69,6 @@
       "source_location": "L11"
     },
     {
-      "id": "web_src_components_icons_disaster_icons_disastericonprops",
-      "label": "DisasterIconProps",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "react",
-      "file_type": "code",
-      "norm_label": "disastericonprops",
-      "source_file": "web/src/components/icons/disaster-icons.tsx",
-      "source_location": "L4"
-    },
-    {
       "id": "web_src_components_json_ld_jsonldprops",
       "label": "JsonLdProps",
       "_callable": true,
@@ -108,6 +108,19 @@
       "source_location": "L11"
     },
     {
+      "id": "web_src_components_live_advisories_list_liveadvisorieslistprops",
+      "label": "LiveAdvisoriesListProps",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "ash-map.tsx",
+      "file_type": "code",
+      "norm_label": "liveadvisorieslistprops",
+      "source_file": "web/src/components/live-advisories-list.tsx",
+      "source_location": "L18"
+    },
+    {
       "id": "web_src_components_live_advisory_ticker_liveadvisorytickerprops",
       "label": "LiveAdvisoryTickerProps",
       "_callable": true,
@@ -119,6 +132,19 @@
       "norm_label": "liveadvisorytickerprops",
       "source_file": "web/src/components/live-advisory-ticker.tsx",
       "source_location": "L16"
+    },
+    {
+      "id": "web_src_components_location_alert_banner_locationalertbannerprops",
+      "label": "LocationAlertBannerProps",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "ash-map.tsx",
+      "file_type": "code",
+      "norm_label": "locationalertbannerprops",
+      "source_file": "web/src/components/location-alert-banner.tsx",
+      "source_location": "L31"
     },
     {
       "id": "web_src_components_map_ash_map_ashmapprops",
@@ -251,6 +277,19 @@
       "source_location": "L103"
     },
     {
+      "id": "web_src_lib_parser_vaa_parser_vaaparser",
+      "label": "vaaParser",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "ash-map.tsx",
+      "file_type": "code",
+      "norm_label": "vaaparser",
+      "source_file": "web/src/lib/parser/vaa-parser.ts",
+      "source_location": "L316"
+    },
+    {
       "id": "web_src_lib_types_ashpolygon",
       "label": "AshPolygon",
       "_callable": true,
@@ -342,30 +381,17 @@
       "source_location": "L31"
     },
     {
-      "id": "web_src_lib_air_quality_airqualityhistorypoint",
-      "label": "AirQualityHistoryPoint",
+      "id": "web_src_components_icons_disaster_icons_disastericonprops",
+      "label": "DisasterIconProps",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
       "community": 11,
       "community_name": "disaster-map.tsx",
       "file_type": "code",
-      "norm_label": "airqualityhistorypoint",
-      "source_file": "web/src/lib/air-quality.ts",
-      "source_location": "L6"
-    },
-    {
-      "id": "web_src_lib_air_quality_airqualityreading",
-      "label": "AirQualityReading",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "disaster-map.tsx",
-      "file_type": "code",
-      "norm_label": "airqualityreading",
-      "source_file": "web/src/lib/air-quality.ts",
-      "source_location": "L14"
+      "norm_label": "disastericonprops",
+      "source_file": "web/src/components/icons/disaster-icons.tsx",
+      "source_location": "L4"
     },
     {
       "id": "web_src_lib_disasters_types_disastertype",
@@ -459,43 +485,30 @@
       "source_location": "L8"
     },
     {
-      "id": "web_src_lib_parser_vaa_parser_vaaparser",
-      "label": "vaaParser",
+      "id": "web_src_lib_air_quality_airqualityhistorypoint",
+      "label": "AirQualityHistoryPoint",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 2,
-      "community_name": "test-runner.ts",
+      "community": 5,
+      "community_name": "air-quality/route.ts",
       "file_type": "code",
-      "norm_label": "vaaparser",
-      "source_file": "web/src/lib/parser/vaa-parser.ts",
-      "source_location": "L316"
+      "norm_label": "airqualityhistorypoint",
+      "source_file": "web/src/lib/air-quality.ts",
+      "source_location": "L6"
     },
     {
-      "id": "web_src_app_advisories_id_page_pageprops",
-      "label": "PageProps",
+      "id": "web_src_lib_air_quality_airqualityreading",
+      "label": "AirQualityReading",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 7,
-      "community_name": "[id]/page.tsx",
+      "community": 5,
+      "community_name": "air-quality/route.ts",
       "file_type": "code",
-      "norm_label": "pageprops",
-      "source_file": "web/src/app/advisories/[id]/page.tsx",
-      "source_location": "L23"
-    },
-    {
-      "id": "web_src_components_live_advisories_list_liveadvisorieslistprops",
-      "label": "LiveAdvisoriesListProps",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "[id]/page.tsx",
-      "file_type": "code",
-      "norm_label": "liveadvisorieslistprops",
-      "source_file": "web/src/components/live-advisories-list.tsx",
-      "source_location": "L18"
+      "norm_label": "airqualityreading",
+      "source_file": "web/src/lib/air-quality.ts",
+      "source_location": "L14"
     },
     {
       "id": "web_src_components_home_tactical_radar_hud_tacticalradarhudprops",
@@ -509,19 +522,6 @@
       "norm_label": "tacticalradarhudprops",
       "source_file": "web/src/components/home/tactical-radar-hud.tsx",
       "source_location": "L6"
-    },
-    {
-      "id": "web_src_components_location_alert_banner_locationalertbannerprops",
-      "label": "LocationAlertBannerProps",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "disasters/types.ts",
-      "file_type": "code",
-      "norm_label": "locationalertbannerprops",
-      "source_file": "web/src/components/location-alert-banner.tsx",
-      "source_location": "L31"
     },
     {
       "id": "web_src_components_map_disaster_map_disastermapprops",
@@ -576,32 +576,6 @@
       "source_location": "L18"
     },
     {
-      "id": "web_src_lib_disasters_bmkg_weather_adapter_bmkggempaitem",
-      "label": "BmkgGempaItem",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "disasters/types.ts",
-      "file_type": "code",
-      "norm_label": "bmkggempaitem",
-      "source_file": "web/src/lib/disasters/bmkg-weather-adapter.ts",
-      "source_location": "L19"
-    },
-    {
-      "id": "web_src_lib_disasters_bmkg_weather_adapter_bmkgresponse",
-      "label": "BmkgResponse",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "disasters/types.ts",
-      "file_type": "code",
-      "norm_label": "bmkgresponse",
-      "source_file": "web/src/lib/disasters/bmkg-weather-adapter.ts",
-      "source_location": "L34"
-    },
-    {
       "id": "web_src_lib_disasters_bnpb_adapter_bnpbattributes",
       "label": "BnpbAttributes",
       "_callable": true,
@@ -641,19 +615,6 @@
       "source_location": "L87"
     },
     {
-      "id": "web_src_lib_disasters_firms_adapter_cachedfirmsresult",
-      "label": "CachedFirmsResult",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "disasters/types.ts",
-      "file_type": "code",
-      "norm_label": "cachedfirmsresult",
-      "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L113"
-    },
-    {
       "id": "web_src_lib_disasters_firms_adapter_firmshotspot",
       "label": "FirmsHotspot",
       "_callable": true,
@@ -664,7 +625,7 @@
       "file_type": "code",
       "norm_label": "firmshotspot",
       "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L22"
+      "source_location": "L15"
     },
     {
       "id": "web_src_lib_disasters_types_aggregateddisastersresponse",
@@ -781,6 +742,42 @@
       "norm_label": "aboutpage()",
       "source_file": "web/src/app/about/page.tsx",
       "source_location": "L25"
+    },
+    {
+      "id": "web_src_app_advisories_id_page_advisorydetailpage",
+      "label": "AdvisoryDetailPage()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "react",
+      "file_type": "code",
+      "norm_label": "advisorydetailpage()",
+      "source_file": "web/src/app/advisories/[id]/page.tsx",
+      "source_location": "L68"
+    },
+    {
+      "id": "web_src_app_advisories_id_page_generatemetadata",
+      "label": "generateMetadata()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "react",
+      "file_type": "code",
+      "norm_label": "generatemetadata()",
+      "source_file": "web/src/app/advisories/[id]/page.tsx",
+      "source_location": "L27"
+    },
+    {
+      "id": "web_src_app_advisories_page_advisoriespage",
+      "label": "AdvisoriesPage()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "react",
+      "file_type": "code",
+      "norm_label": "advisoriespage()",
+      "source_file": "web/src/app/advisories/page.tsx",
+      "source_location": "L43"
     },
     {
       "id": "web_src_app_data_sources_page_datasourcespage",
@@ -939,6 +936,54 @@
       "source_location": "L44"
     },
     {
+      "id": "web_src_app_sitemap_sitemap",
+      "label": "sitemap()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "react",
+      "file_type": "code",
+      "norm_label": "sitemap()",
+      "source_file": "web/src/app/sitemap.ts",
+      "source_location": "L7"
+    },
+    {
+      "id": "web_src_app_volcanoes_page_volcanoespage",
+      "label": "VolcanoesPage()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "react",
+      "file_type": "code",
+      "norm_label": "volcanoespage()",
+      "source_file": "web/src/app/volcanoes/page.tsx",
+      "source_location": "L54"
+    },
+    {
+      "id": "web_src_app_volcanoes_slug_page_generatemetadata",
+      "label": "generateMetadata()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "react",
+      "file_type": "code",
+      "norm_label": "generatemetadata()",
+      "source_file": "web/src/app/volcanoes/[slug]/page.tsx",
+      "source_location": "L29"
+    },
+    {
+      "id": "web_src_app_volcanoes_slug_page_volcanodetailpage",
+      "label": "VolcanoDetailPage()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "react",
+      "file_type": "code",
+      "norm_label": "volcanodetailpage()",
+      "source_file": "web/src/app/volcanoes/[slug]/page.tsx",
+      "source_location": "L73"
+    },
+    {
       "id": "web_src_components_breadcrumbs_breadcrumbs",
       "label": "Breadcrumbs()",
       "_callable": true,
@@ -961,54 +1006,6 @@
       "norm_label": "footer()",
       "source_file": "web/src/components/footer.tsx",
       "source_location": "L36"
-    },
-    {
-      "id": "web_src_components_icons_disaster_icons_createdisastermarkerhtml",
-      "label": "createDisasterMarkerHtml()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "react",
-      "file_type": "code",
-      "norm_label": "createdisastermarkerhtml()",
-      "source_file": "web/src/components/icons/disaster-icons.tsx",
-      "source_location": "L129"
-    },
-    {
-      "id": "web_src_components_icons_disaster_icons_disastericon",
-      "label": "DisasterIcon()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "react",
-      "file_type": "code",
-      "norm_label": "disastericon()",
-      "source_file": "web/src/components/icons/disaster-icons.tsx",
-      "source_location": "L179"
-    },
-    {
-      "id": "web_src_components_icons_disaster_icons_getdisastersvginner",
-      "label": "getDisasterSvgInner()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "react",
-      "file_type": "code",
-      "norm_label": "getdisastersvginner()",
-      "source_file": "web/src/components/icons/disaster-icons.tsx",
-      "source_location": "L15"
-    },
-    {
-      "id": "web_src_components_icons_disaster_icons_getdisastersvgstring",
-      "label": "getDisasterSvgString()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "react",
-      "file_type": "code",
-      "norm_label": "getdisastersvgstring()",
-      "source_file": "web/src/components/icons/disaster-icons.tsx",
-      "source_location": "L113"
     },
     {
       "id": "web_src_components_json_ld_getbreadcrumbjsonld",
@@ -1059,6 +1056,30 @@
       "source_location": "L8"
     },
     {
+      "id": "web_src_components_live_advisories_list_getrelativetime",
+      "label": "getRelativeTime()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "react",
+      "file_type": "code",
+      "norm_label": "getrelativetime()",
+      "source_file": "web/src/components/live-advisories-list.tsx",
+      "source_location": "L23"
+    },
+    {
+      "id": "web_src_components_live_advisories_list_liveadvisorieslist",
+      "label": "LiveAdvisoriesList()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "react",
+      "file_type": "code",
+      "norm_label": "liveadvisorieslist()",
+      "source_file": "web/src/components/live-advisories-list.tsx",
+      "source_location": "L35"
+    },
+    {
       "id": "web_src_components_navbar_navbar",
       "label": "Navbar()",
       "_callable": true,
@@ -1083,16 +1104,64 @@
       "source_location": "L6"
     },
     {
-      "id": "web_src_app_sitemap_sitemap",
-      "label": "sitemap()",
+      "id": "web_src_lib_advisories_getdarwinadvisories",
+      "label": "getDarwinAdvisories()",
       "_callable": true,
       "_origin": "ast",
-      "community": 1,
-      "community_name": "ash-map.tsx",
+      "community": 0,
+      "community_name": "react",
       "file_type": "code",
-      "norm_label": "sitemap()",
-      "source_file": "web/src/app/sitemap.ts",
-      "source_location": "L7"
+      "norm_label": "getdarwinadvisories()",
+      "source_file": "web/src/lib/advisories.ts",
+      "source_location": "L20"
+    },
+    {
+      "id": "web_src_lib_aviation_format_formataltitudecompact",
+      "label": "formatAltitudeCompact()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "react",
+      "file_type": "code",
+      "norm_label": "formataltitudecompact()",
+      "source_file": "web/src/lib/aviation-format.ts",
+      "source_location": "L84"
+    },
+    {
+      "id": "web_src_lib_aviation_format_formatmovementhuman",
+      "label": "formatMovementHuman()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "react",
+      "file_type": "code",
+      "norm_label": "formatmovementhuman()",
+      "source_file": "web/src/lib/aviation-format.ts",
+      "source_location": "L58"
+    },
+    {
+      "id": "web_src_lib_parser_date_utils_formatutcdatetime",
+      "label": "formatUtcDateTime()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "react",
+      "file_type": "code",
+      "norm_label": "formatutcdatetime()",
+      "source_file": "web/src/lib/parser/date-utils.ts",
+      "source_location": "L81"
+    },
+    {
+      "id": "web_src_lib_parser_date_utils_formatwibdatetime",
+      "label": "formatWibDateTime()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "react",
+      "file_type": "code",
+      "norm_label": "formatwibdatetime()",
+      "source_file": "web/src/lib/parser/date-utils.ts",
+      "source_location": "L99"
     },
     {
       "id": "web_src_components_check_my_area_card_checkmyareacard",
@@ -1227,16 +1296,16 @@
       "source_location": "L51"
     },
     {
-      "id": "web_src_lib_disasters_pvmbg_adapter_getpvmbgvolcanoevents",
-      "label": "getPvmbgVolcanoEvents()",
+      "id": "web_src_lib_aviation_format_formatflightlevelhuman",
+      "label": "formatFlightLevelHuman()",
       "_callable": true,
       "_origin": "ast",
       "community": 1,
       "community_name": "ash-map.tsx",
       "file_type": "code",
-      "norm_label": "getpvmbgvolcanoevents()",
-      "source_file": "web/src/lib/disasters/pvmbg-adapter.ts",
-      "source_location": "L4"
+      "norm_label": "formatflightlevelhuman()",
+      "source_file": "web/src/lib/aviation-format.ts",
+      "source_location": "L30"
     },
     {
       "id": "web_src_lib_geo_checker_checklocationashstatus",
@@ -1285,18 +1354,6 @@
       "norm_label": "searchindonesiaplaces()",
       "source_file": "web/src/lib/indonesia-places.ts",
       "source_location": "L74"
-    },
-    {
-      "id": "web_src_lib_magma_status_getallmonitoredvolcanoes",
-      "label": "getAllMonitoredVolcanoes()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "ash-map.tsx",
-      "file_type": "code",
-      "norm_label": "getallmonitoredvolcanoes()",
-      "source_file": "web/src/lib/magma-status.ts",
-      "source_location": "L605"
     },
     {
       "id": "web_src_lib_magma_status_getmagmavolcanostatus",
@@ -1359,16 +1416,160 @@
       "source_location": "L52"
     },
     {
-      "id": "web_src_app_api_air_quality_route_get",
-      "label": "GET()",
+      "id": "web_src_lib_parser_coordinate_parser_parseaviationcomponent",
+      "label": "parseAviationComponent()",
       "_callable": true,
       "_origin": "ast",
-      "community": 11,
-      "community_name": "disaster-map.tsx",
+      "community": 1,
+      "community_name": "ash-map.tsx",
       "file_type": "code",
-      "norm_label": "get()",
-      "source_file": "web/src/app/api/air-quality/route.ts",
-      "source_location": "L17"
+      "norm_label": "parseaviationcomponent()",
+      "source_file": "web/src/lib/parser/coordinate-parser.ts",
+      "source_location": "L10"
+    },
+    {
+      "id": "web_src_lib_parser_coordinate_parser_parseaviationcoordinate",
+      "label": "parseAviationCoordinate()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "ash-map.tsx",
+      "file_type": "code",
+      "norm_label": "parseaviationcoordinate()",
+      "source_file": "web/src/lib/parser/coordinate-parser.ts",
+      "source_location": "L43"
+    },
+    {
+      "id": "web_src_lib_parser_coordinate_parser_parsepolygoncoordinates",
+      "label": "parsePolygonCoordinates()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "ash-map.tsx",
+      "file_type": "code",
+      "norm_label": "parsepolygoncoordinates()",
+      "source_file": "web/src/lib/parser/coordinate-parser.ts",
+      "source_location": "L60"
+    },
+    {
+      "id": "web_src_lib_parser_date_utils_parsedtg",
+      "label": "parseDtg()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "ash-map.tsx",
+      "file_type": "code",
+      "norm_label": "parsedtg()",
+      "source_file": "web/src/lib/parser/date-utils.ts",
+      "source_location": "L10"
+    },
+    {
+      "id": "web_src_lib_parser_date_utils_parseforecastdtg",
+      "label": "parseForecastDtg()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "ash-map.tsx",
+      "file_type": "code",
+      "norm_label": "parseforecastdtg()",
+      "source_file": "web/src/lib/parser/date-utils.ts",
+      "source_location": "L49"
+    },
+    {
+      "id": "web_src_lib_parser_vaa_parser_vaaparser_deduplicatebyvolcano",
+      "label": ".deduplicateByVolcano()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "ash-map.tsx",
+      "file_type": "code",
+      "norm_label": ".deduplicatebyvolcano()",
+      "source_file": "web/src/lib/parser/vaa-parser.ts",
+      "source_location": "L35"
+    },
+    {
+      "id": "web_src_lib_parser_vaa_parser_vaaparser_extractfield",
+      "label": ".extractField()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "ash-map.tsx",
+      "file_type": "code",
+      "norm_label": ".extractfield()",
+      "source_file": "web/src/lib/parser/vaa-parser.ts",
+      "source_location": "L199"
+    },
+    {
+      "id": "web_src_lib_parser_vaa_parser_vaaparser_extractsection",
+      "label": ".extractSection()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "ash-map.tsx",
+      "file_type": "code",
+      "norm_label": ".extractsection()",
+      "source_file": "web/src/lib/parser/vaa-parser.ts",
+      "source_location": "L216"
+    },
+    {
+      "id": "web_src_lib_parser_vaa_parser_vaaparser_normalizeblock",
+      "label": ".normalizeBlock()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "ash-map.tsx",
+      "file_type": "code",
+      "norm_label": ".normalizeblock()",
+      "source_file": "web/src/lib/parser/vaa-parser.ts",
+      "source_location": "L172"
+    },
+    {
+      "id": "web_src_lib_parser_vaa_parser_vaaparser_parse",
+      "label": ".parse()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "ash-map.tsx",
+      "file_type": "code",
+      "norm_label": ".parse()",
+      "source_file": "web/src/lib/parser/vaa-parser.ts",
+      "source_location": "L10"
+    },
+    {
+      "id": "web_src_lib_parser_vaa_parser_vaaparser_parseadvisoryblock",
+      "label": ".parseAdvisoryBlock()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "ash-map.tsx",
+      "file_type": "code",
+      "norm_label": ".parseadvisoryblock()",
+      "source_file": "web/src/lib/parser/vaa-parser.ts",
+      "source_location": "L70"
+    },
+    {
+      "id": "web_src_lib_parser_vaa_parser_vaaparser_parsepolygonsection",
+      "label": ".parsePolygonSection()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "ash-map.tsx",
+      "file_type": "code",
+      "norm_label": ".parsepolygonsection()",
+      "source_file": "web/src/lib/parser/vaa-parser.ts",
+      "source_location": "L231"
+    },
+    {
+      "id": "web_src_lib_parser_vaa_parser_vaaparser_splitadvisoryblocks",
+      "label": ".splitAdvisoryBlocks()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "ash-map.tsx",
+      "file_type": "code",
+      "norm_label": ".splitadvisoryblocks()",
+      "source_file": "web/src/lib/parser/vaa-parser.ts",
+      "source_location": "L53"
     },
     {
       "id": "web_src_components_air_quality_card_airqualitycard",
@@ -1381,6 +1582,54 @@
       "norm_label": "airqualitycard()",
       "source_file": "web/src/components/air-quality-card.tsx",
       "source_location": "L38"
+    },
+    {
+      "id": "web_src_components_icons_disaster_icons_createdisastermarkerhtml",
+      "label": "createDisasterMarkerHtml()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "disaster-map.tsx",
+      "file_type": "code",
+      "norm_label": "createdisastermarkerhtml()",
+      "source_file": "web/src/components/icons/disaster-icons.tsx",
+      "source_location": "L129"
+    },
+    {
+      "id": "web_src_components_icons_disaster_icons_disastericon",
+      "label": "DisasterIcon()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "disaster-map.tsx",
+      "file_type": "code",
+      "norm_label": "disastericon()",
+      "source_file": "web/src/components/icons/disaster-icons.tsx",
+      "source_location": "L179"
+    },
+    {
+      "id": "web_src_components_icons_disaster_icons_getdisastersvginner",
+      "label": "getDisasterSvgInner()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "disaster-map.tsx",
+      "file_type": "code",
+      "norm_label": "getdisastersvginner()",
+      "source_file": "web/src/components/icons/disaster-icons.tsx",
+      "source_location": "L15"
+    },
+    {
+      "id": "web_src_components_icons_disaster_icons_getdisastersvgstring",
+      "label": "getDisasterSvgString()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "disaster-map.tsx",
+      "file_type": "code",
+      "norm_label": "getdisastersvgstring()",
+      "source_file": "web/src/components/icons/disaster-icons.tsx",
+      "source_location": "L113"
     },
     {
       "id": "web_src_components_location_alert_banner_locationalertbanner",
@@ -1443,18 +1692,6 @@
       "source_location": "L59"
     },
     {
-      "id": "web_src_lib_air_quality_calculateispufrompm25",
-      "label": "calculateIspuFromPm25()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "disaster-map.tsx",
-      "file_type": "code",
-      "norm_label": "calculateispufrompm25()",
-      "source_file": "web/src/lib/air-quality.ts",
-      "source_location": "L34"
-    },
-    {
       "id": "web_src_lib_air_quality_dispatchairqualitynotification",
       "label": "dispatchAirQualityNotification()",
       "_callable": true,
@@ -1465,18 +1702,6 @@
       "norm_label": "dispatchairqualitynotification()",
       "source_file": "web/src/lib/air-quality.ts",
       "source_location": "L118"
-    },
-    {
-      "id": "web_src_lib_air_quality_getispucategory",
-      "label": "getIspuCategory()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "disaster-map.tsx",
-      "file_type": "code",
-      "norm_label": "getispucategory()",
-      "source_file": "web/src/lib/air-quality.ts",
-      "source_location": "L56"
     },
     {
       "id": "web_src_lib_air_quality_isairqualityunhealthy",
@@ -1513,6 +1738,18 @@
       "norm_label": "ispointinpolygon()",
       "source_file": "web/src/lib/geo-checker.ts",
       "source_location": "L27"
+    },
+    {
+      "id": "web_src_lib_magma_status_getallmonitoredvolcanoes",
+      "label": "getAllMonitoredVolcanoes()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "disaster-map.tsx",
+      "file_type": "code",
+      "norm_label": "getallmonitoredvolcanoes()",
+      "source_file": "web/src/lib/magma-status.ts",
+      "source_location": "L605"
     },
     {
       "id": "web_src_lib_safety_guides_getsafetyguide",
@@ -1623,76 +1860,16 @@
       "source_location": "L11"
     },
     {
-      "id": "web_src_lib_parser_coordinate_parser_parseaviationcomponent",
-      "label": "parseAviationComponent()",
+      "id": "web_src_app_api_advisories_route_get",
+      "label": "GET()",
       "_callable": true,
       "_origin": "ast",
       "community": 2,
       "community_name": "test-runner.ts",
       "file_type": "code",
-      "norm_label": "parseaviationcomponent()",
-      "source_file": "web/src/lib/parser/coordinate-parser.ts",
-      "source_location": "L10"
-    },
-    {
-      "id": "web_src_lib_parser_coordinate_parser_parseaviationcoordinate",
-      "label": "parseAviationCoordinate()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "test-runner.ts",
-      "file_type": "code",
-      "norm_label": "parseaviationcoordinate()",
-      "source_file": "web/src/lib/parser/coordinate-parser.ts",
-      "source_location": "L43"
-    },
-    {
-      "id": "web_src_lib_parser_coordinate_parser_parsepolygoncoordinates",
-      "label": "parsePolygonCoordinates()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "test-runner.ts",
-      "file_type": "code",
-      "norm_label": "parsepolygoncoordinates()",
-      "source_file": "web/src/lib/parser/coordinate-parser.ts",
-      "source_location": "L60"
-    },
-    {
-      "id": "web_src_lib_parser_date_utils_formatutcdatetime",
-      "label": "formatUtcDateTime()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "test-runner.ts",
-      "file_type": "code",
-      "norm_label": "formatutcdatetime()",
-      "source_file": "web/src/lib/parser/date-utils.ts",
-      "source_location": "L81"
-    },
-    {
-      "id": "web_src_lib_parser_date_utils_parsedtg",
-      "label": "parseDtg()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "test-runner.ts",
-      "file_type": "code",
-      "norm_label": "parsedtg()",
-      "source_file": "web/src/lib/parser/date-utils.ts",
-      "source_location": "L10"
-    },
-    {
-      "id": "web_src_lib_parser_date_utils_parseforecastdtg",
-      "label": "parseForecastDtg()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "test-runner.ts",
-      "file_type": "code",
-      "norm_label": "parseforecastdtg()",
-      "source_file": "web/src/lib/parser/date-utils.ts",
-      "source_location": "L49"
+      "norm_label": "get()",
+      "source_file": "web/src/app/api/advisories/route.ts",
+      "source_location": "L6"
     },
     {
       "id": "web_src_lib_parser_html_extractor_decodehtmlentities",
@@ -1731,268 +1908,40 @@
       "source_location": "L6"
     },
     {
-      "id": "web_src_lib_parser_vaa_parser_vaaparser_deduplicatebyvolcano",
-      "label": ".deduplicateByVolcano()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "test-runner.ts",
-      "file_type": "code",
-      "norm_label": ".deduplicatebyvolcano()",
-      "source_file": "web/src/lib/parser/vaa-parser.ts",
-      "source_location": "L35"
-    },
-    {
-      "id": "web_src_lib_parser_vaa_parser_vaaparser_extractfield",
-      "label": ".extractField()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "test-runner.ts",
-      "file_type": "code",
-      "norm_label": ".extractfield()",
-      "source_file": "web/src/lib/parser/vaa-parser.ts",
-      "source_location": "L199"
-    },
-    {
-      "id": "web_src_lib_parser_vaa_parser_vaaparser_extractsection",
-      "label": ".extractSection()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "test-runner.ts",
-      "file_type": "code",
-      "norm_label": ".extractsection()",
-      "source_file": "web/src/lib/parser/vaa-parser.ts",
-      "source_location": "L216"
-    },
-    {
-      "id": "web_src_lib_parser_vaa_parser_vaaparser_normalizeblock",
-      "label": ".normalizeBlock()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "test-runner.ts",
-      "file_type": "code",
-      "norm_label": ".normalizeblock()",
-      "source_file": "web/src/lib/parser/vaa-parser.ts",
-      "source_location": "L172"
-    },
-    {
-      "id": "web_src_lib_parser_vaa_parser_vaaparser_parse",
-      "label": ".parse()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "test-runner.ts",
-      "file_type": "code",
-      "norm_label": ".parse()",
-      "source_file": "web/src/lib/parser/vaa-parser.ts",
-      "source_location": "L10"
-    },
-    {
-      "id": "web_src_lib_parser_vaa_parser_vaaparser_parseadvisoryblock",
-      "label": ".parseAdvisoryBlock()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "test-runner.ts",
-      "file_type": "code",
-      "norm_label": ".parseadvisoryblock()",
-      "source_file": "web/src/lib/parser/vaa-parser.ts",
-      "source_location": "L70"
-    },
-    {
-      "id": "web_src_lib_parser_vaa_parser_vaaparser_parsepolygonsection",
-      "label": ".parsePolygonSection()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "test-runner.ts",
-      "file_type": "code",
-      "norm_label": ".parsepolygonsection()",
-      "source_file": "web/src/lib/parser/vaa-parser.ts",
-      "source_location": "L231"
-    },
-    {
-      "id": "web_src_lib_parser_vaa_parser_vaaparser_splitadvisoryblocks",
-      "label": ".splitAdvisoryBlocks()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "test-runner.ts",
-      "file_type": "code",
-      "norm_label": ".splitadvisoryblocks()",
-      "source_file": "web/src/lib/parser/vaa-parser.ts",
-      "source_location": "L53"
-    },
-    {
-      "id": "web_src_app_advisories_id_page_advisorydetailpage",
-      "label": "AdvisoryDetailPage()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "[id]/page.tsx",
-      "file_type": "code",
-      "norm_label": "advisorydetailpage()",
-      "source_file": "web/src/app/advisories/[id]/page.tsx",
-      "source_location": "L68"
-    },
-    {
-      "id": "web_src_app_advisories_id_page_generatemetadata",
-      "label": "generateMetadata()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "[id]/page.tsx",
-      "file_type": "code",
-      "norm_label": "generatemetadata()",
-      "source_file": "web/src/app/advisories/[id]/page.tsx",
-      "source_location": "L27"
-    },
-    {
-      "id": "web_src_app_advisories_page_advisoriespage",
-      "label": "AdvisoriesPage()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "[id]/page.tsx",
-      "file_type": "code",
-      "norm_label": "advisoriespage()",
-      "source_file": "web/src/app/advisories/page.tsx",
-      "source_location": "L43"
-    },
-    {
-      "id": "web_src_app_api_advisories_route_get",
+      "id": "web_src_app_api_air_quality_route_get",
       "label": "GET()",
       "_callable": true,
       "_origin": "ast",
-      "community": 7,
-      "community_name": "[id]/page.tsx",
+      "community": 5,
+      "community_name": "air-quality/route.ts",
       "file_type": "code",
       "norm_label": "get()",
-      "source_file": "web/src/app/api/advisories/route.ts",
-      "source_location": "L6"
+      "source_file": "web/src/app/api/air-quality/route.ts",
+      "source_location": "L17"
     },
     {
-      "id": "web_src_app_volcanoes_page_volcanoespage",
-      "label": "VolcanoesPage()",
+      "id": "web_src_lib_air_quality_calculateispufrompm25",
+      "label": "calculateIspuFromPm25()",
       "_callable": true,
       "_origin": "ast",
-      "community": 7,
-      "community_name": "[id]/page.tsx",
+      "community": 5,
+      "community_name": "air-quality/route.ts",
       "file_type": "code",
-      "norm_label": "volcanoespage()",
-      "source_file": "web/src/app/volcanoes/page.tsx",
-      "source_location": "L54"
+      "norm_label": "calculateispufrompm25()",
+      "source_file": "web/src/lib/air-quality.ts",
+      "source_location": "L34"
     },
     {
-      "id": "web_src_app_volcanoes_slug_page_generatemetadata",
-      "label": "generateMetadata()",
+      "id": "web_src_lib_air_quality_getispucategory",
+      "label": "getIspuCategory()",
       "_callable": true,
       "_origin": "ast",
-      "community": 7,
-      "community_name": "[id]/page.tsx",
+      "community": 5,
+      "community_name": "air-quality/route.ts",
       "file_type": "code",
-      "norm_label": "generatemetadata()",
-      "source_file": "web/src/app/volcanoes/[slug]/page.tsx",
-      "source_location": "L29"
-    },
-    {
-      "id": "web_src_app_volcanoes_slug_page_volcanodetailpage",
-      "label": "VolcanoDetailPage()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "[id]/page.tsx",
-      "file_type": "code",
-      "norm_label": "volcanodetailpage()",
-      "source_file": "web/src/app/volcanoes/[slug]/page.tsx",
-      "source_location": "L73"
-    },
-    {
-      "id": "web_src_components_live_advisories_list_getrelativetime",
-      "label": "getRelativeTime()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "[id]/page.tsx",
-      "file_type": "code",
-      "norm_label": "getrelativetime()",
-      "source_file": "web/src/components/live-advisories-list.tsx",
-      "source_location": "L23"
-    },
-    {
-      "id": "web_src_components_live_advisories_list_liveadvisorieslist",
-      "label": "LiveAdvisoriesList()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "[id]/page.tsx",
-      "file_type": "code",
-      "norm_label": "liveadvisorieslist()",
-      "source_file": "web/src/components/live-advisories-list.tsx",
-      "source_location": "L35"
-    },
-    {
-      "id": "web_src_lib_advisories_getdarwinadvisories",
-      "label": "getDarwinAdvisories()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "[id]/page.tsx",
-      "file_type": "code",
-      "norm_label": "getdarwinadvisories()",
-      "source_file": "web/src/lib/advisories.ts",
-      "source_location": "L20"
-    },
-    {
-      "id": "web_src_lib_aviation_format_formataltitudecompact",
-      "label": "formatAltitudeCompact()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "[id]/page.tsx",
-      "file_type": "code",
-      "norm_label": "formataltitudecompact()",
-      "source_file": "web/src/lib/aviation-format.ts",
-      "source_location": "L84"
-    },
-    {
-      "id": "web_src_lib_aviation_format_formatflightlevelhuman",
-      "label": "formatFlightLevelHuman()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "[id]/page.tsx",
-      "file_type": "code",
-      "norm_label": "formatflightlevelhuman()",
-      "source_file": "web/src/lib/aviation-format.ts",
-      "source_location": "L30"
-    },
-    {
-      "id": "web_src_lib_aviation_format_formatmovementhuman",
-      "label": "formatMovementHuman()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "[id]/page.tsx",
-      "file_type": "code",
-      "norm_label": "formatmovementhuman()",
-      "source_file": "web/src/lib/aviation-format.ts",
-      "source_location": "L58"
-    },
-    {
-      "id": "web_src_lib_parser_date_utils_formatwibdatetime",
-      "label": "formatWibDateTime()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "[id]/page.tsx",
-      "file_type": "code",
-      "norm_label": "formatwibdatetime()",
-      "source_file": "web/src/lib/parser/date-utils.ts",
-      "source_location": "L99"
+      "norm_label": "getispucategory()",
+      "source_file": "web/src/lib/air-quality.ts",
+      "source_location": "L56"
     },
     {
       "id": "web_src_app_api_disasters_route_get",
@@ -2076,7 +2025,7 @@
       "file_type": "code",
       "norm_label": "getaggregateddisasters()",
       "source_file": "web/src/lib/disasters/aggregator.ts",
-      "source_location": "L129"
+      "source_location": "L127"
     },
     {
       "id": "web_src_lib_disasters_ashwatch_adapter_getashwatchadvisoryevents",
@@ -2101,30 +2050,6 @@
       "norm_label": "fetchbmkgearthquakes()",
       "source_file": "web/src/lib/disasters/bmkg-adapter.ts",
       "source_location": "L108"
-    },
-    {
-      "id": "web_src_lib_disasters_bmkg_weather_adapter_fetchbmkgtsunamievents",
-      "label": "fetchBmkgTsunamiEvents()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "disasters/types.ts",
-      "file_type": "code",
-      "norm_label": "fetchbmkgtsunamievents()",
-      "source_file": "web/src/lib/disasters/bmkg-weather-adapter.ts",
-      "source_location": "L44"
-    },
-    {
-      "id": "web_src_lib_disasters_bmkg_weather_adapter_fetchcoastalhazardevents",
-      "label": "fetchCoastalHazardEvents()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "disasters/types.ts",
-      "file_type": "code",
-      "norm_label": "fetchcoastalhazardevents()",
-      "source_file": "web/src/lib/disasters/bmkg-weather-adapter.ts",
-      "source_location": "L176"
     },
     {
       "id": "web_src_lib_disasters_bnpb_adapter_estimateseverity",
@@ -2172,7 +2097,7 @@
       "file_type": "code",
       "norm_label": "clusterhotspots()",
       "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L75"
+      "source_location": "L74"
     },
     {
       "id": "web_src_lib_disasters_firms_adapter_fetchfirmshotspots",
@@ -2184,19 +2109,7 @@
       "file_type": "code",
       "norm_label": "fetchfirmshotspots()",
       "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L122"
-    },
-    {
-      "id": "web_src_lib_disasters_firms_adapter_getfirmsurl",
-      "label": "getFirmsUrl()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "disasters/types.ts",
-      "file_type": "code",
-      "norm_label": "getfirmsurl()",
-      "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L13"
+      "source_location": "L110"
     },
     {
       "id": "web_src_lib_disasters_firms_adapter_guessprovince",
@@ -2208,7 +2121,19 @@
       "file_type": "code",
       "norm_label": "guessprovince()",
       "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L99"
+      "source_location": "L98"
+    },
+    {
+      "id": "web_src_lib_disasters_firms_adapter_hotspotseverity",
+      "label": "hotspotSeverity()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "disasters/types.ts",
+      "file_type": "code",
+      "norm_label": "hotspotseverity()",
+      "source_file": "web/src/lib/disasters/firms-adapter.ts",
+      "source_location": "L66"
     },
     {
       "id": "web_src_lib_disasters_firms_adapter_parsecsvline",
@@ -2220,7 +2145,19 @@
       "file_type": "code",
       "norm_label": "parsecsvline()",
       "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L39"
+      "source_location": "L32"
+    },
+    {
+      "id": "web_src_lib_disasters_pvmbg_adapter_getpvmbgvolcanoevents",
+      "label": "getPvmbgVolcanoEvents()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "disasters/types.ts",
+      "file_type": "code",
+      "norm_label": "getpvmbgvolcanoevents()",
+      "source_file": "web/src/lib/disasters/pvmbg-adapter.ts",
+      "source_location": "L4"
     },
     {
       "id": "web_next_config",
@@ -2265,6 +2202,17 @@
       "norm_label": "metadata",
       "source_file": "web/src/app/about/page.tsx",
       "source_location": "L8"
+    },
+    {
+      "id": "web_src_app_advisories_id_page",
+      "label": "[id]/page.tsx",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "react",
+      "file_type": "code",
+      "norm_label": "[id]/page.tsx",
+      "source_file": "web/src/app/advisories/[id]/page.tsx",
+      "source_location": "L1"
     },
     {
       "id": "web_src_app_advisories_page",
@@ -2454,39 +2402,6 @@
       "source_location": "L1"
     },
     {
-      "id": "web_src_app_map_page",
-      "label": "map/page.tsx",
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "react",
-      "file_type": "code",
-      "norm_label": "map/page.tsx",
-      "source_file": "web/src/app/map/page.tsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "web_src_app_map_page_metadata",
-      "label": "metadata",
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "react",
-      "file_type": "code",
-      "norm_label": "metadata",
-      "source_file": "web/src/app/map/page.tsx",
-      "source_location": "L11"
-    },
-    {
-      "id": "web_src_app_map_page_revalidate",
-      "label": "revalidate",
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "react",
-      "file_type": "code",
-      "norm_label": "revalidate",
-      "source_file": "web/src/app/map/page.tsx",
-      "source_location": "L9"
-    },
-    {
       "id": "web_src_app_not_found",
       "label": "not-found.tsx",
       "_origin": "ast",
@@ -2586,6 +2501,39 @@
       "source_location": "L1"
     },
     {
+      "id": "web_src_app_volcanoes_page",
+      "label": "volcanoes/page.tsx",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "react",
+      "file_type": "code",
+      "norm_label": "volcanoes/page.tsx",
+      "source_file": "web/src/app/volcanoes/page.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "web_src_app_volcanoes_page_metadata",
+      "label": "metadata",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "react",
+      "file_type": "code",
+      "norm_label": "metadata",
+      "source_file": "web/src/app/volcanoes/page.tsx",
+      "source_location": "L13"
+    },
+    {
+      "id": "web_src_app_volcanoes_page_revalidate",
+      "label": "revalidate",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "react",
+      "file_type": "code",
+      "norm_label": "revalidate",
+      "source_file": "web/src/app/volcanoes/page.tsx",
+      "source_location": "L11"
+    },
+    {
       "id": "web_src_app_volcanoes_slug_page",
       "label": "[slug]/page.tsx",
       "_origin": "ast",
@@ -2663,17 +2611,6 @@
       "source_location": "L18"
     },
     {
-      "id": "web_src_components_icons_disaster_icons",
-      "label": "disaster-icons.tsx",
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "react",
-      "file_type": "code",
-      "norm_label": "disaster-icons.tsx",
-      "source_file": "web/src/components/icons/disaster-icons.tsx",
-      "source_location": "L1"
-    },
-    {
       "id": "web_src_components_json_ld",
       "label": "json-ld.tsx",
       "_origin": "ast",
@@ -2682,6 +2619,17 @@
       "file_type": "code",
       "norm_label": "json-ld.tsx",
       "source_file": "web/src/components/json-ld.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "web_src_components_live_advisories_list",
+      "label": "live-advisories-list.tsx",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "react",
+      "file_type": "code",
+      "norm_label": "live-advisories-list.tsx",
+      "source_file": "web/src/components/live-advisories-list.tsx",
       "source_location": "L1"
     },
     {
@@ -2751,6 +2699,28 @@
       "source_location": "L18"
     },
     {
+      "id": "web_src_lib_aviation_format",
+      "label": "aviation-format.ts",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "react",
+      "file_type": "code",
+      "norm_label": "aviation-format.ts",
+      "source_file": "web/src/lib/aviation-format.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "web_src_lib_aviation_format_direction_names",
+      "label": "DIRECTION_NAMES",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "react",
+      "file_type": "code",
+      "norm_label": "direction_names",
+      "source_file": "web/src/lib/aviation-format.ts",
+      "source_location": "L7"
+    },
+    {
       "id": "web_src_lib_disasters_aggregator_disaster_categories",
       "label": "DISASTER_CATEGORIES",
       "_origin": "ast",
@@ -2759,7 +2729,18 @@
       "file_type": "code",
       "norm_label": "disaster_categories",
       "source_file": "web/src/lib/disasters/aggregator.ts",
-      "source_location": "L16"
+      "source_location": "L14"
+    },
+    {
+      "id": "web_src_lib_parser_date_utils",
+      "label": "date-utils.ts",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "react",
+      "file_type": "code",
+      "norm_label": "date-utils.ts",
+      "source_file": "web/src/lib/parser/date-utils.ts",
+      "source_location": "L1"
     },
     {
       "id": "ref_lucide_react",
@@ -2847,17 +2828,6 @@
       "file_type": "code",
       "norm_label": "ash-map.tsx",
       "source_file": "web/src/components/map/ash-map.tsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "web_src_lib_disasters_pvmbg_adapter",
-      "label": "pvmbg-adapter.ts",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "ash-map.tsx",
-      "file_type": "code",
-      "norm_label": "pvmbg-adapter.ts",
-      "source_file": "web/src/lib/disasters/pvmbg-adapter.ts",
       "source_location": "L1"
     },
     {
@@ -2958,6 +2928,28 @@
       "norm_label": "layer_colors",
       "source_file": "web/src/lib/palette.ts",
       "source_location": "L8"
+    },
+    {
+      "id": "web_src_lib_parser_coordinate_parser",
+      "label": "coordinate-parser.ts",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "ash-map.tsx",
+      "file_type": "code",
+      "norm_label": "coordinate-parser.ts",
+      "source_file": "web/src/lib/parser/coordinate-parser.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "web_src_lib_parser_vaa_parser",
+      "label": "vaa-parser.ts",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "ash-map.tsx",
+      "file_type": "code",
+      "norm_label": "vaa-parser.ts",
+      "source_file": "web/src/lib/parser/vaa-parser.ts",
+      "source_location": "L1"
     },
     {
       "id": "web_src_lib_types",
@@ -3162,50 +3154,6 @@
       "source_location": "L79"
     },
     {
-      "id": "web_src_app_api_air_quality_route",
-      "label": "air-quality/route.ts",
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "disaster-map.tsx",
-      "file_type": "code",
-      "norm_label": "air-quality/route.ts",
-      "source_file": "web/src/app/api/air-quality/route.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "web_src_app_api_air_quality_route_day_names",
-      "label": "DAY_NAMES",
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "disaster-map.tsx",
-      "file_type": "code",
-      "norm_label": "day_names",
-      "source_file": "web/src/app/api/air-quality/route.ts",
-      "source_location": "L15"
-    },
-    {
-      "id": "web_src_app_api_air_quality_route_month_names",
-      "label": "MONTH_NAMES",
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "disaster-map.tsx",
-      "file_type": "code",
-      "norm_label": "month_names",
-      "source_file": "web/src/app/api/air-quality/route.ts",
-      "source_location": "L11"
-    },
-    {
-      "id": "web_src_app_api_air_quality_route_revalidate",
-      "label": "revalidate",
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "disaster-map.tsx",
-      "file_type": "code",
-      "norm_label": "revalidate",
-      "source_file": "web/src/app/api/air-quality/route.ts",
-      "source_location": "L9"
-    },
-    {
       "id": "web_src_components_air_quality_card",
       "label": "air-quality-card.tsx",
       "_origin": "ast",
@@ -3214,6 +3162,17 @@
       "file_type": "code",
       "norm_label": "air-quality-card.tsx",
       "source_file": "web/src/components/air-quality-card.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "web_src_components_icons_disaster_icons",
+      "label": "disaster-icons.tsx",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "disaster-map.tsx",
+      "file_type": "code",
+      "norm_label": "disaster-icons.tsx",
+      "source_file": "web/src/components/icons/disaster-icons.tsx",
       "source_location": "L1"
     },
     {
@@ -3248,17 +3207,6 @@
       "norm_label": "disaster_visuals",
       "source_file": "web/src/components/map/disaster-map.tsx",
       "source_location": "L75"
-    },
-    {
-      "id": "web_src_lib_air_quality",
-      "label": "air-quality.ts",
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "disaster-map.tsx",
-      "file_type": "code",
-      "norm_label": "air-quality.ts",
-      "source_file": "web/src/lib/air-quality.ts",
-      "source_location": "L1"
     },
     {
       "id": "web_src_lib_safety_guides",
@@ -3797,6 +3745,28 @@
       "source_location": "L5"
     },
     {
+      "id": "web_src_app_api_advisories_route",
+      "label": "advisories/route.ts",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "test-runner.ts",
+      "file_type": "code",
+      "norm_label": "advisories/route.ts",
+      "source_file": "web/src/app/api/advisories/route.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "web_src_app_api_advisories_route_dynamic",
+      "label": "dynamic",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "test-runner.ts",
+      "file_type": "code",
+      "norm_label": "dynamic",
+      "source_file": "web/src/app/api/advisories/route.ts",
+      "source_location": "L4"
+    },
+    {
       "id": "web_src_lib_advisories",
       "label": "advisories.ts",
       "_origin": "ast",
@@ -3838,28 +3808,6 @@
       "file_type": "code",
       "norm_label": "single_advisory_fixture",
       "source_file": "web/src/lib/fixtures.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "web_src_lib_parser_coordinate_parser",
-      "label": "coordinate-parser.ts",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "test-runner.ts",
-      "file_type": "code",
-      "norm_label": "coordinate-parser.ts",
-      "source_file": "web/src/lib/parser/coordinate-parser.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "web_src_lib_parser_date_utils",
-      "label": "date-utils.ts",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "test-runner.ts",
-      "file_type": "code",
-      "norm_label": "date-utils.ts",
-      "source_file": "web/src/lib/parser/date-utils.ts",
       "source_location": "L1"
     },
     {
@@ -4092,17 +4040,6 @@
       "norm_label": "testpoly",
       "source_file": "web/src/lib/parser/test-runner.ts",
       "source_location": "L86"
-    },
-    {
-      "id": "web_src_lib_parser_vaa_parser",
-      "label": "vaa-parser.ts",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "test-runner.ts",
-      "file_type": "code",
-      "norm_label": "vaa-parser.ts",
-      "source_file": "web/src/lib/parser/vaa-parser.ts",
-      "source_location": "L1"
     },
     {
       "id": "claude_skills_graphify_references_transcribe",
@@ -5235,6 +5172,61 @@
       "source_location": "L29"
     },
     {
+      "id": "web_src_app_api_air_quality_route",
+      "label": "air-quality/route.ts",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "air-quality/route.ts",
+      "file_type": "code",
+      "norm_label": "air-quality/route.ts",
+      "source_file": "web/src/app/api/air-quality/route.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "web_src_app_api_air_quality_route_day_names",
+      "label": "DAY_NAMES",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "air-quality/route.ts",
+      "file_type": "code",
+      "norm_label": "day_names",
+      "source_file": "web/src/app/api/air-quality/route.ts",
+      "source_location": "L15"
+    },
+    {
+      "id": "web_src_app_api_air_quality_route_month_names",
+      "label": "MONTH_NAMES",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "air-quality/route.ts",
+      "file_type": "code",
+      "norm_label": "month_names",
+      "source_file": "web/src/app/api/air-quality/route.ts",
+      "source_location": "L11"
+    },
+    {
+      "id": "web_src_app_api_air_quality_route_revalidate",
+      "label": "revalidate",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "air-quality/route.ts",
+      "file_type": "code",
+      "norm_label": "revalidate",
+      "source_file": "web/src/app/api/air-quality/route.ts",
+      "source_location": "L9"
+    },
+    {
+      "id": "web_src_lib_air_quality",
+      "label": "air-quality.ts",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "air-quality/route.ts",
+      "file_type": "code",
+      "norm_label": "air-quality.ts",
+      "source_file": "web/src/lib/air-quality.ts",
+      "source_location": "L1"
+    },
+    {
       "id": "claude_skills_graphify_skill",
       "label": "SKILL.md",
       "_origin": "ast",
@@ -5563,105 +5555,6 @@
       "source_location": "L49"
     },
     {
-      "id": "web_src_app_advisories_id_page",
-      "label": "[id]/page.tsx",
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "[id]/page.tsx",
-      "file_type": "code",
-      "norm_label": "[id]/page.tsx",
-      "source_file": "web/src/app/advisories/[id]/page.tsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "web_src_app_api_advisories_route",
-      "label": "advisories/route.ts",
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "[id]/page.tsx",
-      "file_type": "code",
-      "norm_label": "advisories/route.ts",
-      "source_file": "web/src/app/api/advisories/route.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "web_src_app_api_advisories_route_dynamic",
-      "label": "dynamic",
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "[id]/page.tsx",
-      "file_type": "code",
-      "norm_label": "dynamic",
-      "source_file": "web/src/app/api/advisories/route.ts",
-      "source_location": "L4"
-    },
-    {
-      "id": "web_src_app_volcanoes_page",
-      "label": "volcanoes/page.tsx",
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "[id]/page.tsx",
-      "file_type": "code",
-      "norm_label": "volcanoes/page.tsx",
-      "source_file": "web/src/app/volcanoes/page.tsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "web_src_app_volcanoes_page_metadata",
-      "label": "metadata",
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "[id]/page.tsx",
-      "file_type": "code",
-      "norm_label": "metadata",
-      "source_file": "web/src/app/volcanoes/page.tsx",
-      "source_location": "L13"
-    },
-    {
-      "id": "web_src_app_volcanoes_page_revalidate",
-      "label": "revalidate",
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "[id]/page.tsx",
-      "file_type": "code",
-      "norm_label": "revalidate",
-      "source_file": "web/src/app/volcanoes/page.tsx",
-      "source_location": "L11"
-    },
-    {
-      "id": "web_src_components_live_advisories_list",
-      "label": "live-advisories-list.tsx",
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "[id]/page.tsx",
-      "file_type": "code",
-      "norm_label": "live-advisories-list.tsx",
-      "source_file": "web/src/components/live-advisories-list.tsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "web_src_lib_aviation_format",
-      "label": "aviation-format.ts",
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "[id]/page.tsx",
-      "file_type": "code",
-      "norm_label": "aviation-format.ts",
-      "source_file": "web/src/lib/aviation-format.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "web_src_lib_aviation_format_direction_names",
-      "label": "DIRECTION_NAMES",
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "[id]/page.tsx",
-      "file_type": "code",
-      "norm_label": "direction_names",
-      "source_file": "web/src/lib/aviation-format.ts",
-      "source_location": "L7"
-    },
-    {
       "id": "web_src_app_api_disasters_route",
       "label": "disasters/route.ts",
       "_origin": "ast",
@@ -5682,6 +5575,39 @@
       "norm_label": "dynamic",
       "source_file": "web/src/app/api/disasters/route.ts",
       "source_location": "L5"
+    },
+    {
+      "id": "web_src_app_map_page",
+      "label": "map/page.tsx",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "disasters/types.ts",
+      "file_type": "code",
+      "norm_label": "map/page.tsx",
+      "source_file": "web/src/app/map/page.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "web_src_app_map_page_metadata",
+      "label": "metadata",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "disasters/types.ts",
+      "file_type": "code",
+      "norm_label": "metadata",
+      "source_file": "web/src/app/map/page.tsx",
+      "source_location": "L11"
+    },
+    {
+      "id": "web_src_app_map_page_revalidate",
+      "label": "revalidate",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "disasters/types.ts",
+      "file_type": "code",
+      "norm_label": "revalidate",
+      "source_file": "web/src/app/map/page.tsx",
+      "source_location": "L9"
     },
     {
       "id": "web_src_components_home_tactical_radar_hud",
@@ -5761,17 +5687,6 @@
       "source_location": "L25"
     },
     {
-      "id": "web_src_lib_disasters_bmkg_weather_adapter",
-      "label": "bmkg-weather-adapter.ts",
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "disasters/types.ts",
-      "file_type": "code",
-      "norm_label": "bmkg-weather-adapter.ts",
-      "source_file": "web/src/lib/disasters/bmkg-weather-adapter.ts",
-      "source_location": "L1"
-    },
-    {
       "id": "web_src_lib_disasters_bnpb_adapter",
       "label": "bnpb-adapter.ts",
       "_origin": "ast",
@@ -5835,7 +5750,18 @@
       "file_type": "code",
       "norm_label": "idn_bounds",
       "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L20"
+      "source_location": "L13"
+    },
+    {
+      "id": "web_src_lib_disasters_pvmbg_adapter",
+      "label": "pvmbg-adapter.ts",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "disasters/types.ts",
+      "file_type": "code",
+      "norm_label": "pvmbg-adapter.ts",
+      "source_file": "web/src/lib/disasters/pvmbg-adapter.ts",
+      "source_location": "L1"
     },
     {
       "id": "web_src_lib_disasters_types",
@@ -5847,17 +5773,6 @@
       "norm_label": "disasters/types.ts",
       "source_file": "web/src/lib/disasters/types.ts",
       "source_location": "L1"
-    },
-    {
-      "id": "web_src_lib_disasters_bmkg_weather_adapter_rationale_167",
-      "label": "NOTE: Coastal hazard events are extracted from BNPB data",
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "disasters/types.ts",
-      "file_type": "rationale",
-      "norm_label": "note: coastal hazard events are extracted from bnpb data",
-      "source_file": "web/src/lib/disasters/bmkg-weather-adapter.ts",
-      "source_location": "L167"
     },
     {
       "id": "web_tsconfig",
@@ -7123,7 +7038,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "web/src/lib/disasters/aggregator.ts",
-      "source_location": "L133",
+      "source_location": "L131",
       "weight": 1.0
     },
     {
@@ -7135,7 +7050,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "web/src/lib/disasters/aggregator.ts",
-      "source_location": "L134",
+      "source_location": "L132",
       "weight": 1.0
     },
     {
@@ -7147,31 +7062,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "web/src/lib/disasters/aggregator.ts",
-      "source_location": "L135",
-      "weight": 1.0
-    },
-    {
-      "source": "web_src_lib_disasters_aggregator_getaggregateddisasters",
-      "target": "web_src_lib_disasters_firms_adapter_fetchfirmshotspots",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "web/src/lib/disasters/aggregator.ts",
-      "source_location": "L136",
-      "weight": 1.0
-    },
-    {
-      "source": "web_src_lib_disasters_aggregator_getaggregateddisasters",
-      "target": "web_src_lib_disasters_bmkg_weather_adapter_fetchbmkgtsunamievents",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "web/src/lib/disasters/aggregator.ts",
-      "source_location": "L137",
+      "source_location": "L133",
       "weight": 1.0
     },
     {
@@ -7183,7 +7074,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "web/src/lib/disasters/aggregator.ts",
-      "source_location": "L140",
+      "source_location": "L136",
       "weight": 1.0
     },
     {
@@ -7212,18 +7103,6 @@
     },
     {
       "source": "web_src_lib_disasters_firms_adapter_fetchfirmshotspots",
-      "target": "web_src_lib_disasters_firms_adapter_getfirmsurl",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L137",
-      "weight": 1.0
-    },
-    {
-      "source": "web_src_lib_disasters_firms_adapter_fetchfirmshotspots",
       "target": "web_src_lib_disasters_firms_adapter_parsecsvline",
       "relation": "calls",
       "_origin": "ast",
@@ -7231,7 +7110,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L170",
+      "source_location": "L139",
       "weight": 1.0
     },
     {
@@ -7243,7 +7122,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L180",
+      "source_location": "L149",
       "weight": 1.0
     },
     {
@@ -7255,7 +7134,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L197",
+      "source_location": "L166",
       "weight": 1.0
     },
     {
@@ -7868,18 +7747,6 @@
       "context": "field",
       "source_file": "web/src/lib/advisories.ts",
       "source_location": "L9",
-      "weight": 1.0
-    },
-    {
-      "source": "web_src_lib_disasters_firms_adapter_cachedfirmsresult",
-      "target": "web_src_lib_disasters_types_disasterevent",
-      "relation": "references",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "field",
-      "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L114",
       "weight": 1.0
     },
     {
@@ -10483,30 +10350,6 @@
     },
     {
       "source": "web_src_lib_disasters_aggregator",
-      "target": "web_src_lib_disasters_firms_adapter_fetchfirmshotspots",
-      "relation": "imports",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "import",
-      "source_file": "web/src/lib/disasters/aggregator.ts",
-      "source_location": "L13",
-      "weight": 1.0
-    },
-    {
-      "source": "web_src_lib_disasters_aggregator",
-      "target": "web_src_lib_disasters_bmkg_weather_adapter_fetchbmkgtsunamievents",
-      "relation": "imports",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "import",
-      "source_file": "web/src/lib/disasters/aggregator.ts",
-      "source_location": "L14",
-      "weight": 1.0
-    },
-    {
-      "source": "web_src_lib_disasters_aggregator",
       "target": "web_src_lib_disasters_bmkg_adapter_fetchbmkgearthquakes",
       "relation": "imports",
       "_origin": "ast",
@@ -10566,30 +10409,6 @@
       "weight": 1.0
     },
     {
-      "source": "web_src_lib_disasters_bmkg_weather_adapter",
-      "target": "web_src_lib_disasters_types_disasterevent",
-      "relation": "imports",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "import",
-      "source_file": "web/src/lib/disasters/bmkg-weather-adapter.ts",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "web_src_lib_disasters_bmkg_weather_adapter",
-      "target": "web_src_lib_disasters_types_disasterseverity",
-      "relation": "imports",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "import",
-      "source_file": "web/src/lib/disasters/bmkg-weather-adapter.ts",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
       "source": "web_src_lib_disasters_bnpb_adapter",
       "target": "web_src_lib_disasters_types_disasterevent",
       "relation": "imports",
@@ -10640,6 +10459,18 @@
     {
       "source": "web_src_lib_disasters_firms_adapter",
       "target": "web_src_lib_disasters_types_disasterevent",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "web/src/lib/disasters/firms-adapter.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "web_src_lib_disasters_firms_adapter",
+      "target": "web_src_lib_disasters_types_disasterseverity",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -13480,30 +13311,6 @@
     },
     {
       "source": "web_src_lib_disasters_aggregator",
-      "target": "web_src_lib_disasters_firms_adapter",
-      "relation": "imports_from",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "import",
-      "source_file": "web/src/lib/disasters/aggregator.ts",
-      "source_location": "L13",
-      "weight": 1.0
-    },
-    {
-      "source": "web_src_lib_disasters_aggregator",
-      "target": "web_src_lib_disasters_bmkg_weather_adapter",
-      "relation": "imports_from",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "import",
-      "source_file": "web/src/lib/disasters/aggregator.ts",
-      "source_location": "L14",
-      "weight": 1.0
-    },
-    {
-      "source": "web_src_lib_disasters_aggregator",
       "target": "web_src_lib_disasters_bmkg_adapter",
       "relation": "imports_from",
       "_origin": "ast",
@@ -13559,18 +13366,6 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "web/src/lib/disasters/bmkg-adapter.ts",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "web_src_lib_disasters_bmkg_weather_adapter",
-      "target": "web_src_lib_disasters_types",
-      "relation": "imports_from",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "import",
-      "source_file": "web/src/lib/disasters/bmkg-weather-adapter.ts",
       "source_location": "L1",
       "weight": 1.0
     },
@@ -16814,7 +16609,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "web/src/lib/disasters/aggregator.ts",
-      "source_location": "L129",
+      "source_location": "L127",
       "weight": 1.0
     },
     {
@@ -16825,7 +16620,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "web/src/lib/disasters/aggregator.ts",
-      "source_location": "L16",
+      "source_location": "L14",
       "weight": 1.0
     },
     {
@@ -16881,50 +16676,6 @@
       "confidence_score": 1.0,
       "source_file": "web/src/lib/disasters/bmkg-adapter.ts",
       "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "web_src_lib_disasters_bmkg_weather_adapter",
-      "target": "web_src_lib_disasters_bmkg_weather_adapter_fetchcoastalhazardevents",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "web/src/lib/disasters/bmkg-weather-adapter.ts",
-      "source_location": "L176",
-      "weight": 1.0
-    },
-    {
-      "source": "web_src_lib_disasters_bmkg_weather_adapter",
-      "target": "web_src_lib_disasters_bmkg_weather_adapter_bmkggempaitem",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "web/src/lib/disasters/bmkg-weather-adapter.ts",
-      "source_location": "L19",
-      "weight": 1.0
-    },
-    {
-      "source": "web_src_lib_disasters_bmkg_weather_adapter",
-      "target": "web_src_lib_disasters_bmkg_weather_adapter_bmkgresponse",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "web/src/lib/disasters/bmkg-weather-adapter.ts",
-      "source_location": "L34",
-      "weight": 1.0
-    },
-    {
-      "source": "web_src_lib_disasters_bmkg_weather_adapter",
-      "target": "web_src_lib_disasters_bmkg_weather_adapter_fetchbmkgtsunamievents",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "web/src/lib/disasters/bmkg-weather-adapter.ts",
-      "source_location": "L44",
       "weight": 1.0
     },
     {
@@ -17028,35 +16779,13 @@
     },
     {
       "source": "web_src_lib_disasters_firms_adapter",
-      "target": "web_src_lib_disasters_firms_adapter_cachedfirmsresult",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L113",
-      "weight": 1.0
-    },
-    {
-      "source": "web_src_lib_disasters_firms_adapter",
       "target": "web_src_lib_disasters_firms_adapter_fetchfirmshotspots",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L122",
-      "weight": 1.0
-    },
-    {
-      "source": "web_src_lib_disasters_firms_adapter",
-      "target": "web_src_lib_disasters_firms_adapter_getfirmsurl",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L13",
+      "source_location": "L110",
       "weight": 1.0
     },
     {
@@ -17067,7 +16796,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L20",
+      "source_location": "L13",
       "weight": 1.0
     },
     {
@@ -17078,7 +16807,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L22",
+      "source_location": "L15",
       "weight": 1.0
     },
     {
@@ -17089,7 +16818,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L39",
+      "source_location": "L32",
+      "weight": 1.0
+    },
+    {
+      "source": "web_src_lib_disasters_firms_adapter",
+      "target": "web_src_lib_disasters_firms_adapter_hotspotseverity",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "web/src/lib/disasters/firms-adapter.ts",
+      "source_location": "L66",
       "weight": 1.0
     },
     {
@@ -17100,7 +16840,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L75",
+      "source_location": "L74",
       "weight": 1.0
     },
     {
@@ -17111,7 +16851,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "web/src/lib/disasters/firms-adapter.ts",
-      "source_location": "L99",
+      "source_location": "L98",
       "weight": 1.0
     },
     {
@@ -18479,17 +18219,6 @@
       "confidence_score": 1.0,
       "source_file": "web/src/lib/parser/vaa-parser.ts",
       "source_location": "L70",
-      "weight": 1.0
-    },
-    {
-      "source": "web_src_lib_disasters_bmkg_weather_adapter_rationale_167",
-      "target": "web_src_lib_disasters_bmkg_weather_adapter",
-      "relation": "rationale_for",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "web/src/lib/disasters/bmkg-weather-adapter.ts",
-      "source_location": "L167",
       "weight": 1.0
     },
     {

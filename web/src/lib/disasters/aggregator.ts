@@ -10,6 +10,8 @@ import { fetchBmkgEarthquakes } from './bmkg-adapter';
 import { fetchBnpbDisasters } from './bnpb-adapter';
 import { getPvmbgVolcanoEvents } from './pvmbg-adapter';
 import { getAshwatchAdvisoryEvents } from './ashwatch-adapter';
+import { fetchFirmsHotspots } from './firms-adapter';
+import { fetchBmkgTsunamiEvents } from './bmkg-weather-adapter';
 
 export const DISASTER_CATEGORIES: DisasterCategoryMeta[] = [
   {
@@ -127,20 +129,24 @@ export const DISASTER_CATEGORIES: DisasterCategoryMeta[] = [
 export async function getAggregatedDisasters(
   period: TimelinePeriod = 'LIVE'
 ): Promise<AggregatedDisastersResponse> {
-  const [bmkgData, bnpbData, vaacData] = await Promise.all([
+  const [bmkgData, bnpbData, vaacData, firmsData, tsunamiData] = await Promise.all([
     fetchBmkgEarthquakes(),
     fetchBnpbDisasters(),
     getAshwatchAdvisoryEvents(),
+    fetchFirmsHotspots(),
+    fetchBmkgTsunamiEvents(),
   ]);
 
   const pvmbgEvents = getPvmbgVolcanoEvents();
 
-  // Combine all normalized events
+  // Combine all normalized events from all sources
   const allEvents: DisasterEvent[] = [
     ...bmkgData.events,
     ...bnpbData.events,
     ...pvmbgEvents,
     ...vaacData.events,
+    ...firmsData.events,
+    ...tsunamiData.events,
   ];
 
   // Filter by timeline period
@@ -207,17 +213,17 @@ export async function getAggregatedDisasters(
       status: bmkgData.isLive ? 'online' : 'degraded',
       lastUpdated: bmkgData.lastUpdated,
       url: 'https://data.bmkg.go.id/',
-      description: 'Pusat Gempa Bumi & Tsunami Nasional',
-      eventsCount: bmkgData.events.length,
+      description: 'Pusat Gempa Bumi, Tsunami & Cuaca Nasional',
+      eventsCount: bmkgData.events.length + tsunamiData.events.length,
     },
     {
       id: 'bnpb',
-      name: 'BNPB / InaRISK',
+      name: 'BNPB Geoportal',
       code: 'BNPB',
-      status: 'online',
+      status: bnpbData.isLive ? 'online' : 'degraded',
       lastUpdated: bnpbData.lastUpdated,
       url: 'https://gis.bnpb.go.id/',
-      description: 'Pusdalops & Geoportal Bencana BNPB',
+      description: 'Kejadian Bencana Mingguan — ArcGIS FeatureServer',
       eventsCount: bnpbData.events.length,
     },
     {

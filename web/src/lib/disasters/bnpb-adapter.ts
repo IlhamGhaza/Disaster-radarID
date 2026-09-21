@@ -1,180 +1,170 @@
-import { DisasterEvent, DisasterHazardZone } from './types';
+import { DisasterEvent, DisasterHazardZone, DisasterType, DisasterSeverity } from './types';
 
-// Curated verified disaster events aggregated from BNPB Geoportal & BPBD Pusdalops
-const VERIFIED_BNPB_EVENTS: DisasterEvent[] = [
-  {
-    id: 'bnpb-flood-bogor-1',
-    type: 'flood',
-    title: 'Banjir Luapan Sungai Ciliwung Bogor',
-    description: 'Hujan intensitas tinggi menyebabkan luapan debit air sungai di bantaran permukiman warga. TMA mencapai 140 cm.',
-    latitude: -6.595,
-    longitude: 106.816,
-    locationName: 'Kabupaten Bogor & Kota Bogor',
-    regency: 'Bogor',
-    province: 'Jawa Barat',
-    eventTime: new Date(Date.now() - 2 * 3600 * 1000).toISOString(),
-    updatedAt: new Date().toISOString(),
-    severity: 'high',
-    status: 'Penanganan BPBD',
-    source: {
-      name: 'BNPB / BPBD Jawa Barat',
-      url: 'https://gis.bnpb.go.id/',
-      description: 'Pusdalops Penanggulangan Bencana',
-    },
-    isOfficialWarning: true,
-    radiusKm: 3.5,
-    metadata: {
-      waterLevelCm: 140,
-    },
-  },
-  {
-    id: 'bnpb-landslide-sukabumi-1',
-    type: 'landslide',
-    title: 'Tanah Longsor Tebing Cisolok Sukabumi',
-    description: 'Pergerakan tanah dan longsor tebing menutup akses jalan penghubung antardesa akibat curah hujan ekstrem.',
-    latitude: -6.953,
-    longitude: 106.452,
-    locationName: 'Kecamatan Cisolok, Sukabumi',
-    regency: 'Sukabumi',
-    province: 'Jawa Barat',
-    eventTime: new Date(Date.now() - 5 * 3600 * 1000).toISOString(),
-    updatedAt: new Date().toISOString(),
-    severity: 'high',
-    status: 'Pembersihan Material',
-    source: {
-      name: 'BNPB / BPBD Sukabumi',
-      url: 'https://gis.bnpb.go.id/',
-      description: 'Pusdalops BNPB',
-    },
-    isOfficialWarning: true,
-    radiusKm: 2.5,
-  },
-  {
-    id: 'bnpb-fire-kalteng-1',
-    type: 'forest-fire',
-    title: 'Titik Panas Karhutla Gambut Kotawaringin Timur',
-    description: 'Klaster titik panas (hotspot) berkepercayaan tinggi terdeteksi di kawasan lahan gambut. Manggala Agni KLHK menggelar pemadaman dan water bombing.',
-    latitude: -2.532,
-    longitude: 112.956,
-    locationName: 'Kotawaringin Timur, Kalimantan Tengah',
-    regency: 'Kotawaringin Timur',
-    province: 'Kalimantan Tengah',
-    eventTime: new Date(Date.now() - 1 * 3600 * 1000).toISOString(),
-    updatedAt: new Date().toISOString(),
-    severity: 'high',
-    status: 'Operasi Pemadaman Terpadu',
-    source: {
-      name: 'SiPongi KLHK / BNPB',
-      url: 'https://sipongi.menlhk.go.id/',
-      description: 'Sistem Monitoring Karhutla SiPongi KLHK & Satgas BNPB',
-    },
-    isOfficialWarning: true,
-    radiusKm: 12,
-    metadata: {
-      affectedAreaHa: 24,
-      confidence: 'Tinggi (88%)',
-      satelliteSensor: 'SNPP / VIIRS',
-    },
-  },
-  {
-    id: 'bnpb-fire-riau-1',
-    type: 'forest-fire',
-    title: 'Peringatan Hotspot Karhutla Pelalawan',
-    description: 'Sensor satelit mendeteksi anomali suhu termal vegetasi di area konsesi gambut. Satgas Udara dan BPBD Riau melakukan pemantauan intensif.',
-    latitude: 0.315,
-    longitude: 102.164,
-    locationName: 'Kecamatan Teluk Meranti, Pelalawan',
-    regency: 'Pelalawan',
-    province: 'Riau',
-    eventTime: new Date(Date.now() - 3 * 3600 * 1000).toISOString(),
-    updatedAt: new Date().toISOString(),
-    severity: 'moderate',
-    status: 'Patroli Terpadu',
-    source: {
-      name: 'SiPongi KLHK / BPBD Riau',
-      url: 'https://sipongi.menlhk.go.id/',
-      description: 'Pusdalops SiPongi KLHK & BPBD Riau',
-    },
-    isOfficialWarning: true,
-    radiusKm: 8,
-    metadata: {
-      affectedAreaHa: 10,
-      confidence: 'Sedang (75%)',
-      satelliteSensor: 'MODIS Terra/Aqua',
-    },
-  },
-  {
-    id: 'bnpb-weather-jatim-1',
-    type: 'extreme-weather',
-    title: 'Angin Puting Beliung Sidoarjo',
-    description: 'Hujan lebat disertai angin kencang merusak belasan atap rumah dan menumbangkan pohon peneduh di tepi jalan arteri.',
-    latitude: -7.452,
-    longitude: 112.718,
-    locationName: 'Kabupaten Sidoarjo, Jawa Timur',
-    regency: 'Sidoarjo',
-    province: 'Jawa Timur',
-    eventTime: new Date(Date.now() - 11 * 3600 * 1000).toISOString(),
-    updatedAt: new Date().toISOString(),
-    severity: 'moderate',
-    status: 'Pendataan Kerusakan',
-    source: {
-      name: 'BPBD Jawa Timur',
-      url: 'https://bpbd.jatimprov.go.id/',
-      description: 'Pusat Pengendalian Operasi BPBD Jatim',
-    },
-    isOfficialWarning: false,
-    radiusKm: 10,
-  },
-  {
-    id: 'bnpb-flood-demak-1',
-    type: 'flood',
-    title: 'Banjir Luapan Tanggul Sungai Wulan Demak',
-    description: 'Genangan air merendam jalan pantura dan persawahan setinggi 60-90 cm. Jalur evakuasi darurat difungsikan.',
-    latitude: -6.894,
-    longitude: 110.638,
-    locationName: 'Kabupaten Demak, Jawa Tengah',
-    regency: 'Demak',
-    province: 'Jawa Tengah',
-    eventTime: new Date(Date.now() - 19 * 3600 * 1000).toISOString(),
-    updatedAt: new Date().toISOString(),
-    severity: 'critical',
-    status: 'Status Tanggap Darurat',
-    source: {
-      name: 'BNPB / BPBD Jawa Tengah',
-      url: 'https://gis.bnpb.go.id/',
-      description: 'Portal InaRISK & Geoportal BNPB',
-    },
-    isOfficialWarning: true,
-    radiusKm: 18,
-    metadata: {
-      waterLevelCm: 90,
-    },
-  },
-  {
-    id: 'bnpb-landslide-padang-1',
-    type: 'landslide',
-    title: 'Longsor Jalur Sitinjau Lauik Padang',
-    description: 'Material tanah dan batuan menutup sebagian badan jalan nasional penghubung Kota Padang dan Solok.',
-    latitude: -0.962,
-    longitude: 100.512,
-    locationName: 'Sitinjau Lauik, Kota Padang',
-    regency: 'Kota Padang',
-    province: 'Sumatera Barat',
-    eventTime: new Date(Date.now() - 28 * 3600 * 1000).toISOString(),
-    updatedAt: new Date().toISOString(),
-    severity: 'high',
-    status: 'Buka Tutup Jalur',
-    source: {
-      name: 'BPBD Sumatera Barat',
-      url: 'https://bpbd.sumbarprov.go.id/',
-      description: 'Pusdalops BPBD Sumbar',
-    },
-    isOfficialWarning: true,
-    radiusKm: 6,
-  },
-];
+// ---------------------------------------------------------------------------
+// BNPB Geoportal ArcGIS REST API — Kejadian Bencana Mingguan
+// Endpoint: FeatureServer layer 25 (polygon geometry with centroids)
+// Source: https://gis.bnpb.go.id/server/rest/services/Kejadian_Bencana_Mingguan
+// ---------------------------------------------------------------------------
 
-// Official InaRISK hazard zones across Indonesia
+const BNPB_FEATURE_URL =
+  'https://gis.bnpb.go.id/server/rest/services/Kejadian_Bencana_Mingguan/FeatureServer/25/query';
+
+// Map BNPB's Indonesian category names to our DisasterType enum
+const BNPB_TYPE_MAP: Record<string, DisasterType> = {
+  'Banjir': 'flood',
+  'Banjir Bandang': 'flood',
+  'Banjir dan Tanah Longsor': 'flood',
+  'Longsor': 'landslide',
+  'Tanah Longsor': 'landslide',
+  'Kebakaran hutan dan lahan': 'forest-fire',
+  'Kebakaran Hutan dan Lahan': 'forest-fire',
+  'Karhutla': 'forest-fire',
+  'Cuaca ekstrem': 'extreme-weather',
+  'Cuaca Ekstrem': 'extreme-weather',
+  'Puting Beliung': 'extreme-weather',
+  'Angin Puting Beliung': 'extreme-weather',
+  'Erupsi gunung api': 'volcano',
+  'Gempabumi': 'earthquake',
+  'Gempa bumi': 'earthquake',
+  'Gelombang pasang / Abrasi': 'coastal-hazard',
+  'Gelombang Pasang/Abrasi': 'coastal-hazard',
+  'Gelombang pasang': 'coastal-hazard',
+  'Abrasi': 'coastal-hazard',
+  'Tsunami': 'tsunami',
+  'Kekeringan': 'drought',
+};
+
+// Estimate severity from BNPB damage data
+function estimateSeverity(attrs: BnpbAttributes): DisasterSeverity {
+  const dead = attrs.meninggal || 0;
+  const missing = attrs.hilang || 0;
+  const evacuated = attrs.mengungsi || 0;
+  const heavyDamage = attrs.rumah_rusak_berat || 0;
+
+  if (dead > 0 || missing > 0 || heavyDamage > 5) return 'critical';
+  if (evacuated > 100 || heavyDamage > 0) return 'high';
+  if (evacuated > 0 || (attrs.rumah_terendam || 0) > 5) return 'moderate';
+  return 'low';
+}
+
+interface BnpbAttributes {
+  dt: number; // epoch ms
+  kabupaten: string;
+  kategori_bencana: string;
+  jumlah_kejadian: number;
+  meninggal: number;
+  hilang: number;
+  luka_sakit: number;
+  menderita: number;
+  mengungsi: number;
+  menderita_mengungsi: number;
+  rumah_rusak_berat: number;
+  rumah_rusak_sedang: number;
+  rumah_rusak_ringan: number;
+  rumah_terendam: number;
+  lahan_hektar: number | null;
+  rumah_rusak: number;
+  kronologis: string;
+  penyebab: string;
+  deskripsi: string;
+  kondisi_mutakhir: string;
+  upaya_: string;
+  id: string;
+  id_kab_sdi: string;
+  tgl: number;
+  bulan: number;
+  tahun: number;
+  minggu: number;
+  objectid: number;
+  [key: string]: unknown;
+}
+
+interface BnpbFeature {
+  attributes: BnpbAttributes;
+  centroid?: { x: number; y: number };
+}
+
+interface BnpbQueryResponse {
+  features: BnpbFeature[];
+  exceededTransferLimit?: boolean;
+}
+
+function parseBnpbFeature(feature: BnpbFeature): DisasterEvent | null {
+  const attrs = feature.attributes;
+  const centroid = feature.centroid;
+
+  // Must have centroid for map placement
+  if (!centroid || centroid.x === 0 || centroid.y === 0) return null;
+
+  const disasterType = BNPB_TYPE_MAP[attrs.kategori_bencana];
+  // Skip types we already get from dedicated adapters (earthquake, volcano)
+  if (!disasterType || disasterType === 'earthquake' || disasterType === 'volcano') return null;
+
+  const severity = estimateSeverity(attrs);
+
+  // Build description from kronologis (most useful field from BNPB)
+  const kronologis = (attrs.kronologis || '').replace(/●\s*/g, '').trim();
+  const kondisi = (attrs.kondisi_mutakhir || '').replace(/●\s*/g, '').trim();
+
+  // Build a human-readable impact summary
+  const impactParts: string[] = [];
+  if (attrs.meninggal) impactParts.push(`${attrs.meninggal} meninggal`);
+  if (attrs.hilang) impactParts.push(`${attrs.hilang} hilang`);
+  if (attrs.luka_sakit) impactParts.push(`${attrs.luka_sakit} luka/sakit`);
+  if (attrs.mengungsi) impactParts.push(`${attrs.mengungsi} mengungsi`);
+  if (attrs.rumah_terendam) impactParts.push(`${attrs.rumah_terendam} rumah terendam`);
+  if (attrs.rumah_rusak_berat) impactParts.push(`${attrs.rumah_rusak_berat} rumah rusak berat`);
+  if (attrs.lahan_hektar) impactParts.push(`${attrs.lahan_hektar} ha terdampak`);
+
+  const impactText = impactParts.length > 0 ? `Dampak: ${impactParts.join(', ')}.` : '';
+
+  // Build title
+  const typeLabel = attrs.kategori_bencana;
+  const title = `${typeLabel} ${attrs.kabupaten}`;
+
+  // Parse date from tgl/bulan/tahun (more reliable than dt epoch)
+  let eventTime: string;
+  try {
+    if (attrs.dt && attrs.dt > 0) {
+      eventTime = new Date(attrs.dt).toISOString();
+    } else {
+      eventTime = new Date(attrs.tahun, attrs.bulan - 1, attrs.tgl).toISOString();
+    }
+  } catch {
+    eventTime = new Date().toISOString();
+  }
+
+  return {
+    id: `bnpb-${attrs.id || attrs.objectid}`,
+    type: disasterType,
+    title,
+    description: [kronologis, impactText, kondisi].filter(Boolean).join(' ').slice(0, 500),
+    latitude: centroid.y,
+    longitude: centroid.x,
+    locationName: `Kab/Kota ${attrs.kabupaten}`,
+    regency: attrs.kabupaten,
+    eventTime,
+    updatedAt: new Date().toISOString(),
+    severity,
+    status: kondisi ? 'Penanganan BNPB/BPBD' : 'Dilaporkan',
+    source: {
+      name: 'BNPB Geoportal',
+      url: 'https://gis.bnpb.go.id/',
+      description: 'Pusdalops Penanggulangan Bencana — Kejadian Bencana Mingguan',
+    },
+    isOfficialWarning: severity === 'critical' || severity === 'high',
+    radiusKm: disasterType === 'forest-fire' ? 10 : 5,
+    metadata: {
+      affectedAreaHa: attrs.lahan_hektar || undefined,
+      waterLevelCm: attrs.rumah_terendam ? attrs.rumah_terendam * 10 : undefined,
+      bnpbId: attrs.id,
+      evacuated: attrs.mengungsi || undefined,
+      casualties: (attrs.meninggal || 0) + (attrs.hilang || 0) || undefined,
+    },
+  };
+}
+
+// Official InaRISK hazard zones across Indonesia (static reference data)
 export const INARISK_HAZARD_ZONES: DisasterHazardZone[] = [
   {
     id: 'inarisk-flood-pantura',
@@ -222,17 +212,96 @@ export const INARISK_HAZARD_ZONES: DisasterHazardZone[] = [
   },
 ];
 
+// Fallback curated events (only used when BNPB API is unreachable)
+const FALLBACK_BNPB_EVENTS: DisasterEvent[] = [
+  {
+    id: 'bnpb-fallback-flood-1',
+    type: 'flood',
+    title: 'Banjir (Data Cadangan — API BNPB tidak tersedia)',
+    description: 'Data cadangan ditampilkan karena API BNPB Geoportal tidak dapat dijangkau. Silakan cek gis.bnpb.go.id untuk data terkini.',
+    latitude: -6.595,
+    longitude: 106.816,
+    locationName: 'Data cadangan',
+    eventTime: new Date(Date.now() - 6 * 3600 * 1000).toISOString(),
+    updatedAt: new Date().toISOString(),
+    severity: 'moderate',
+    status: 'Data Cadangan (Offline)',
+    source: {
+      name: 'BNPB Geoportal (Offline)',
+      url: 'https://gis.bnpb.go.id/',
+      description: 'Pusdalops BNPB — Fallback',
+    },
+    isOfficialWarning: false,
+    radiusKm: 3,
+  },
+];
+
 export async function fetchBnpbDisasters(): Promise<{
   events: DisasterEvent[];
   hazardZones: DisasterHazardZone[];
   isLive: boolean;
   lastUpdated: string;
 }> {
-  // Return verified aggregated disaster events
-  return {
-    events: VERIFIED_BNPB_EVENTS,
-    hazardZones: INARISK_HAZARD_ZONES,
-    isLive: true,
-    lastUpdated: new Date().toISOString(),
-  };
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+    // Query the BNPB FeatureServer for recent disaster events
+    // orderByFields=dt DESC → newest first
+    // returnCentroid=true → polygon centroid for map marker placement
+    // resultRecordCount=50 → sensible limit for recent disasters
+    const queryParams = new URLSearchParams({
+      where: '1=1',
+      outFields: [
+        'dt', 'kabupaten', 'kategori_bencana', 'jumlah_kejadian',
+        'meninggal', 'hilang', 'luka_sakit', 'menderita', 'mengungsi',
+        'menderita_mengungsi', 'rumah_rusak_berat', 'rumah_rusak_sedang',
+        'rumah_rusak_ringan', 'rumah_terendam', 'lahan_hektar', 'rumah_rusak',
+        'kronologis', 'penyebab', 'deskripsi', 'kondisi_mutakhir', 'upaya_',
+        'id', 'id_kab_sdi', 'tgl', 'bulan', 'tahun', 'minggu', 'objectid',
+      ].join(','),
+      returnGeometry: 'false',
+      returnCentroid: 'true',
+      resultRecordCount: '50',
+      orderByFields: 'dt DESC',
+      f: 'json',
+    });
+
+    const res = await fetch(`${BNPB_FEATURE_URL}?${queryParams.toString()}`, {
+      signal: controller.signal,
+      next: { revalidate: 300 }, // 5 min server-side cache
+    });
+    clearTimeout(timeoutId);
+
+    if (!res.ok) {
+      throw new Error(`BNPB GIS returned ${res.status}`);
+    }
+
+    const data: BnpbQueryResponse = await res.json();
+
+    if (!data.features || data.features.length === 0) {
+      throw new Error('BNPB GIS returned empty features array');
+    }
+
+    const events = data.features
+      .map(parseBnpbFeature)
+      .filter((ev): ev is DisasterEvent => ev !== null);
+
+    console.log(`[BNPB Adapter] Fetched ${events.length} live events from BNPB Geoportal`);
+
+    return {
+      events,
+      hazardZones: INARISK_HAZARD_ZONES,
+      isLive: true,
+      lastUpdated: new Date().toISOString(),
+    };
+  } catch (err) {
+    console.warn('[BNPB Adapter] Using fallback data (BNPB Geoportal API offline or timed out):', err);
+    return {
+      events: FALLBACK_BNPB_EVENTS,
+      hazardZones: INARISK_HAZARD_ZONES,
+      isLive: false,
+      lastUpdated: new Date().toISOString(),
+    };
+  }
 }
