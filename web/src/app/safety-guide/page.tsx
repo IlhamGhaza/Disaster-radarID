@@ -12,7 +12,6 @@ import {
   ChevronRight,
   Package,
   Zap,
-  Radio,
 } from 'lucide-react';
 
 export const metadata: Metadata = {
@@ -41,266 +40,222 @@ export const metadata: Metadata = {
   },
 };
 
+const HOTLINE_SECONDARY = [
+  { tel: '115', name: 'BASARNAS', note: 'Pencarian & SAR' },
+  { tel: '117', name: 'BNPB', note: 'Posko Bencana' },
+  { tel: '113', name: 'Damkar', note: 'Pemadam Kebakaran' },
+  { tel: '119', name: 'Ambulans / PSC', note: 'Medis Darurat' },
+  { tel: '110', name: 'Polisi', note: 'Keamanan Publik' },
+];
+
+const hotlineClass =
+  'group flex min-h-tap-lg items-center gap-row rounded-card border border-line bg-surface px-gutter py-row transition-colors duration-120 hover:border-accent';
+
 export default function SafetyGuidePage() {
   const guides = Object.values(DISASTER_SAFETY_GUIDES);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 bg-[#080C14] text-[#E8ECF1]">
+    <div className="mx-auto max-w-7xl px-gutter py-stack sm:px-6 lg:px-8">
       <Breadcrumbs items={[{ name: 'Panduan Keselamatan & Evakuasi', url: '/safety-guide' }]} />
 
       {/* Hero Header */}
-      <div className="relative mt-4 mb-12 rounded-2xl border border-white/[0.08] bg-gradient-to-b from-[#180E14] via-[#0E121B] to-[#070A10] p-6 sm:p-8 overflow-hidden shadow-2xl">
-        <div className="pointer-events-none absolute -top-24 right-0 h-80 w-80 rounded-full bg-red-600/10 blur-[120px]" />
-
-        <div className="relative z-10 max-w-3xl">
-          <div className="inline-flex items-center gap-2 rounded-full border border-red-500/20 bg-red-950/40 px-3 py-1 text-[11px] font-mono font-semibold tracking-wider text-red-400 uppercase mb-4 backdrop-blur-md">
-            <Radio className="h-3 w-3 animate-pulse" />
-            <span>PANDUAN PRAKTIS PENYELAMATAN DIRI</span>
-          </div>
-
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[#E8ECF1] leading-[1.1]">
-            Panduan Keselamatan & Evakuasi Bencana
+      <div className="mb-section pt-4">
+        <div className="max-w-3xl">
+          <h1 className="text-display text-fg-1 text-balance md:text-display-lg">
+            Panduan <span className="serif-accent text-accent">keselamatan</span> & Evakuasi Bencana
           </h1>
 
-          <p className="mt-4 text-sm sm:text-base text-[#94A3B8] leading-relaxed">
+          <p className="mt-row text-body text-fg-2">
             Langkah cepat dan praktis untuk menyelamatkan diri dan keluarga saat terjadi gempa bumi, banjir, letusan gunung api, atau cuaca ekstrem di sekitar Anda. Berdasarkan pedoman resmi BNPB dan BPBD.
           </p>
         </div>
       </div>
 
-      {/* National Emergency Numbers Bar (Tactical Hotline Grid) */}
-      <section className="mb-14 p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-red-950/40 via-[#0D1117] to-[#0A0E17] border border-red-500/25 shadow-2xl">
-        <div className="flex items-center gap-2 mb-2">
-          <PhoneCall className="h-5 w-5 text-red-400" />
-          <h2 className="text-lg sm:text-xl font-bold text-[#E8ECF1]">
+      {/* Nomor telepon darurat */}
+      <section className="mb-section" aria-labelledby="hotline-heading">
+        <div className="mb-cell flex items-center gap-cell">
+          <PhoneCall className="h-5 w-5 text-fg-2" aria-hidden="true" />
+          <h2 id="hotline-heading" className="text-title text-fg-1 md:text-title-lg">
             Nomor Telepon Darurat Nasional Indonesia
           </h2>
         </div>
-        <p className="text-xs sm:text-sm text-[#94A3B8] mb-6 leading-relaxed">
+        <p className="mb-gutter max-w-3xl text-body text-fg-2">
           Simpan nomor-nomor darurat berikut di ponsel Anda. Seluruh panggilan layanan darurat 112 dapat dihubungi bebas pulsa dari seluruh operator di Indonesia.
         </p>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-[1.4fr_repeat(5,1fr)]">
+          {/* 112 = nomor utama: isian accent, angka paling besar */}
           <a
             href="tel:112"
-            className="group p-4 rounded-xl bg-[#140E14] border border-red-500/30 hover:border-red-500 hover:bg-red-950/40 transition-all text-center shadow-lg"
+            className="flex min-h-tap-lg items-center gap-row rounded-card bg-accent px-gutter py-row text-fg-inverse transition-colors duration-120 hover:bg-accent-hover sm:col-span-2 lg:col-span-1 lg:flex-col lg:items-start lg:justify-center lg:gap-1"
           >
-            <div className="text-3xl font-extrabold text-[#E8ECF1] tabular-nums group-hover:text-red-400 transition-colors">112</div>
-            <div className="text-xs font-bold text-red-300 mt-1">Panggilan Darurat</div>
-            <div className="text-[10px] text-[#8B95A7] mt-0.5">Bebas Pulsa Terpadu</div>
+            <span className="font-mono text-num-xl font-bold tabular-nums">112</span>
+            <span>
+              <span className="block text-body font-bold">Panggilan Darurat</span>
+              <span className="block text-small">Bebas Pulsa Terpadu</span>
+            </span>
           </a>
 
-          <a
-            href="tel:115"
-            className="group p-4 rounded-xl bg-[#140E14] border border-red-500/30 hover:border-red-500 hover:bg-red-950/40 transition-all text-center shadow-lg"
-          >
-            <div className="text-3xl font-extrabold text-[#E8ECF1] tabular-nums group-hover:text-red-400 transition-colors">115</div>
-            <div className="text-xs font-bold text-red-300 mt-1">BASARNAS</div>
-            <div className="text-[10px] text-[#8B95A7] mt-0.5">Pencarian & SAR</div>
-          </a>
-
-          <a
-            href="tel:117"
-            className="group p-4 rounded-xl bg-[#140E14] border border-red-500/30 hover:border-red-500 hover:bg-red-950/40 transition-all text-center shadow-lg"
-          >
-            <div className="text-3xl font-extrabold text-[#E8ECF1] tabular-nums group-hover:text-red-400 transition-colors">117</div>
-            <div className="text-xs font-bold text-red-300 mt-1">BNPB</div>
-            <div className="text-[10px] text-[#8B95A7] mt-0.5">Posko Bencana</div>
-          </a>
-
-          <a
-            href="tel:113"
-            className="group p-4 rounded-xl bg-[#140E14] border border-red-500/30 hover:border-red-500 hover:bg-red-950/40 transition-all text-center shadow-lg"
-          >
-            <div className="text-3xl font-extrabold text-[#E8ECF1] tabular-nums group-hover:text-red-400 transition-colors">113</div>
-            <div className="text-xs font-bold text-red-300 mt-1">Damkar</div>
-            <div className="text-[10px] text-[#8B95A7] mt-0.5">Pemadam Kebakaran</div>
-          </a>
-
-          <a
-            href="tel:119"
-            className="group p-4 rounded-xl bg-[#140E14] border border-red-500/30 hover:border-red-500 hover:bg-red-950/40 transition-all text-center shadow-lg"
-          >
-            <div className="text-3xl font-extrabold text-[#E8ECF1] tabular-nums group-hover:text-red-400 transition-colors">119</div>
-            <div className="text-xs font-bold text-red-300 mt-1">Ambulans / PSC</div>
-            <div className="text-[10px] text-[#8B95A7] mt-0.5">Medis Darurat</div>
-          </a>
-
-          <a
-            href="tel:110"
-            className="group p-4 rounded-xl bg-[#140E14] border border-red-500/30 hover:border-red-500 hover:bg-red-950/40 transition-all text-center shadow-lg"
-          >
-            <div className="text-3xl font-extrabold text-[#E8ECF1] tabular-nums group-hover:text-red-400 transition-colors">110</div>
-            <div className="text-xs font-bold text-red-300 mt-1">Polisi</div>
-            <div className="text-[10px] text-[#8B95A7] mt-0.5">Keamanan Publik</div>
-          </a>
+          {HOTLINE_SECONDARY.map((h) => (
+            <a key={h.tel} href={`tel:${h.tel}`} className={hotlineClass}>
+              <span className="font-mono text-num-lg font-bold text-fg-1 tabular-nums group-hover:text-accent">{h.tel}</span>
+              <span>
+                <span className="block text-small font-semibold text-fg-1">{h.name}</span>
+                <span className="block text-small text-fg-3">{h.note}</span>
+              </span>
+            </a>
+          ))}
         </div>
       </section>
 
       {/* Emergency Preparedness Kit (Tas Siaga Bencana 72 Jam) */}
-      <section className="mb-14 p-6 sm:p-8 rounded-2xl bg-[#0D1117] border border-white/[0.08] shadow-xl">
-        <div className="flex items-center gap-2 mb-2">
-          <Package className="h-5 w-5 text-amber-400" />
-          <h2 className="text-xl font-bold text-[#E8ECF1]">
+      <section className="mb-section border-t border-line pt-stack">
+        <div className="mb-cell flex items-center gap-cell">
+          <Package className="h-5 w-5 text-fg-2" aria-hidden="true" />
+          <h2 className="text-title text-fg-1 md:text-title-lg">
             Panduan Tas Siaga Bencana (TSB 72 Jam)
           </h2>
         </div>
-        <p className="text-xs sm:text-sm text-[#94A3B8] mb-6 leading-relaxed">
+        <p className="mb-stack max-w-3xl text-body text-fg-2">
           Siapkan tas ransel tahan air di dekat pintu keluar rumah yang berisi perlengkapan bertahan hidup mandiri minimal untuk 3 hari pertama (72 jam) sebelum bantuan logistik tiba.
         </p>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="p-4 rounded-xl bg-[#141B26] border border-white/[0.06]">
-            <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-amber-300 mb-2.5">
+        <div className="grid grid-cols-1 gap-x-stack gap-y-gutter sm:grid-cols-2 lg:grid-cols-4">
+          <div>
+            <h3 className="mb-cell text-heading text-fg-1">
               1. Dokumen & Finansial
             </h3>
-            <ul className="text-xs text-[#CBD5E1] space-y-1.5 leading-relaxed">
-              <li>• Surat nikah / Akta lahir</li>
-              <li>• KTP / KK / Paspor</li>
-              <li>• Sertifikat tanah / ijazah</li>
-              <li>• Uang tunai pecahan kecil</li>
+            <ul className="list-disc space-y-1 pl-5 text-body text-fg-2 marker:text-fg-3">
+              <li>Surat nikah / Akta lahir</li>
+              <li>KTP / KK / Paspor</li>
+              <li>Sertifikat tanah / ijazah</li>
+              <li>Uang tunai pecahan kecil</li>
             </ul>
           </div>
 
-          <div className="p-4 rounded-xl bg-[#141B26] border border-white/[0.06]">
-            <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-amber-300 mb-2.5">
+          <div>
+            <h3 className="mb-cell text-heading text-fg-1">
               2. Pangan & Nutrisi
             </h3>
-            <ul className="text-xs text-[#CBD5E1] space-y-1.5 leading-relaxed">
-              <li>• Air mineral (minimal 3 liter)</li>
-              <li>• Biskuit kalori tinggi / kurma</li>
-              <li>• Makanan kaleng siap santap</li>
-              <li>• Sendok & pembuka kaleng</li>
+            <ul className="list-disc space-y-1 pl-5 text-body text-fg-2 marker:text-fg-3">
+              <li>Air mineral (minimal 3 liter)</li>
+              <li>Biskuit kalori tinggi / kurma</li>
+              <li>Makanan kaleng siap santap</li>
+              <li>Sendok & pembuka kaleng</li>
             </ul>
           </div>
 
-          <div className="p-4 rounded-xl bg-[#141B26] border border-white/[0.06]">
-            <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-amber-300 mb-2.5">
+          <div>
+            <h3 className="mb-cell text-heading text-fg-1">
               3. Kesehatan & Sanitasi
             </h3>
-            <ul className="text-xs text-[#CBD5E1] space-y-1.5 leading-relaxed">
-              <li>• Obat resep harian pribadi</li>
-              <li>• Kotak P3K standar & kasa</li>
-              <li>• Masker N95 / medis</li>
-              <li>• Hand sanitizer & tisu basah</li>
+            <ul className="list-disc space-y-1 pl-5 text-body text-fg-2 marker:text-fg-3">
+              <li>Obat resep harian pribadi</li>
+              <li>Kotak P3K standar & kasa</li>
+              <li>Masker N95 / medis</li>
+              <li>Hand sanitizer & tisu basah</li>
             </ul>
           </div>
 
-          <div className="p-4 rounded-xl bg-[#141B26] border border-white/[0.06]">
-            <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-amber-300 mb-2.5">
+          <div>
+            <h3 className="mb-cell text-heading text-fg-1">
               4. Alat Bertahan Hidup
             </h3>
-            <ul className="text-xs text-[#CBD5E1] space-y-1.5 leading-relaxed">
-              <li>• Senter LED & baterai cadang</li>
-              <li>• Peluit nyaring (minta tolong)</li>
-              <li>• Power bank terisi penuh</li>
-              <li>• Pakaian ganti & jas hujan</li>
+            <ul className="list-disc space-y-1 pl-5 text-body text-fg-2 marker:text-fg-3">
+              <li>Senter LED & baterai cadang</li>
+              <li>Peluit nyaring (minta tolong)</li>
+              <li>Power bank terisi penuh</li>
+              <li>Pakaian ganti & jas hujan</li>
             </ul>
           </div>
         </div>
       </section>
 
       {/* Detailed Guides per Disaster Category */}
-      <section className="space-y-10 mb-16">
-        <div className="border-b border-white/[0.06] pb-4">
-          <h2 className="text-2xl font-bold text-[#E8ECF1]">
+      <section className="space-y-section">
+        <div className="border-t border-line pt-stack">
+          <h2 className="text-title text-fg-1 md:text-title-lg">
             Prosedur Evakuasi Khusus Berdasarkan Jenis Bencana
           </h2>
-          <p className="text-xs sm:text-sm text-[#94A3B8] mt-1">
-            Instruksi keselamatan 3 fase dari para ahli tanggap darurat nasional.
+          <p className="mt-1 text-body text-fg-2">
+            Langkah saat kejadian, serta yang dianjurkan dan dilarang, untuk tiap jenis bencana.
           </p>
         </div>
 
         {guides.map((guide) => (
-          <article
-            key={guide.id}
-            id={guide.id}
-            className="p-6 sm:p-8 rounded-2xl bg-[#0D1117] border border-white/[0.08] shadow-xl"
-          >
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/[0.06] mb-6">
-              <div className="flex items-start gap-4">
-                <div
-                  className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border mt-1"
-                  style={{
-                    backgroundColor: `${guide.color}15`,
-                    borderColor: `${guide.color}35`,
-                  }}
-                >
-                  <DisasterIcon type={guide.disasterType} size={24} color={guide.color} />
+          <article key={guide.id} id={guide.id} className="scroll-mt-20">
+            <div className="mb-gutter flex flex-col justify-between gap-gutter border-b border-line pb-gutter sm:flex-row sm:items-end">
+              <div className="flex items-start gap-row">
+                <div className="mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-control border border-line">
+                  <DisasterIcon type={guide.disasterType} size={24} color="var(--fg-1)" />
                 </div>
                 <div>
-                  <span
-                    className="text-xs font-mono font-bold uppercase tracking-wider"
-                    style={{ color: guide.color }}
-                  >
+                  <span className="block text-small text-fg-3">
                     {guide.subtitle}
                   </span>
-                  <h3 className="text-xl sm:text-2xl font-bold text-[#E8ECF1] mt-1">
+                  <h3 className="mt-0.5 text-title text-fg-1">
                     {guide.title}
                   </h3>
-                  <p className="text-xs text-[#94A3B8] mt-1">{guide.tagline}</p>
+                  <p className="mt-0.5 text-small text-fg-3">{guide.tagline}</p>
                 </div>
               </div>
 
               <Link
                 href={`/disasters/${guide.disasterType}`}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-white/[0.04] border border-white/[0.08] hover:bg-white/[0.08] hover:border-white/[0.15] text-xs font-semibold text-[#E8ECF1] transition-all self-start sm:self-auto"
+                className="inline-flex min-h-tap shrink-0 items-center gap-1.5 self-start text-small font-semibold text-accent transition-colors duration-120 hover:text-accent-hover sm:self-auto"
               >
                 <span>Lihat Peta Kejadian</span>
-                <ChevronRight className="h-4 w-4 text-[#8B95A7]" />
+                <ChevronRight className="h-4 w-4" aria-hidden="true" />
               </Link>
             </div>
 
-            {/* During Action (Tindakan Cepat Golden Time) */}
-            <div className="mb-6">
-              <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-[#E8ECF1] mb-3 flex items-center gap-2">
-                <Zap className="h-4 w-4 text-amber-400" />
-                <span>Langkah Penyelamatan Saat Terjadi (Golden Time)</span>
+            {/* Yang dilakukan saat kejadian */}
+            <div className="mb-stack">
+              <h4 className="mb-row flex items-center gap-cell text-heading text-fg-1">
+                <Zap className="h-4 w-4 text-sev-warning" aria-hidden="true" />
+                <span>Yang dilakukan saat kejadian</span>
               </h4>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              <ol className="grid grid-cols-1 gap-x-stack gap-y-gutter sm:grid-cols-2 lg:grid-cols-4">
                 {guide.duringAction.map((step) => (
-                  <div
-                    key={step.step}
-                    className="p-4 rounded-xl bg-[#141B26] border border-white/[0.05]"
-                  >
-                    <div className="flex h-6 w-6 items-center justify-center rounded-full bg-red-500/20 text-red-400 text-xs font-mono font-bold mb-2">
+                  <li key={step.step} className="border-t-2 border-line-strong pt-row">
+                    <div className="font-mono text-num font-bold text-fg-1 tabular-nums">
                       {step.step}
                     </div>
-                    <div className="text-xs font-bold text-[#E8ECF1]">{step.title}</div>
-                    <p className="text-[11px] text-[#94A3B8] mt-1 leading-relaxed">
+                    <div className="mt-1 text-body font-bold text-fg-1">{step.title}</div>
+                    <p className="mt-1 text-small text-fg-2">
                       {step.instruction}
                     </p>
-                  </div>
+                  </li>
                 ))}
-              </div>
+              </ol>
             </div>
 
             {/* Dos and Don'ts */}
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div className="p-4 rounded-xl bg-emerald-950/20 border border-emerald-500/30">
-                <h5 className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-400 mb-2.5 flex items-center gap-1.5">
-                  <CheckCircle2 className="h-3.5 w-3.5" />
+            <div className="grid grid-cols-1 gap-gutter sm:grid-cols-2">
+              <div className="border-l-4 border-sev-normal pl-gutter">
+                <h5 className="mb-cell flex items-center gap-1.5 text-body font-bold text-fg-1">
+                  <CheckCircle2 className="h-4 w-4 text-sev-normal" aria-hidden="true" />
                   <span>Yang Dianjurkan (Harus Dilakukan)</span>
                 </h5>
-                <ul className="space-y-1.5 text-xs text-[#CBD5E1]">
+                <ul className="space-y-1.5 text-body text-fg-2">
                   {guide.dos.map((d, idx) => (
-                    <li key={idx} className="flex items-start gap-2">
-                      <span className="text-emerald-400 font-bold shrink-0">✓</span>
+                    <li key={idx} className="flex items-start gap-cell">
+                      <span className="shrink-0 font-bold text-sev-normal" aria-hidden="true">✓</span>
                       <span>{d}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              <div className="p-4 rounded-xl bg-red-950/20 border border-red-500/30">
-                <h5 className="text-xs font-mono font-bold uppercase tracking-wider text-red-400 mb-2.5 flex items-center gap-1.5">
-                  <AlertTriangle className="h-3.5 w-3.5" />
+              <div className="border-l-4 border-sev-critical pl-gutter">
+                <h5 className="mb-cell flex items-center gap-1.5 text-body font-bold text-fg-1">
+                  <AlertTriangle className="h-4 w-4 text-sev-critical" aria-hidden="true" />
                   <span>Yang Dilarang (Hindari Risiko Bahaya)</span>
                 </h5>
-                <ul className="space-y-1.5 text-xs text-[#CBD5E1]">
+                <ul className="space-y-1.5 text-body text-fg-2">
                   {guide.donts.map((d, idx) => (
-                    <li key={idx} className="flex items-start gap-2">
-                      <span className="text-red-400 font-bold shrink-0">✕</span>
+                    <li key={idx} className="flex items-start gap-cell">
+                      <span className="shrink-0 font-bold text-sev-critical" aria-hidden="true">✕</span>
                       <span>{d}</span>
                     </li>
                   ))}

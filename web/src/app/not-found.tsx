@@ -5,8 +5,8 @@ import { Map, Home } from 'lucide-react';
 
 export default function NotFound() {
   return (
-    <div className="flex min-h-[70vh] flex-col items-center justify-center px-4 text-center">
-      <div className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-[#111827] shadow-xl mb-6">
+    <div className="flex min-h-[70vh] flex-col items-center justify-center px-gutter text-center">
+      <div className="relative mb-stack flex h-16 w-16 items-center justify-center overflow-hidden rounded-card border border-line bg-surface">
         <Image
           src="/logo.png"
           alt="Disaster Radar Indonesia Logo"
@@ -16,31 +16,31 @@ export default function NotFound() {
         />
       </div>
 
-      <span className="text-xs font-bold uppercase tracking-widest text-[#EF4444]">
+      <span className="font-mono text-small text-fg-3">
         404 — Halaman Tidak Ditemukan
       </span>
-      <h1 className="mt-2 text-3xl font-black text-white sm:text-4xl">
-        Halaman Tidak Tersedia
+      <h1 className="mt-cell text-display text-fg-1 md:text-display-lg">
+        Halaman Tidak <span className="serif-accent text-accent">tersedia</span>
       </h1>
-      <p className="mx-auto mt-3 max-w-md text-xs sm:text-sm text-[#8B95A7] leading-relaxed">
+      <p className="mx-auto mt-row max-w-md text-body text-fg-2">
         Halaman, kategori bencana, atau rute yang Anda cari tidak ditemukan atau telah dipindahkan.
       </p>
 
-      <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+      <div className="mt-stack flex flex-wrap items-center justify-center gap-row">
         <Link
           href="/"
-          className="flex items-center gap-2 rounded-xl bg-[#151C28] px-5 py-2.5 text-xs font-bold text-white hover:bg-white/10 transition border border-white/10"
+          className="flex min-h-tap items-center gap-2 rounded-control border border-line-strong px-gutter text-small font-semibold text-fg-1 transition-colors duration-120 hover:border-accent hover:text-accent"
         >
-          <Home className="h-4 w-4" />
+          <Home className="h-4 w-4" aria-hidden="true" />
           <span>Kembali ke Beranda</span>
         </Link>
 
         <Link
           href="/map"
-          className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#EF4444] to-[#F97316] px-5 py-2.5 text-xs font-bold text-white shadow-lg shadow-red-500/20 hover:brightness-110 transition"
+          className="flex min-h-tap items-center gap-2 rounded-control bg-accent px-gutter text-small font-semibold text-fg-inverse transition-colors duration-120 hover:bg-accent-hover"
         >
-          <Map className="h-4 w-4" />
-          <span>Buka Peta Radar</span>
+          <Map className="h-4 w-4" aria-hidden="true" />
+          <span>Buka peta</span>
         </Link>
       </div>
     </div>

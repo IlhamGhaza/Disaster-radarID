@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react'
 import type { Map as LeafletMap, LayerGroup } from 'leaflet';
 import Link from 'next/link';
 import { VolcanoAdvisory, AshPolygon, LatLng } from '@/lib/types';
-import { LAYER_COLORS } from '@/lib/palette';
+import { LAYER_COLORS, SEVERITY_HEX } from '@/lib/palette';
 import { formatWibDateTime } from '@/lib/parser/date-utils';
 import { formatAltitudeCompact, formatMovementHuman, formatFlightLevelHuman } from '@/lib/aviation-format';
 import { checkLocationAshStatus, LocationCheckResult } from '@/lib/geo-checker';
@@ -202,15 +202,15 @@ export default function AshMap({
           const L = LModule.default;
           const statusBg =
             res.status === 'ASH_AREA'
-              ? '#FF6B1A'
+              ? SEVERITY_HEX.critical
               : res.status === 'FORECAST_OVERLAP'
-              ? '#F59E0B'
-              : '#10B981';
+              ? SEVERITY_HEX.warning
+              : SEVERITY_HEX.normal;
 
           const markerHtml = `
             <div class="relative flex h-8 w-8 items-center justify-center cursor-pointer select-none" style="transform: translate(-50%, -50%);">
               <span class="user-gps-ring" style="background-color: ${statusBg}40; border: 1.5px solid ${statusBg};"></span>
-              <div class="relative flex h-4 w-4 items-center justify-center rounded-full bg-white shadow-lg border-2" style="border-color: ${statusBg};">
+              <div class="relative flex h-4 w-4 items-center justify-center rounded-full bg-fg-1 border-2" style="border-color: ${statusBg};">
                 <div class="h-2 w-2 rounded-full" style="background-color: ${statusBg};"></div>
               </div>
             </div>
@@ -415,16 +415,16 @@ export default function AshMap({
 
         // Label Badge
         const labelHtml = `
-          <div class="${isDukono ? 'mb-1 order-first' : 'mt-1.5 order-last'} whitespace-nowrap rounded-lg px-2 py-1 text-center bg-[#0B0F17]/95 border border-white/15 shadow-xl backdrop-blur-md">
+          <div class="${isDukono ? 'mb-1 order-first' : 'mt-1.5 order-last'} whitespace-nowrap rounded-lg px-2 py-1 text-center bg-raised border border-line-strong shadow-float">
             <div class="flex items-center gap-1.5">
-              <span class="h-1.5 w-1.5 rounded-full" style="background-color: ${statusColor}; box-shadow: 0 0 6px ${statusColor};"></span>
-              <span style="color: #F5F7FA; font-size: 9.5px; font-weight: 800; line-height: 1;">
+              <span class="h-1.5 w-1.5 rounded-full" style="background-color: ${statusColor};"></span>
+              <span style="color: var(--fg-1); font-size: 12px; font-weight: 600; line-height: 1.2;">
                 ${volcano.volcanoName}
               </span>
-              <span style="font-size: 8px; font-weight: 800; padding: 1px 4px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.05em; background: ${statusMeta.badgeBg}; color: ${statusMeta.badgeText}; border: 1px solid ${statusMeta.badgeBorder};">
+              <span style="font-size: 12px; font-weight: 600; padding: 1px 4px; border-radius: 2px; background: ${statusMeta.badgeBg}; color: ${statusMeta.badgeText}; border: 1px solid ${statusMeta.badgeBorder};">
                 ${statusMeta.name}
               </span>
-              ${hasActiveAsh ? `<span style="font-size: 7.5px; font-weight: 900; padding: 1px 3.5px; border-radius: 3px; background: rgba(255, 107, 26, 0.25); color: #FF8A3D; border: 1px solid rgba(255, 107, 26, 0.4);">ABU</span>` : ''}
+              ${hasActiveAsh ? `<span style="font-size: 12px; font-weight: 600; padding: 1px 4px; border-radius: 2px; background: var(--sev-ash-soft); color: var(--sev-ash); border: 1px solid var(--sev-ash);">Abu</span>` : ''}
             </div>
           </div>
         `;
@@ -433,7 +433,7 @@ export default function AshMap({
         const markerHtml = `
           <div class="flex flex-col items-center cursor-pointer select-none" style="transform: translate(-50%, -50%);">
             ${isDukono ? labelHtml : ''}
-            <div class="relative flex h-6 w-6 items-center justify-center rounded-full bg-[#111827] shadow-lg border" style="border-color: ${statusColor};">
+            <div class="relative flex h-6 w-6 items-center justify-center rounded-full bg-raised border" style="border-color: ${statusColor};">
               ${hasActiveAsh ? `<span class="pulse-marker-ring" style="background-color: ${statusMeta.ringColor}; border: 1px solid ${statusColor};"></span>` : ''}
               ${hasActiveAsh ? `
                 <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="${statusColor}">
@@ -462,24 +462,24 @@ export default function AshMap({
         const tooltipHtml = hasActiveAsh && matchingAdvisory
           ? `
             <div class="text-center p-1">
-              <div class="font-black text-white text-xs tracking-wide">${volcano.volcanoName}</div>
-              <div class="inline-flex items-center gap-1 my-1 px-2 py-0.5 rounded-full text-[10px] font-bold" style="background: ${statusMeta.badgeBg}; color: ${statusMeta.badgeText}; border: 1px solid ${statusMeta.badgeBorder};">
+              <div class="font-bold text-fg-1 text-small">${volcano.volcanoName}</div>
+              <div class="inline-flex items-center gap-1 my-1 px-2 py-0.5 rounded-full text-label font-bold" style="background: ${statusMeta.badgeBg}; color: ${statusMeta.badgeText}; border: 1px solid ${statusMeta.badgeBorder};">
                 <span>Status PVMBG:</span>
                 <span>${statusMeta.roman} (${statusMeta.name})</span>
               </div>
-              <div class="text-[10px] text-[#FF8A3D] font-bold">ABU AKTIF: ${formatAltitudeCompact(matchingAdvisory.primaryFlightLevel)}</div>
-              <div class="text-[10px] text-[#8B95A7]">${formatMovementHuman(matchingAdvisory.primaryMovement)}</div>
+              <div class="text-label text-accent font-bold">Abu aktif: ${formatAltitudeCompact(matchingAdvisory.primaryFlightLevel)}</div>
+              <div class="text-label text-fg-2">${formatMovementHuman(matchingAdvisory.primaryMovement)}</div>
             </div>
           `
           : `
             <div class="text-center p-1">
-              <div class="font-black text-white text-xs tracking-wide">${volcano.volcanoName} (${volcano.elevation})</div>
-              <div class="inline-flex items-center gap-1 my-1 px-2 py-0.5 rounded-full text-[10px] font-bold" style="background: ${statusMeta.badgeBg}; color: ${statusMeta.badgeText}; border: 1px solid ${statusMeta.badgeBorder};">
+              <div class="font-bold text-fg-1 text-small">${volcano.volcanoName} (${volcano.elevation})</div>
+              <div class="inline-flex items-center gap-1 my-1 px-2 py-0.5 rounded-full text-label font-bold" style="background: ${statusMeta.badgeBg}; color: ${statusMeta.badgeText}; border: 1px solid ${statusMeta.badgeBorder};">
                 <span>Status PVMBG:</span>
                 <span>${statusMeta.roman} (${statusMeta.name})</span>
               </div>
-              <div class="text-[10px] text-slate-300 font-medium">${volcano.area}</div>
-              <div class="text-[9px] text-[#8B95A7] mt-0.5">Pemantauan Seismik Ground PVMBG</div>
+              <div class="text-label text-fg-2 font-medium">${volcano.area}</div>
+              <div class="text-label text-fg-2 mt-0.5">Pemantauan Seismik Ground PVMBG</div>
             </div>
           `;
 
@@ -514,21 +514,21 @@ export default function AshMap({
 
         const markerHtml = `
           <div class="flex flex-col items-center cursor-pointer select-none" style="transform: translate(-50%, -50%);">
-            <div class="relative flex h-6 w-6 items-center justify-center rounded-full bg-[#111827] shadow-lg border" style="border-color: ${magmaStatus.color};">
+            <div class="relative flex h-6 w-6 items-center justify-center rounded-full bg-raised border" style="border-color: ${magmaStatus.color};">
               <span class="pulse-marker-ring" style="background-color: ${magmaStatus.ringColor}; border: 1px solid ${magmaStatus.color};"></span>
               <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="${magmaStatus.color}">
                 <path d="M18 20H6l4.5-9h3L18 20z"/>
                 <circle cx="12" cy="5" r="2"/>
               </svg>
             </div>
-            <div class="mt-1.5 whitespace-nowrap rounded-lg px-2 py-1 text-center bg-[#0B0F17]/95 border border-white/15 shadow-xl backdrop-blur-md">
+            <div class="mt-1.5 whitespace-nowrap rounded-lg px-2 py-1 text-center bg-raised border border-line-strong shadow-float">
               <div class="flex items-center gap-1.5">
                 <span class="h-1.5 w-1.5 rounded-full" style="background-color: ${magmaStatus.color};"></span>
-                <span style="color: #F5F7FA; font-size: 9.5px; font-weight: 800;">${advisory.volcanoName}</span>
-                <span style="font-size: 8px; font-weight: 800; padding: 1px 4px; border-radius: 4px; background: ${magmaStatus.badgeBg}; color: ${magmaStatus.badgeText}; border: 1px solid ${magmaStatus.badgeBorder};">
+                <span style="color: var(--fg-1); font-size: 12px; font-weight: 600;">${advisory.volcanoName}</span>
+                <span style="font-size: 12px; font-weight: 600; padding: 1px 4px; border-radius: 2px; background: ${magmaStatus.badgeBg}; color: ${magmaStatus.badgeText}; border: 1px solid ${magmaStatus.badgeBorder};">
                   ${magmaStatus.levelName}
                 </span>
-                <span style="font-size: 7.5px; font-weight: 900; padding: 1px 3.5px; border-radius: 3px; background: rgba(255, 107, 26, 0.25); color: #FF8A3D; border: 1px solid rgba(255, 107, 26, 0.4);">ABU</span>
+                <span style="font-size: 12px; font-weight: 600; padding: 1px 4px; border-radius: 2px; background: var(--sev-ash-soft); color: var(--sev-ash); border: 1px solid var(--sev-ash);">Abu</span>
               </div>
             </div>
           </div>
@@ -636,9 +636,9 @@ export default function AshMap({
         polygon.bindTooltip(
           `
             <div class="text-center">
-              <div class="font-bold text-white">${advisory.volcanoName} [${ashPoly.type.toUpperCase()}]</div>
-              <div class="text-[10px] text-[#FF8A3D]">${altText}</div>
-              ${ashPoly.movementDirection ? `<div class="text-[10px] text-[#8B95A7]">${ashPoly.movementDirection} ${ashPoly.movementSpeed || ''}</div>` : ''}
+              <div class="font-bold text-fg-1">${advisory.volcanoName} [${ashPoly.type.toUpperCase()}]</div>
+              <div class="text-label text-accent">${altText}</div>
+              ${ashPoly.movementDirection ? `<div class="text-label text-fg-2">${ashPoly.movementDirection} ${ashPoly.movementSpeed || ''}</div>` : ''}
             </div>
           `,
           { sticky: true, className: 'leaflet-tooltip' }
@@ -699,7 +699,7 @@ export default function AshMap({
   };
 
   return (
-    <div className="relative h-full w-full overflow-hidden bg-[#0B0F17]">
+    <div className="relative h-full w-full overflow-hidden bg-raised">
       {/* Map Canvas with OpenStreetMap dark transformation */}
       <div ref={mapContainerRef} className="h-full w-full osm-dark-tiles" />
 
@@ -708,8 +708,8 @@ export default function AshMap({
         <div className="flex items-center gap-2 pointer-events-auto">
           {/* Location Search Input with Instant Autocomplete */}
           <div className="relative" ref={searchContainerRef}>
-            <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-[#0B0F17]/90 px-3 py-2 shadow-xl backdrop-blur-md">
-              <Search className="h-3.5 w-3.5 text-[#8B95A7]" />
+            <div className="flex items-center gap-2 rounded-card border border-line bg-raised px-3 py-2 shadow-float">
+              <Search className="h-3.5 w-3.5 text-fg-2" />
               <input
                 type="text"
                 placeholder="Cari kota, bandara, atau lokasi..."
@@ -718,12 +718,12 @@ export default function AshMap({
                 onFocus={() => {
                   if (searchQuery.trim().length >= 2) setShowSuggestions(true);
                 }}
-                className="w-36 sm:w-56 bg-transparent text-xs text-[#F5F7FA] placeholder-[#8B95A7] focus:outline-none"
+                className="min-h-tap w-36 sm:w-56 bg-transparent text-body text-fg-1 placeholder:text-fg-3"
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="text-[#8B95A7] hover:text-white"
+                  className="text-fg-2 hover:text-fg-1"
                 >
                   <X className="h-3 w-3" />
                 </button>
@@ -732,28 +732,28 @@ export default function AshMap({
 
             {/* Suggestions Dropdown (Both Volcanoes and Places) */}
             {showSuggestions && (suggestions.length > 0 || volcanoSuggestions.length > 0) && (
-              <div className="absolute top-full left-0 mt-1.5 w-72 max-h-72 overflow-y-auto rounded-xl border border-white/10 bg-[#111827] p-1.5 shadow-2xl backdrop-blur-xl divide-y divide-white/5">
+              <div className="absolute top-full left-0 mt-1.5 w-72 max-h-72 overflow-y-auto rounded-xl border border-line bg-raised p-1.5 shadow-float divide-y divide-line">
                 {/* Volcano Matches */}
                 {volcanoSuggestions.length > 0 && (
                   <div className="py-1">
-                    <div className="px-2 py-1 text-[9px] font-bold uppercase tracking-wider text-[#FF6B1A]">
+                    <div className="px-2 py-1 text-label font-bold text-accent">
                       Gunung Api Terpantau (PVMBG)
                     </div>
                     {volcanoSuggestions.map((v) => (
                       <button
                         key={v.volcanoSlug}
                         onClick={() => handleSelectVolcano(v)}
-                        className="flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-left text-xs transition hover:bg-[#151C28]"
+                        className="flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-left text-small transition hover:bg-surface"
                       >
                         <div className="flex items-center gap-1.5">
                           <span
                             className="h-2 w-2 rounded-full shrink-0"
                             style={{ backgroundColor: v.color }}
                           />
-                          <span className="font-semibold text-white">{v.volcanoName}</span>
+                          <span className="font-semibold text-fg-1">{v.volcanoName}</span>
                         </div>
                         <span
-                          className="text-[9px] font-bold px-1.5 py-0.5 rounded uppercase"
+                          className="text-label font-bold px-1.5 py-0.5 rounded"
                           style={{
                             backgroundColor: v.badgeBg,
                             color: v.badgeText,
@@ -770,20 +770,20 @@ export default function AshMap({
                 {/* Indonesian Cities and Places Matches */}
                 {suggestions.length > 0 && (
                   <div className="py-1">
-                    <div className="px-2 py-1 text-[9px] font-bold uppercase tracking-wider text-[#8B95A7]">
+                    <div className="px-2 py-1 text-label font-bold text-fg-2">
                       Kota & Lokasi Indonesia
                     </div>
                     {suggestions.map((p, idx) => (
                       <button
                         key={idx}
                         onClick={() => handleSelectPlace(p)}
-                        className="flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-left text-xs transition hover:bg-[#151C28]"
+                        className="flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-left text-small transition hover:bg-surface"
                       >
                         <div className="flex items-center gap-1.5">
-                          <MapPin className="h-3 w-3 text-[#FF6B1A]" />
-                          <span className="font-semibold text-white">{p.name}</span>
+                          <MapPin className="h-3 w-3 text-accent" />
+                          <span className="font-semibold text-fg-1">{p.name}</span>
                         </div>
-                        <span className="text-[10px] text-[#8B95A7]">{p.province}</span>
+                        <span className="text-label text-fg-2">{p.province}</span>
                       </button>
                     ))}
                   </div>
@@ -796,13 +796,13 @@ export default function AshMap({
         {/* Top Right Controls: GPS, Layers, Refresh, Fullscreen */}
         <div className="flex items-center gap-2 pointer-events-auto">
           {/* Live Badge */}
-          <div className="hidden sm:flex items-center gap-2 rounded-xl border border-white/10 bg-[#0B0F17]/90 px-3 py-2 text-xs shadow-xl backdrop-blur-md">
+          <div className="hidden sm:flex items-center gap-2 rounded-xl border border-line bg-raised px-3 py-2 text-small shadow-float">
             <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+              <span className="absolute inline-flex h-full w-full rounded-full bg-sev-normal opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-sev-normal" />
             </span>
-            <span className="font-bold text-emerald-400">LIVE</span>
-            <span className="text-[#8B95A7] font-medium" suppressHydrationWarning>
+            <span className="font-bold text-sev-normal">LIVE</span>
+            <span className="text-fg-2 font-medium" suppressHydrationWarning>
               {mounted ? relativeTime : 'baru saja'}
             </span>
           </div>
@@ -811,11 +811,11 @@ export default function AshMap({
           <button
             onClick={handleLocateUser}
             disabled={isLocating}
-            className="flex h-9 items-center gap-1.5 rounded-xl border border-white/10 bg-[#0B0F17]/90 px-3 text-xs font-semibold text-[#F5F7FA] shadow-xl backdrop-blur-md hover:bg-[#151C28] hover:border-[#FF6B1A]/40 transition disabled:opacity-50"
+            className="flex h-9 items-center gap-1.5 rounded-xl border border-line bg-raised px-3 text-small font-semibold text-fg-1 shadow-float hover:bg-surface hover:border-accent transition disabled:opacity-50"
             title="Deteksi Lokasi GPS"
             aria-label="Deteksi lokasi saya via GPS"
           >
-            <Crosshair className={`h-4 w-4 text-[#FF6B1A] ${isLocating ? 'animate-spin' : ''}`} />
+            <Crosshair className={`h-4 w-4 text-accent ${isLocating ? 'animate-spin' : ''}`} />
             <span className="hidden sm:inline">GPS</span>
           </button>
 
@@ -823,75 +823,75 @@ export default function AshMap({
           <div className="relative">
             <button
               onClick={() => setShowLayersMenu(!showLayersMenu)}
-              className="flex h-9 items-center gap-1.5 rounded-xl border border-white/10 bg-[#0B0F17]/90 px-3 text-xs font-semibold text-[#F5F7FA] shadow-xl backdrop-blur-md hover:bg-[#151C28] transition"
+              className="flex h-9 items-center gap-1.5 rounded-xl border border-line bg-raised px-3 text-small font-semibold text-fg-1 shadow-float hover:bg-surface transition"
               title="Lapisan Peta"
               aria-label="Lapisan Peta"
             >
-              <Layers className="h-4 w-4 text-[#8B95A7]" />
+              <Layers className="h-4 w-4 text-fg-2" />
               <span className="hidden sm:inline">Lapisan</span>
             </button>
 
             {/* Layers Menu Popover */}
             {showLayersMenu && (
-              <div className="absolute right-0 top-full mt-2 w-64 rounded-xl border border-white/10 bg-[#111827] p-3 shadow-2xl backdrop-blur-xl space-y-2.5">
+              <div className="absolute right-0 top-full mt-2 w-64 rounded-xl border border-line bg-raised p-3 shadow-float space-y-2.5">
                 <div>
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-[#8B95A7] px-1 mb-1">
+                  <div className="text-label font-bold text-fg-2 px-1 mb-1">
                     Lapisan Sebaran Abu
                   </div>
                   <div className="space-y-1">
                     <button
                       onClick={() => setActiveLayers((p) => ({ ...p, observed: !p.observed }))}
-                      className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-xs font-semibold transition ${
+                      className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-small font-semibold transition ${
                         activeLayers.observed
-                          ? 'bg-white/10 text-white'
-                          : 'text-[#8B95A7] hover:bg-white/5'
+                          ? 'bg-surface text-fg-1'
+                          : 'text-fg-2 hover:bg-surface'
                       }`}
                     >
                       <div className="flex items-center gap-2">
-                        <span className="h-2.5 w-2.5 rounded-full bg-slate-200 border border-white" />
+                        <span className="h-2.5 w-2.5 rounded-full bg-fg-1 border border-fg-1" />
                         <span>Abu Teramati</span>
                       </div>
-                      <span className="text-[10px] text-slate-400">Saat ini</span>
+                      <span className="text-label text-fg-2">Saat ini</span>
                     </button>
 
                     <button
                       onClick={() => setActiveLayers((p) => ({ ...p, forecast6h: !p.forecast6h }))}
-                      className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-xs font-semibold transition ${
+                      className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-small font-semibold transition ${
                         activeLayers.forecast6h
-                          ? 'bg-[#FF8A3D]/15 text-[#FF8A3D]'
-                          : 'text-[#8B95A7] hover:bg-white/5'
+                          ? 'bg-accent/15 text-accent'
+                          : 'text-fg-2 hover:bg-surface'
                       }`}
                     >
                       <div className="flex items-center gap-2">
-                        <span className="h-2.5 w-2.5 rounded-full bg-[#FF8A3D]" />
+                        <span className="h-2.5 w-2.5 rounded-full bg-accent" />
                         <span>Prakiraan +6j</span>
                       </div>
                     </button>
 
                     <button
                       onClick={() => setActiveLayers((p) => ({ ...p, forecast12h: !p.forecast12h }))}
-                      className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-xs font-semibold transition ${
+                      className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-small font-semibold transition ${
                         activeLayers.forecast12h
-                          ? 'bg-[#FF8A3D]/15 text-[#FF8A3D]'
-                          : 'text-[#8B95A7] hover:bg-white/5'
+                          ? 'bg-accent/15 text-accent'
+                          : 'text-fg-2 hover:bg-surface'
                       }`}
                     >
                       <div className="flex items-center gap-2">
-                        <span className="h-2.5 w-2.5 rounded-full bg-[#FF8A3D]/70" />
+                        <span className="h-2.5 w-2.5 rounded-full bg-accent" />
                         <span>Prakiraan +12j</span>
                       </div>
                     </button>
 
                     <button
                       onClick={() => setActiveLayers((p) => ({ ...p, forecast18h: !p.forecast18h }))}
-                      className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-xs font-semibold transition ${
+                      className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-small font-semibold transition ${
                         activeLayers.forecast18h
-                          ? 'bg-[#FF8A3D]/15 text-[#FF8A3D]'
-                          : 'text-[#8B95A7] hover:bg-white/5'
+                          ? 'bg-accent/15 text-accent'
+                          : 'text-fg-2 hover:bg-surface'
                       }`}
                     >
                       <div className="flex items-center gap-2">
-                        <span className="h-2.5 w-2.5 rounded-full bg-[#FF8A3D]/40" />
+                        <span className="h-2.5 w-2.5 rounded-full bg-accent/15" />
                         <span>Prakiraan +18j</span>
                       </div>
                     </button>
@@ -899,15 +899,15 @@ export default function AshMap({
                 </div>
 
                 {/* Lapisan Gunung Api (4 Level PVMBG) */}
-                <div className="pt-2 border-t border-white/10">
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-[#8B95A7] px-1 mb-1 flex items-center justify-between">
+                <div className="pt-2 border-t border-line">
+                  <div className="text-label font-bold text-fg-2 px-1 mb-1 flex items-center justify-between">
                     <span>Gunung Api Terpantau</span>
                     <button
                       onClick={() => setActiveLayers((p) => ({ ...p, allVolcanoes: !p.allVolcanoes }))}
-                      className={`text-[10px] font-bold px-1.5 py-0.5 rounded transition ${
+                      className={`text-label font-bold px-1.5 py-0.5 rounded transition ${
                         activeLayers.allVolcanoes
-                          ? 'bg-[#FF6B1A]/20 text-[#FF8A3D]'
-                          : 'bg-white/5 text-[#8B95A7]'
+                          ? 'bg-accent/15 text-accent'
+                          : 'bg-surface text-fg-2'
                       }`}
                     >
                       {activeLayers.allVolcanoes ? 'Aktif' : 'Abu Saja'}
@@ -918,30 +918,30 @@ export default function AshMap({
                   <div className="mt-2 space-y-1">
                     <button
                       onClick={toggleAllLevels}
-                      className={`flex w-full items-center justify-between rounded-lg px-2 py-1 text-xs font-semibold transition ${
+                      className={`flex w-full items-center justify-between rounded-lg px-2 py-1 text-small font-semibold transition ${
                         isAllLevelsSelected
-                          ? 'bg-white/15 text-white'
-                          : 'text-[#8B95A7] hover:bg-white/5'
+                          ? 'bg-surface text-fg-1'
+                          : 'text-fg-2 hover:bg-surface'
                       }`}
                     >
                       <div className="flex items-center gap-2">
                         <div
                           className={`flex h-3.5 w-3.5 items-center justify-center rounded border transition ${
                             isAllLevelsSelected
-                              ? 'bg-white/30 border-white/60 text-white'
+                              ? 'bg-surface border-fg-1 text-fg-1'
                               : selectedLevels.length > 0
-                              ? 'bg-white/10 border-white/30 text-white'
-                              : 'border-white/20 bg-transparent'
+                              ? 'bg-surface border-line-strong text-fg-1'
+                              : 'border-line-strong bg-transparent'
                           }`}
                         >
                           {isAllLevelsSelected && <Check className="h-2.5 w-2.5 stroke-[3]" />}
                           {!isAllLevelsSelected && selectedLevels.length > 0 && (
-                            <span className="h-1.5 w-1.5 rounded-sm bg-white" />
+                            <span className="h-1.5 w-1.5 rounded-sm bg-fg-1" />
                           )}
                         </div>
                         <span>Semua Status</span>
                       </div>
-                      <span className="text-[10px] font-mono text-slate-400">
+                      <span className="text-label font-mono text-fg-2">
                         {isAllLevelsSelected
                           ? allMonitored.length
                           : `${filteredMonitored.length}/${allMonitored.length}`}
@@ -950,114 +950,114 @@ export default function AshMap({
 
                     <button
                       onClick={() => toggleLevel(4)}
-                      className={`flex w-full items-center justify-between rounded-lg px-2 py-1 text-xs font-semibold transition ${
+                      className={`flex w-full items-center justify-between rounded-lg px-2 py-1 text-small font-semibold transition ${
                         selectedLevels.includes(4)
-                          ? 'bg-[#EF4444]/25 text-[#F87171] border border-[#EF4444]/40'
-                          : 'text-[#8B95A7] hover:bg-white/5 border border-transparent'
+                          ? 'bg-sev-critical-soft text-sev-critical border border-sev-critical'
+                          : 'text-fg-2 hover:bg-surface border border-transparent'
                       }`}
                     >
                       <div className="flex items-center gap-2">
                         <div
                           className={`flex h-3.5 w-3.5 items-center justify-center rounded border transition ${
                             selectedLevels.includes(4)
-                              ? 'bg-[#EF4444] border-[#EF4444] text-white'
-                              : 'border-white/20 bg-transparent'
+                              ? 'bg-sev-critical border-sev-critical text-sev-on'
+                              : 'border-line-strong bg-transparent'
                           }`}
                         >
                           {selectedLevels.includes(4) && <Check className="h-2.5 w-2.5 stroke-[3]" />}
                         </div>
                         <span
                           className={`h-2 w-2 rounded-full ${
-                            selectedLevels.includes(4) ? 'bg-[#EF4444]' : 'bg-[#EF4444]/40'
+                            selectedLevels.includes(4) ? 'bg-sev-critical' : 'bg-sev-critical-soft'
                           }`}
                         />
                         <span>Level IV: Awas</span>
                       </div>
-                      <span className="text-[10px] font-mono text-[#F87171]">{countLevel4}</span>
+                      <span className="text-label font-mono text-sev-critical">{countLevel4}</span>
                     </button>
 
                     <button
                       onClick={() => toggleLevel(3)}
-                      className={`flex w-full items-center justify-between rounded-lg px-2 py-1 text-xs font-semibold transition ${
+                      className={`flex w-full items-center justify-between rounded-lg px-2 py-1 text-small font-semibold transition ${
                         selectedLevels.includes(3)
-                          ? 'bg-[#FF6B1A]/25 text-[#FF8A3D] border border-[#FF6B1A]/40'
-                          : 'text-[#8B95A7] hover:bg-white/5 border border-transparent'
+                          ? 'bg-accent/15 text-accent border border-accent'
+                          : 'text-fg-2 hover:bg-surface border border-transparent'
                       }`}
                     >
                       <div className="flex items-center gap-2">
                         <div
                           className={`flex h-3.5 w-3.5 items-center justify-center rounded border transition ${
                             selectedLevels.includes(3)
-                              ? 'bg-[#FF6B1A] border-[#FF6B1A] text-white'
-                              : 'border-white/20 bg-transparent'
+                              ? 'bg-accent border-accent text-fg-inverse'
+                              : 'border-line-strong bg-transparent'
                           }`}
                         >
                           {selectedLevels.includes(3) && <Check className="h-2.5 w-2.5 stroke-[3]" />}
                         </div>
                         <span
                           className={`h-2 w-2 rounded-full ${
-                            selectedLevels.includes(3) ? 'bg-[#FF6B1A]' : 'bg-[#FF6B1A]/40'
+                            selectedLevels.includes(3) ? 'bg-accent' : 'bg-accent/15'
                           }`}
                         />
                         <span>Level III: Siaga</span>
                       </div>
-                      <span className="text-[10px] font-mono text-[#FF8A3D]">{countLevel3}</span>
+                      <span className="text-label font-mono text-accent">{countLevel3}</span>
                     </button>
 
                     <button
                       onClick={() => toggleLevel(2)}
-                      className={`flex w-full items-center justify-between rounded-lg px-2 py-1 text-xs font-semibold transition ${
+                      className={`flex w-full items-center justify-between rounded-lg px-2 py-1 text-small font-semibold transition ${
                         selectedLevels.includes(2)
-                          ? 'bg-[#F59E0B]/25 text-[#FBBF24] border border-[#F59E0B]/40'
-                          : 'text-[#8B95A7] hover:bg-white/5 border border-transparent'
+                          ? 'bg-sev-warning-soft text-sev-warning border border-sev-warning'
+                          : 'text-fg-2 hover:bg-surface border border-transparent'
                       }`}
                     >
                       <div className="flex items-center gap-2">
                         <div
                           className={`flex h-3.5 w-3.5 items-center justify-center rounded border transition ${
                             selectedLevels.includes(2)
-                              ? 'bg-[#F59E0B] border-[#F59E0B] text-slate-950'
-                              : 'border-white/20 bg-transparent'
+                              ? 'bg-sev-warning border-sev-warning text-fg-inverse'
+                              : 'border-line-strong bg-transparent'
                           }`}
                         >
                           {selectedLevels.includes(2) && <Check className="h-2.5 w-2.5 stroke-[3]" />}
                         </div>
                         <span
                           className={`h-2 w-2 rounded-full ${
-                            selectedLevels.includes(2) ? 'bg-[#F59E0B]' : 'bg-[#F59E0B]/40'
+                            selectedLevels.includes(2) ? 'bg-sev-warning' : 'bg-sev-warning-soft'
                           }`}
                         />
                         <span>Level II: Waspada</span>
                       </div>
-                      <span className="text-[10px] font-mono text-[#FBBF24]">{countLevel2}</span>
+                      <span className="text-label font-mono text-sev-warning">{countLevel2}</span>
                     </button>
 
                     <button
                       onClick={() => toggleLevel(1)}
-                      className={`flex w-full items-center justify-between rounded-lg px-2 py-1 text-xs font-semibold transition ${
+                      className={`flex w-full items-center justify-between rounded-lg px-2 py-1 text-small font-semibold transition ${
                         selectedLevels.includes(1)
-                          ? 'bg-[#10B981]/25 text-[#34D399] border border-[#10B981]/40'
-                          : 'text-[#8B95A7] hover:bg-white/5 border border-transparent'
+                          ? 'bg-sev-normal-soft text-sev-normal border border-sev-normal'
+                          : 'text-fg-2 hover:bg-surface border border-transparent'
                       }`}
                     >
                       <div className="flex items-center gap-2">
                         <div
                           className={`flex h-3.5 w-3.5 items-center justify-center rounded border transition ${
                             selectedLevels.includes(1)
-                              ? 'bg-[#10B981] border-[#10B981] text-white'
-                              : 'border-white/20 bg-transparent'
+                              ? 'bg-sev-normal border-sev-normal text-sev-on'
+                              : 'border-line-strong bg-transparent'
                           }`}
                         >
                           {selectedLevels.includes(1) && <Check className="h-2.5 w-2.5 stroke-[3]" />}
                         </div>
                         <span
                           className={`h-2 w-2 rounded-full ${
-                            selectedLevels.includes(1) ? 'bg-[#10B981]' : 'bg-[#10B981]/40'
+                            selectedLevels.includes(1) ? 'bg-sev-normal' : 'bg-sev-normal-soft'
                           }`}
                         />
                         <span>Level I: Normal</span>
                       </div>
-                      <span className="text-[10px] font-mono text-[#34D399]">{countLevel1}</span>
+                      <span className="text-label font-mono text-sev-normal">{countLevel1}</span>
                     </button>
                   </div>
                 </div>
@@ -1068,7 +1068,7 @@ export default function AshMap({
           {/* Fullscreen Button */}
           <button
             onClick={handleToggleFullscreen}
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-[#0B0F17]/90 text-[#8B95A7] shadow-xl backdrop-blur-md hover:text-white transition"
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-line bg-raised text-fg-2 shadow-float hover:text-fg-1 transition"
             title="Layar Penuh"
             aria-label="Layar Penuh"
           >
@@ -1079,26 +1079,26 @@ export default function AshMap({
 
       {/* Floating User Location Status Pill (Directly from tugas.md section) */}
       {checkResult && (
-        <div className="absolute top-16 left-4 z-[400] max-w-xs pointer-events-auto sm:left-6 animate-in fade-in slide-in-from-top-3">
-          <div className="rounded-2xl border border-white/10 bg-[#111827]/95 p-3.5 shadow-2xl backdrop-blur-xl">
-            <div className="flex items-center justify-between pb-1.5 border-b border-white/10">
-              <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#8B95A7]">
+        <div className="absolute top-16 left-4 z-[400] max-w-xs pointer-events-auto sm:left-6">
+          <div className="rounded-card border border-line bg-raised p-3.5 shadow-float">
+            <div className="flex items-center justify-between pb-1.5 border-b border-line">
+              <div className="flex items-center gap-1.5 text-label font-bold text-fg-2">
                 <span
                   className="h-2 w-2 rounded-full"
                   style={{
                     backgroundColor:
                       checkResult.status === 'ASH_AREA'
-                        ? '#FF6B1A'
-                        : checkResult.status === 'FORECAST_OVERLAP'
-                        ? '#F59E0B'
-                        : '#10B981',
+                      ? 'var(--sev-critical)'
+                      : checkResult.status === 'FORECAST_OVERLAP'
+                      ? 'var(--sev-warning)'
+                      : 'var(--sev-normal)',
                   }}
                 />
-                <span>LOKASI ANDA</span>
+                <span>Lokasi Anda</span>
               </div>
               <button
                 onClick={() => setCheckResult(null)}
-                className="text-[#8B95A7] hover:text-white text-xs"
+                className="text-fg-2 hover:text-fg-1 text-small"
               >
                 <X className="h-3.5 w-3.5" />
               </button>
@@ -1106,28 +1106,28 @@ export default function AshMap({
 
             <div className="mt-2">
               <div
-                className="text-xs font-black tracking-wide"
+                className="text-small font-bold"
                 style={{
                   color:
                     checkResult.status === 'ASH_AREA'
-                      ? '#FF6B1A'
+                      ? 'var(--sev-critical)'
                       : checkResult.status === 'FORECAST_OVERLAP'
-                      ? '#F59E0B'
-                      : '#10B981',
+                      ? 'var(--sev-warning)'
+                      : 'var(--sev-normal)',
                 }}
               >
                 {checkResult.status === 'CLEAR'
-                  ? 'AMAN DARI ABU'
+                  ? 'Di luar area abu'
                   : checkResult.status === 'ASH_AREA'
-                  ? 'WILAYAH ABU AKTIF'
-                  : 'PRAKIRAAN SEBARAN ABU'}
+                  ? 'Di dalam area abu aktif'
+                  : 'Masuk prakiraan sebaran abu'}
               </div>
-              <div className="text-[11px] text-[#F5F7FA] font-medium mt-0.5">
+              <div className="text-label text-fg-1 font-medium mt-0.5">
                 {checkResult.status === 'CLEAR' && (
                   <span>
                     Tidak ada sebaran abu vulkanik aktif di area ini.
                     {checkResult.nearestAshDistanceKm > 0 && (
-                      <span className="block text-[#8B95A7] text-[10px] mt-0.5">
+                      <span className="block text-fg-2 text-label mt-0.5">
                         Terdekat: ~{checkResult.nearestAshDistanceKm} km ({checkResult.nearestVolcanoName})
                       </span>
                     )}
@@ -1153,7 +1153,7 @@ export default function AshMap({
       <div className="absolute bottom-6 right-4 z-[400] flex flex-col gap-1.5 pointer-events-auto sm:right-6">
         <button
           onClick={handleZoomIn}
-          className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-[#0B0F17]/90 text-[#F5F7FA] shadow-xl backdrop-blur-md hover:bg-[#151C28] transition"
+          className="flex h-9 w-9 items-center justify-center rounded-xl border border-line bg-raised text-fg-1 shadow-float hover:bg-surface transition"
           title="Perbesar"
           aria-label="Perbesar"
         >
@@ -1161,7 +1161,7 @@ export default function AshMap({
         </button>
         <button
           onClick={handleZoomOut}
-          className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-[#0B0F17]/90 text-[#F5F7FA] shadow-xl backdrop-blur-md hover:bg-[#151C28] transition"
+          className="flex h-9 w-9 items-center justify-center rounded-xl border border-line bg-raised text-fg-1 shadow-float hover:bg-surface transition"
           title="Perkecil"
           aria-label="Perkecil"
         >
@@ -1171,42 +1171,42 @@ export default function AshMap({
 
       {/* Desktop Left Rail: Quick Volcano Selector with 4 Levels Filter */}
       <div className="absolute bottom-6 left-4 z-[400] w-80 hidden md:block pointer-events-auto">
-        <div className="rounded-2xl border border-white/10 bg-[#0B0F17]/95 p-3 shadow-2xl backdrop-blur-xl">
+        <div className="rounded-card border border-line bg-raised p-3 shadow-float">
           {/* Tabs: Semua Gunung vs Abu Aktif */}
-          <div className="flex items-center gap-1 p-0.5 rounded-xl bg-white/5 mb-2">
+          <div className="flex items-center gap-1 p-0.5 rounded-xl bg-surface mb-2">
             <button
               onClick={() => setLeftRailTab('ALL')}
-              className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold transition ${
+              className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-small font-bold transition ${
                 leftRailTab === 'ALL'
-                  ? 'bg-[#151C28] text-white border border-white/10 shadow-sm'
-                  : 'text-[#8B95A7] hover:text-white'
+                  ? 'bg-surface text-fg-1 border border-line '
+                  : 'text-fg-2 hover:text-fg-1'
               }`}
             >
-              <Mountain className="h-3.5 w-3.5 text-[#FF6B1A]" />
+              <Mountain className="h-3.5 w-3.5 text-accent" />
               <span>Semua Gunung ({filteredMonitored.length})</span>
             </button>
             <button
               onClick={() => setLeftRailTab('ASH')}
-              className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold transition ${
+              className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-small font-bold transition ${
                 leftRailTab === 'ASH'
-                  ? 'bg-[#151C28] text-white border border-white/10 shadow-sm'
-                  : 'text-[#8B95A7] hover:text-white'
+                  ? 'bg-surface text-fg-1 border border-line '
+                  : 'text-fg-2 hover:text-fg-1'
               }`}
             >
-              <Flame className="h-3.5 w-3.5 text-amber-400" />
+              <Flame className="h-3.5 w-3.5 text-sev-warning" />
               <span>Abu Aktif ({advisories.length})</span>
             </button>
           </div>
 
           {/* Level Filter Chips when leftRailTab === 'ALL' (Multi-Select) */}
           {leftRailTab === 'ALL' && (
-            <div className="flex items-center gap-1 mb-2 overflow-x-auto pb-1 text-[10px]">
+            <div className="flex items-center gap-1 mb-2 overflow-x-auto pb-1 text-label">
               <button
                 onClick={toggleAllLevels}
                 className={`px-2 py-1 rounded-md font-bold transition whitespace-nowrap ${
                   isAllLevelsSelected
-                    ? 'bg-white/20 text-white'
-                    : 'bg-white/5 text-[#8B95A7] hover:text-white'
+                    ? 'bg-surface text-fg-1'
+                    : 'bg-surface text-fg-2 hover:text-fg-1'
                 }`}
                 title={isAllLevelsSelected ? 'Hapus semua pilihan level' : 'Pilih semua level'}
               >
@@ -1216,8 +1216,8 @@ export default function AshMap({
                 onClick={() => toggleLevel(4)}
                 className={`px-2 py-1 rounded-md font-bold transition whitespace-nowrap flex items-center gap-1 ${
                   selectedLevels.includes(4)
-                    ? 'bg-[#EF4444] text-white shadow-sm ring-1 ring-[#EF4444]/60'
-                    : 'bg-[#EF4444]/15 text-[#F87171] hover:bg-[#EF4444]/25 opacity-50'
+                    ? 'bg-sev-critical text-sev-on ring-1 ring-sev-critical'
+                    : 'bg-sev-critical-soft text-sev-critical hover:bg-sev-critical-soft opacity-50'
                 }`}
               >
                 <span className="h-1.5 w-1.5 rounded-full bg-current" />
@@ -1227,8 +1227,8 @@ export default function AshMap({
                 onClick={() => toggleLevel(3)}
                 className={`px-2 py-1 rounded-md font-bold transition whitespace-nowrap flex items-center gap-1 ${
                   selectedLevels.includes(3)
-                    ? 'bg-[#FF6B1A] text-white shadow-sm ring-1 ring-[#FF6B1A]/60'
-                    : 'bg-[#FF6B1A]/15 text-[#FF8A3D] hover:bg-[#FF6B1A]/25 opacity-50'
+                    ? 'bg-accent text-fg-inverse ring-1 ring-accent'
+                    : 'bg-accent/15 text-accent hover:bg-accent/15 opacity-50'
                 }`}
               >
                 <span className="h-1.5 w-1.5 rounded-full bg-current" />
@@ -1238,8 +1238,8 @@ export default function AshMap({
                 onClick={() => toggleLevel(2)}
                 className={`px-2 py-1 rounded-md font-bold transition whitespace-nowrap flex items-center gap-1 ${
                   selectedLevels.includes(2)
-                    ? 'bg-[#F59E0B] text-slate-950 font-black shadow-sm ring-1 ring-[#F59E0B]/60'
-                    : 'bg-[#F59E0B]/15 text-[#FBBF24] hover:bg-[#F59E0B]/25 opacity-50'
+                    ? 'bg-sev-warning text-fg-inverse font-bold ring-1 ring-sev-warning'
+                    : 'bg-sev-warning-soft text-sev-warning hover:bg-sev-warning-soft opacity-50'
                 }`}
               >
                 <span className="h-1.5 w-1.5 rounded-full bg-current" />
@@ -1249,8 +1249,8 @@ export default function AshMap({
                 onClick={() => toggleLevel(1)}
                 className={`px-2 py-1 rounded-md font-bold transition whitespace-nowrap flex items-center gap-1 ${
                   selectedLevels.includes(1)
-                    ? 'bg-[#10B981] text-white shadow-sm ring-1 ring-[#10B981]/60'
-                    : 'bg-[#10B981]/15 text-[#34D399] hover:bg-[#10B981]/25 opacity-50'
+                    ? 'bg-sev-normal text-sev-on ring-1 ring-sev-normal'
+                    : 'bg-sev-normal-soft text-sev-normal hover:bg-sev-normal-soft opacity-50'
                 }`}
               >
                 <span className="h-1.5 w-1.5 rounded-full bg-current" />
@@ -1282,10 +1282,10 @@ export default function AshMap({
                         );
                       }
                     }}
-                    className={`flex items-center justify-between gap-3 rounded-xl px-3 py-2 text-left transition border backdrop-blur-md shadow-lg ${
+                    className={`flex items-center justify-between gap-3 rounded-xl px-3 py-2 text-left transition border   ${
                       isSelected
-                        ? 'bg-[#151C28] border-[#FF6B1A] ring-1 ring-[#FF6B1A]/40'
-                        : 'bg-[#0B0F17]/85 border-white/10 hover:bg-[#151C28]'
+                        ? 'bg-surface border-accent ring-1 ring-accent'
+                        : 'bg-raised border-line hover:bg-surface'
                     }`}
                   >
                     <div className="flex items-center gap-2 min-w-0">
@@ -1293,11 +1293,11 @@ export default function AshMap({
                         className="h-2 w-2 rounded-full shrink-0"
                         style={{ backgroundColor: magmaStatus.color }}
                       />
-                      <span className="text-xs font-bold text-white truncate">{adv.volcanoName}</span>
+                      <span className="text-small font-bold text-fg-1 truncate">{adv.volcanoName}</span>
                     </div>
                     <div className="flex items-center gap-1.5 shrink-0">
                       <span
-                        className="text-[9px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider"
+                        className="text-label font-bold px-1.5 py-0.5 rounded"
                         style={{
                           backgroundColor: magmaStatus.badgeBg,
                           color: magmaStatus.badgeText,
@@ -1306,7 +1306,7 @@ export default function AshMap({
                       >
                         {magmaStatus.levelName}
                       </span>
-                      <span className="text-[10px] font-semibold text-[#8B95A7] bg-white/5 px-1.5 py-0.5 rounded">
+                      <span className="text-label font-semibold text-fg-2 bg-surface px-1.5 py-0.5 rounded">
                         {adv.primaryFlightLevel}
                       </span>
                     </div>
@@ -1314,11 +1314,11 @@ export default function AshMap({
                 );
               })
             ) : filteredMonitored.length === 0 ? (
-              <div className="py-6 px-3 text-center rounded-xl bg-white/5 border border-white/10">
-                <p className="text-xs font-medium text-[#8B95A7]">Tidak ada level yang dipilih</p>
+              <div className="py-6 px-3 text-center rounded-xl bg-surface border border-line">
+                <p className="text-small font-medium text-fg-2">Tidak ada level yang dipilih</p>
                 <button
                   onClick={() => setSelectedLevels([1, 2, 3, 4])}
-                  className="mt-2 inline-flex items-center gap-1 rounded-lg bg-[#FF6B1A]/20 px-2.5 py-1 text-[11px] font-bold text-[#FF8A3D] hover:bg-[#FF6B1A]/30 transition"
+                  className="mt-2 inline-flex items-center gap-1 rounded-lg bg-accent/15 px-2.5 py-1 text-label font-bold text-accent hover:bg-accent/15 transition"
                 >
                   Pilih Semua Level
                 </button>
@@ -1353,10 +1353,10 @@ export default function AshMap({
                         );
                       }
                     }}
-                    className={`flex items-center justify-between gap-3 rounded-xl px-3 py-2 text-left transition border backdrop-blur-md shadow-lg ${
+                    className={`flex items-center justify-between gap-3 rounded-xl px-3 py-2 text-left transition border   ${
                       isSelected
-                        ? 'bg-[#151C28] border-[#FF6B1A] ring-1 ring-[#FF6B1A]/40'
-                        : 'bg-[#0B0F17]/85 border-white/10 hover:bg-[#151C28]'
+                        ? 'bg-surface border-accent ring-1 ring-accent'
+                        : 'bg-raised border-line hover:bg-surface'
                     }`}
                   >
                     <div className="flex items-center gap-2 min-w-0">
@@ -1366,19 +1366,19 @@ export default function AshMap({
                       />
                       <div className="min-w-0">
                         <div className="flex items-center gap-1.5">
-                          <span className="text-xs font-bold text-white truncate">{volc.volcanoName}</span>
+                          <span className="text-small font-bold text-fg-1 truncate">{volc.volcanoName}</span>
                           {hasAsh && (
-                            <span className="text-[8px] font-black px-1 py-0.2 rounded bg-[#FF6B1A]/20 text-[#FF8A3D] border border-[#FF6B1A]/40">
+                            <span className="text-label font-bold px-1 py-0.2 rounded bg-accent/15 text-accent border border-accent">
                               ABU
                             </span>
                           )}
                         </div>
-                        <span className="text-[10px] text-[#8B95A7] truncate block">{volc.area}</span>
+                        <span className="text-label text-fg-2 truncate block">{volc.area}</span>
                       </div>
                     </div>
                     <div className="flex items-center gap-1.5 shrink-0">
                       <span
-                        className="text-[9px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider"
+                        className="text-label font-bold px-1.5 py-0.5 rounded"
                         style={{
                           backgroundColor: volc.badgeBg,
                           color: volc.badgeText,
@@ -1400,8 +1400,8 @@ export default function AshMap({
       {selectedAdvisory && (() => {
         const magmaStatus = getMagmaVolcanoStatus(selectedAdvisory.volcanoName);
         return (
-          <div className="absolute bottom-4 left-4 right-4 z-[450] sm:left-auto sm:right-6 sm:bottom-6 sm:w-96 rounded-2xl border border-white/10 bg-[#111827]/95 p-5 shadow-2xl backdrop-blur-xl animate-in fade-in slide-in-from-bottom-4 pointer-events-auto">
-            <div className="flex items-start justify-between border-b border-white/10 pb-3">
+          <div className="absolute bottom-4 left-4 right-4 z-[450] sm:left-auto sm:right-6 sm:bottom-6 sm:w-96 rounded-card border border-line bg-raised p-5 shadow-float pointer-events-auto">
+            <div className="flex items-start justify-between border-b border-line pb-3">
               <div className="flex items-center gap-2.5">
                 <div
                   className="flex h-8 w-8 items-center justify-center rounded-xl"
@@ -1411,9 +1411,9 @@ export default function AshMap({
                 </div>
                 <div>
                   <div className="flex items-center gap-1.5">
-                    <h3 className="text-base font-black text-white">{selectedAdvisory.volcanoName}</h3>
+                    <h3 className="text-base font-bold text-fg-1">{selectedAdvisory.volcanoName}</h3>
                     <span
-                      className="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider"
+                      className="text-label font-bold px-2 py-0.5 rounded-full"
                       style={{
                         backgroundColor: magmaStatus.badgeBg,
                         color: magmaStatus.badgeText,
@@ -1423,7 +1423,7 @@ export default function AshMap({
                       {magmaStatus.levelRoman} · {magmaStatus.levelName}
                     </span>
                   </div>
-                  <p className="text-[11px] text-[#8B95A7]">
+                  <p className="text-label text-fg-2">
                     Buletin #{selectedAdvisory.advisoryNumber} · {selectedAdvisory.area}
                   </p>
                 </div>
@@ -1433,7 +1433,7 @@ export default function AshMap({
                   setSelectedAdvisory(null);
                   setSelectedMonitored(null);
                 }}
-                className="rounded-lg p-1 text-[#8B95A7] hover:bg-white/10 hover:text-white transition"
+                className="rounded-lg p-1 text-fg-2 hover:bg-surface hover:text-fg-1 transition"
                 aria-label="Tutup panel"
               >
                 <X className="h-4 w-4" />
@@ -1447,69 +1447,69 @@ export default function AshMap({
             >
               <div className="flex items-center justify-between">
                 <span
-                  className="text-[10px] font-bold uppercase tracking-wider"
+                  className="text-label font-bold"
                   style={{ color: magmaStatus.badgeText }}
                 >
                   Status Aktivitas MAGMA ESDM
                 </span>
                 <span
-                  className="text-[10px] font-black uppercase px-1.5 py-0.5 rounded shadow-sm"
-                  style={{ backgroundColor: magmaStatus.color, color: '#0B0F17' }}
+                  className="text-label font-bold px-1.5 py-0.5 rounded"
+                  style={{ backgroundColor: magmaStatus.color, color: 'var(--sev-on)' }}
                 >
                   {magmaStatus.levelName}
                 </span>
               </div>
-              <p className="mt-1 text-xs text-slate-200 leading-relaxed font-medium">
+              <p className="mt-1 text-small text-fg-1 leading-relaxed font-medium">
                 {magmaStatus.description}
               </p>
-              <div className="mt-2 pt-2 border-t border-white/10 flex items-start gap-1.5 text-[11px]">
+              <div className="mt-2 pt-2 border-t border-line flex items-start gap-1.5 text-label">
                 <AlertTriangle
                   className="h-3.5 w-3.5 shrink-0 mt-0.5"
                   style={{ color: magmaStatus.badgeText }}
                 />
-                <span className="text-slate-300">
-                  <strong className="text-white">Radius Bahaya:</strong> {magmaStatus.recommendation}
+                <span className="text-fg-2">
+                  <strong className="text-fg-1">Radius Bahaya:</strong> {magmaStatus.recommendation}
                 </span>
               </div>
             </div>
 
             {/* Ash Telemetry details */}
-            <div className="mt-3 space-y-2 text-xs">
-              <div className="flex justify-between py-1 border-b border-white/5">
-                <span className="text-[#8B95A7]">Ketinggian Abu:</span>
-                <span className="font-bold text-[#FF6B1A]">
+            <div className="mt-3 space-y-2 text-small">
+              <div className="flex justify-between py-1 border-b border-line">
+                <span className="text-fg-2">Ketinggian Abu:</span>
+                <span className="font-bold text-accent">
                   {selectedAdvisory.primaryFlightLevel} ({formatAltitudeCompact(selectedAdvisory.primaryFlightLevel)})
                 </span>
               </div>
 
-              <div className="flex justify-between py-1 border-b border-white/5">
-                <span className="text-[#8B95A7]">Pergerakan:</span>
-                <span className="font-semibold text-amber-300">
+              <div className="flex justify-between py-1 border-b border-line">
+                <span className="text-fg-2">Pergerakan:</span>
+                <span className="font-semibold text-sev-warning">
                   {formatMovementHuman(selectedAdvisory.primaryMovement)}
                 </span>
               </div>
 
-              <div className="flex justify-between py-1 border-b border-white/5">
-                <span className="text-[#8B95A7]">Waktu Terbit:</span>
-                <span className="font-semibold text-[#F5F7FA]">
+              <div className="flex justify-between py-1 border-b border-line">
+                <span className="text-fg-2">Waktu Terbit:</span>
+                <span className="font-semibold text-fg-1">
                   {formatWibDateTime(selectedAdvisory.dtg)}
                 </span>
               </div>
 
               {selectedAdvisory.eruptionDetails && (
                 <div className="py-1">
-                  <span className="text-[#8B95A7] block mb-0.5">Detail Erupsi:</span>
-                  <p className="text-slate-200 bg-[#0B0F17]/80 rounded-lg p-2 font-mono text-[11px] leading-relaxed">
+                  <span className="text-fg-2 block mb-0.5">Detail Erupsi:</span>
+                  <p className="text-fg-1 bg-raised rounded-lg p-2 font-mono text-label leading-relaxed">
                     {selectedAdvisory.eruptionDetails}
                   </p>
                 </div>
               )}
             </div>
 
-            <div className="mt-4 flex items-center justify-between gap-2 pt-2 border-t border-white/10">
+            <div className="mt-4 flex items-center justify-between gap-2 pt-2 border-t border-line">
               <Link
                 href={`/volcanoes/${selectedAdvisory.volcanoSlug}`}
-                className="flex items-center gap-1 text-[11px] font-semibold text-[#FF6B1A] hover:text-[#FF8A3D] transition"
+                className="flex items-center gap-1 text-label font-semibold text-accent hover:text-accent transition"
               >
                 <span>Profil Gunung Api</span>
                 <ChevronRight className="h-3.5 w-3.5" />
@@ -1520,7 +1520,7 @@ export default function AshMap({
                   href={magmaStatus.sourceUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1 text-[10px] text-[#8B95A7] hover:text-white transition"
+                  className="flex items-center gap-1 text-label text-fg-2 hover:text-fg-1 transition"
                   title="Lihat data di situs resmi MAGMA ESDM"
                 >
                   <span>MAGMA ESDM</span>
@@ -1529,7 +1529,7 @@ export default function AshMap({
 
                 <Link
                   href={`/advisories/${selectedAdvisory.id}`}
-                  className="flex items-center gap-1 rounded-lg bg-[#FF6B1A]/20 px-2.5 py-1 text-[11px] font-semibold text-[#FF6B1A] border border-[#FF6B1A]/30 hover:bg-[#FF6B1A]/30 transition"
+                  className="flex items-center gap-1 rounded-lg bg-accent/15 px-2.5 py-1 text-label font-semibold text-accent border border-accent hover:bg-accent/15 transition"
                 >
                   <span>Buletin Lengkap</span>
                   <ExternalLink className="h-3 w-3" />
@@ -1542,8 +1542,8 @@ export default function AshMap({
 
       {/* Selected Monitored Volcano Drawer (when no active ash advisory is selected) */}
       {!selectedAdvisory && selectedMonitored && (
-        <div className="absolute bottom-4 left-4 right-4 z-[450] sm:left-auto sm:right-6 sm:bottom-6 sm:w-96 rounded-2xl border border-white/10 bg-[#111827]/95 p-5 shadow-2xl backdrop-blur-xl animate-in fade-in slide-in-from-bottom-4 pointer-events-auto">
-          <div className="flex items-start justify-between border-b border-white/10 pb-3">
+        <div className="absolute bottom-4 left-4 right-4 z-[450] sm:left-auto sm:right-6 sm:bottom-6 sm:w-96 rounded-card border border-line bg-raised p-5 shadow-float pointer-events-auto">
+          <div className="flex items-start justify-between border-b border-line pb-3">
             <div className="flex items-center gap-2.5">
               <div
                 className="flex h-8 w-8 items-center justify-center rounded-xl"
@@ -1553,9 +1553,9 @@ export default function AshMap({
               </div>
               <div>
                 <div className="flex items-center gap-1.5">
-                  <h3 className="text-base font-black text-white">{selectedMonitored.volcanoName}</h3>
+                  <h3 className="text-base font-bold text-fg-1">{selectedMonitored.volcanoName}</h3>
                   <span
-                    className="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider"
+                    className="text-label font-bold px-2 py-0.5 rounded-full"
                     style={{
                       backgroundColor: selectedMonitored.badgeBg,
                       color: selectedMonitored.badgeText,
@@ -1565,14 +1565,14 @@ export default function AshMap({
                     {selectedMonitored.levelRoman} · {selectedMonitored.levelName}
                   </span>
                 </div>
-                <p className="text-[11px] text-[#8B95A7]">
+                <p className="text-label text-fg-2">
                   {selectedMonitored.area} · Elevasi: {selectedMonitored.elevation}
                 </p>
               </div>
             </div>
             <button
               onClick={() => setSelectedMonitored(null)}
-              className="rounded-lg p-1 text-[#8B95A7] hover:bg-white/10 hover:text-white transition"
+              className="rounded-lg p-1 text-fg-2 hover:bg-surface hover:text-fg-1 transition"
               aria-label="Tutup panel"
             >
               <X className="h-4 w-4" />
@@ -1586,58 +1586,58 @@ export default function AshMap({
           >
             <div className="flex items-center justify-between">
               <span
-                className="text-[10px] font-bold uppercase tracking-wider"
+                className="text-label font-bold"
                 style={{ color: selectedMonitored.badgeText }}
               >
                 Status Aktivitas MAGMA ESDM
               </span>
               <span
-                className="text-[10px] font-black uppercase px-1.5 py-0.5 rounded shadow-sm"
-                style={{ backgroundColor: selectedMonitored.color, color: '#0B0F17' }}
+                className="text-label font-bold px-1.5 py-0.5 rounded"
+                style={{ backgroundColor: selectedMonitored.color, color: 'var(--sev-on)' }}
               >
                 {selectedMonitored.levelName}
               </span>
             </div>
-            <p className="mt-1 text-xs text-slate-200 leading-relaxed font-medium">
+            <p className="mt-1 text-small text-fg-1 leading-relaxed font-medium">
               {selectedMonitored.description}
             </p>
-            <div className="mt-2 pt-2 border-t border-white/10 flex items-start gap-1.5 text-[11px]">
+            <div className="mt-2 pt-2 border-t border-line flex items-start gap-1.5 text-label">
               <AlertTriangle
                 className="h-3.5 w-3.5 shrink-0 mt-0.5"
                 style={{ color: selectedMonitored.badgeText }}
               />
-              <span className="text-slate-300">
-                <strong className="text-white">Radius Bahaya:</strong> {selectedMonitored.recommendation}
+              <span className="text-fg-2">
+                <strong className="text-fg-1">Radius Bahaya:</strong> {selectedMonitored.recommendation}
               </span>
             </div>
           </div>
 
           {/* Telemetry & Ground Monitoring Details */}
-          <div className="mt-3 space-y-2 text-xs">
-            <div className="flex justify-between py-1 border-b border-white/5">
-              <span className="text-[#8B95A7]">Status Pemantauan:</span>
-              <span className="font-semibold text-emerald-400">Pemantauan Ground PVMBG</span>
+          <div className="mt-3 space-y-2 text-small">
+            <div className="flex justify-between py-1 border-b border-line">
+              <span className="text-fg-2">Status Pemantauan:</span>
+              <span className="font-semibold text-sev-normal">Pemantauan Ground PVMBG</span>
             </div>
-            <div className="flex justify-between py-1 border-b border-white/5">
-              <span className="text-[#8B95A7]">Sebaran Abu Vulkanik:</span>
-              <span className="font-semibold text-slate-300">Tidak ada abu aktif di udara</span>
+            <div className="flex justify-between py-1 border-b border-line">
+              <span className="text-fg-2">Sebaran Abu Vulkanik:</span>
+              <span className="font-semibold text-fg-2">Tidak ada abu aktif di udara</span>
             </div>
-            <div className="flex justify-between py-1 border-b border-white/5">
-              <span className="text-[#8B95A7]">Wilayah Pulau:</span>
-              <span className="font-semibold text-[#F5F7FA]">{selectedMonitored.island}</span>
+            <div className="flex justify-between py-1 border-b border-line">
+              <span className="text-fg-2">Wilayah Pulau:</span>
+              <span className="font-semibold text-fg-1">{selectedMonitored.island}</span>
             </div>
-            <div className="flex justify-between py-1 border-b border-white/5">
-              <span className="text-[#8B95A7]">Koordinat Kawah:</span>
-              <span className="font-mono text-[#8B95A7]">
+            <div className="flex justify-between py-1 border-b border-line">
+              <span className="text-fg-2">Koordinat Kawah:</span>
+              <span className="font-mono text-fg-2">
                 {selectedMonitored.position.latitude.toFixed(3)}°, {selectedMonitored.position.longitude.toFixed(3)}°
               </span>
             </div>
           </div>
 
-          <div className="mt-4 flex items-center justify-between gap-2 pt-2 border-t border-white/10">
+          <div className="mt-4 flex items-center justify-between gap-2 pt-2 border-t border-line">
             <Link
               href={`/volcanoes/${selectedMonitored.volcanoSlug}`}
-              className="flex items-center gap-1 text-[11px] font-semibold text-[#FF6B1A] hover:text-[#FF8A3D] transition"
+              className="flex items-center gap-1 text-label font-semibold text-accent hover:text-accent transition"
             >
               <span>Profil Gunung Api</span>
               <ChevronRight className="h-3.5 w-3.5" />
@@ -1647,7 +1647,7 @@ export default function AshMap({
               href={selectedMonitored.sourceUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 rounded-lg bg-white/10 px-2.5 py-1 text-[11px] font-semibold text-white hover:bg-white/15 transition border border-white/10"
+              className="flex items-center gap-1 rounded-lg bg-surface px-2.5 py-1 text-label font-semibold text-fg-1 hover:bg-surface transition border border-line"
               title="Buka portal resmi MAGMA Indonesia ESDM"
             >
               <span>Portal MAGMA ESDM</span>

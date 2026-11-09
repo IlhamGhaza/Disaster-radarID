@@ -65,12 +65,12 @@ export function IndonesiaMiniMap({ advisories }: IndonesiaMiniMapProps) {
 
           const markerHtml = `
             <div class="flex flex-col items-center select-none" style="transform: translate(-50%, -50%);">
-              <div class="relative flex h-5 w-5 items-center justify-center rounded-full bg-[#111827] shadow-lg border" style="border-color: ${magmaStatus.color};">
+              <div class="relative flex h-5 w-5 items-center justify-center rounded-full border" style="background-color: var(--raised); border-color: ${magmaStatus.color};">
                 <span class="pulse-marker-ring" style="background-color: ${magmaStatus.ringColor}; border: 1px solid ${magmaStatus.color};"></span>
                 <div class="h-2 w-2 rounded-full" style="background-color: ${magmaStatus.color};"></div>
               </div>
-              <div class="mt-0.5 whitespace-nowrap rounded px-1.5 py-0.2 text-center bg-[#0B0F17]/90 border border-white/10 shadow-sm">
-                <span style="color: #F5F7FA; font-size: 8.5px; font-weight: 700; display: block; line-height: 1;">
+              <div class="mt-0.5 whitespace-nowrap px-1.5 py-0.5 text-center" style="background-color: var(--raised); border: 1px solid var(--line-strong); border-radius: 2px;">
+                <span style="color: var(--fg-1); font-size: 12px; font-weight: 600; display: block; line-height: 1.2;">
                   ${adv.volcanoName}
                 </span>
               </div>
@@ -123,39 +123,46 @@ export function IndonesiaMiniMap({ advisories }: IndonesiaMiniMapProps) {
   return (
     <Link
       href="/map"
-      className="group relative block w-full rounded-3xl border border-white/10 bg-[#111827]/80 p-4 sm:p-5 shadow-2xl backdrop-blur-xl overflow-hidden hover:border-[#FF6B1A]/40 transition duration-300"
+      className="group relative block w-full overflow-hidden rounded-card border border-line bg-surface p-gutter transition-colors duration-120 hover:border-line-strong"
     >
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-2 text-xs text-[#8B95A7]">
-          <span className="h-2 w-2 rounded-full bg-[#FF6B1A] animate-pulse"></span>
-          <span className="font-semibold text-white">Live Volcanic Ash Map Preview</span>
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+        <p className="flex items-center gap-2 text-small text-fg-2">
+          <span className="font-semibold text-fg-1">Live Volcanic Ash Map Preview</span>
           <span className="hidden sm:inline">· OpenStreetMap Indonesia</span>
-        </div>
+        </p>
 
-        <div className="flex items-center gap-1 text-xs font-bold text-[#FF6B1A] group-hover:text-[#FF8A3D] transition">
-          <span>Explore Live Map</span>
-          <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
-        </div>
+        <span className="flex items-center gap-1 text-small font-semibold text-accent group-hover:text-accent-hover">
+          <span>Open Live Map</span>
+          <ArrowRight className="h-4 w-4" aria-hidden="true" />
+        </span>
       </div>
 
-      <div className="relative aspect-[16/8] sm:aspect-[21/9] w-full rounded-2xl bg-[#0B0F17] border border-white/5 overflow-hidden osm-dark-tiles">
+      <div className="osm-dark-tiles relative aspect-[16/8] w-full overflow-hidden rounded-control border border-line bg-bg sm:aspect-[21/9]">
         {mounted ? (
-          <div ref={mapContainerRef} className="h-full w-full pointer-events-none" />
+          <div ref={mapContainerRef} className="pointer-events-none h-full w-full" />
         ) : (
-          <div className="flex h-full w-full items-center justify-center text-[#8B95A7]">
-            <Loader2 className="h-6 w-6 animate-spin text-[#FF6B1A]" />
+          <div role="status" className="flex h-full w-full items-center justify-center gap-2 text-small text-fg-3">
+            <Loader2 className="h-5 w-5 animate-spin motion-reduce:animate-none" aria-hidden="true" />
+            <span>Loading map…</span>
           </div>
         )}
 
-        {/* Bottom subtle CTA overlay */}
-        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#0B0F17]/90 via-[#0B0F17]/30 to-transparent p-3 sm:p-4 flex items-center justify-between pointer-events-none">
-          <span className="text-[11px] text-[#8B95A7] font-medium hidden sm:inline">
+        {/* Empty state: peta tetap tampil, tapi dijelaskan bahwa tidak ada poligon */}
+        {mounted && advisories.length === 0 && (
+          <p className="pointer-events-none absolute left-3 top-3 rounded-control border border-line-strong bg-raised px-2 py-1 text-small text-fg-2">
+            No active volcanic ash advisories.
+          </p>
+        )}
+
+        {/* Bottom CTA bar (solid, tanpa gradient) */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-between gap-2 border-t border-line bg-bg/85 p-2 sm:p-3">
+          <span className="hidden text-small text-fg-2 sm:inline">
             Click anywhere on preview to launch full interactive map
           </span>
-          <div className="flex items-center gap-1.5 rounded-xl bg-[#FF6B1A] px-3.5 py-1.5 text-xs font-bold text-white shadow-lg group-hover:bg-[#FF8A3D] transition ml-auto">
-            <Map className="h-3.5 w-3.5" />
+          <span className="ml-auto flex min-h-10 items-center gap-1.5 rounded-control bg-accent px-3 text-small font-semibold text-fg-inverse group-hover:bg-accent-hover">
+            <Map className="h-4 w-4" aria-hidden="true" />
             <span>Launch Full Map</span>
-          </div>
+          </span>
         </div>
       </div>
     </Link>

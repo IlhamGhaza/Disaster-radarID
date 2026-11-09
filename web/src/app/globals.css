@@ -2,63 +2,228 @@
 @import "leaflet/dist/leaflet.css";
 
 /* ============================================================
-   DESIGN SYSTEM — Disaster Radar Indonesia
-   National Geospatial Intelligence Interface
+   DESIGN TOKENS — Disaster Radar Indonesia
+   Konsep "Radar Malam": instrumen presisi, gelap & premium (docs/redesign/DIRECTION.md, Arah C).
+   ATURAN 3 WARNA (60 / 30 / 10):
+     INK    — latar & permukaan (60%)
+     BONE   — teks, garis, tombol sekunder (30%)
+     SIGNAL — satu warna "lihat ke sini": brand, aksi utama, live, status Kritis/Awas (10%)
+   Pengecualian terdokumentasi: skala level PVMBG (Siaga/Waspada/Normal) + tsunami + abu
+   hanya boleh muncul di badge/penanda DATA, tidak pernah sebagai dekorasi.
+   Rasio kontras dihitung terhadap --surface.
    ============================================================ */
 
 :root {
-  /* ── Background Scale ── */
-  --bg-base: #080C14;
-  --bg-surface: #0D1117;
-  --bg-elevated: #151C28;
-  --bg-card: rgba(13, 17, 23, 0.75);
-  --bg-card-solid: #0D1117;
-  --bg-overlay: rgba(8, 12, 20, 0.85);
+  color-scheme: dark;
 
-  /* ── Text Scale ── */
-  --text-primary: #E8ECF1;
-  --text-secondary: #8B95A7;
-  --text-muted: #5A6478;
-  --text-inverse: #080C14;
+  /* ── INK: permukaan ── */
+  --bg: #0A0B0D;            /* latar halaman */
+  --surface: #121316;       /* inti kartu */
+  --raised: #1A1B1F;        /* popup, dropdown, panel di atas peta */
+  --shell: rgb(242 238 230 / 0.035); /* cangkang luar double-bezel */
 
-  /* ── Border Scale ── */
-  --border-subtle: rgba(255, 255, 255, 0.05);
-  --border-default: rgba(255, 255, 255, 0.08);
-  --border-hover: rgba(255, 255, 255, 0.14);
-  --border-active: rgba(255, 255, 255, 0.20);
+  /* ── BONE: teks & garis ── */
+  --fg-1: #F2EEE6;          /* teks utama        16.0:1 */
+  --fg-2: #BEB9AF;          /* teks kedua         9.5:1 */
+  --fg-3: #94908A;          /* meta, label        5.9:1 (5.4:1 di raised) */
+  --fg-inverse: #0A0B0D;    /* teks di atas signal/bone */
 
-  /* ── Accent ── */
-  --accent-primary: #EF4444;
-  --accent-secondary: #F97316;
-  --accent-glow: rgba(239, 68, 68, 0.12);
+  --line: #24252A;          /* hairline 1px */
+  --line-strong: #393A40;   /* border input, pemisah tabel */
 
-  /* ── Severity Scale ── */
-  --severity-critical: #EF4444;
-  --severity-critical-bg: rgba(239, 68, 68, 0.10);
-  --severity-high: #F97316;
-  --severity-high-bg: rgba(249, 115, 22, 0.10);
-  --severity-warning: #EAB308;
-  --severity-warning-bg: rgba(234, 179, 8, 0.10);
-  --severity-normal: #10B981;
-  --severity-normal-bg: rgba(16, 185, 129, 0.10);
-  --severity-tsunami: #06B6D4;
-  --severity-tsunami-bg: rgba(6, 182, 212, 0.10);
-  --severity-ash: #FB923C;
-  --severity-ash-bg: rgba(251, 146, 60, 0.10);
+  /* ── SIGNAL: satu aksen ── */
+  --accent: #FF5B36;        /* 6.0:1 di surface; ink di atasnya 6.4:1 */
+  --accent-hover: #FF7A5A;
+  --accent-soft: color-mix(in srgb, var(--accent) 12%, var(--surface));
+  --focus: #F2EEE6;         /* cincin fokus bone: terlihat di ink maupun di atas signal */
 
-  /* ── Animation ── */
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --transition-fast: 120ms;
-  --transition-base: 200ms;
-  --transition-slow: 350ms;
+  /* ── Skala data (bukan dekorasi) ── */
+  --sev-critical: var(--accent); /* Awas / Kritis = Signal */
+  --sev-high: #FFA23A;      /* 9.3:1 — Siaga */
+  --sev-warning: #EFD24A;   /* 12.4:1 — Waspada */
+  --sev-normal: #52C98E;    /* 8.9:1 — Normal */
+  --sev-tsunami: #4FC3E8;   /* 9.1:1 — InaTEWS */
+  --sev-ash: #C9B79C;       /* 9.5:1 — abu vulkanik */
+  --sev-on: #0A0B0D;        /* teks di atas isian data solid */
+
+  --sev-critical-soft: color-mix(in srgb, var(--sev-critical) 12%, var(--surface));
+  --sev-high-soft: color-mix(in srgb, var(--sev-high) 12%, var(--surface));
+  --sev-warning-soft: color-mix(in srgb, var(--sev-warning) 12%, var(--surface));
+  --sev-normal-soft: color-mix(in srgb, var(--sev-normal) 12%, var(--surface));
+  --sev-tsunami-soft: color-mix(in srgb, var(--sev-tsunami) 12%, var(--surface));
+  --sev-ash-soft: color-mix(in srgb, var(--sev-ash) 12%, var(--surface));
+
+  /* ── Kedalaman: bayangan ambient lembut + highlight dalam (double-bezel) ── */
+  --elev-float: 0 0 0 1px rgb(242 238 230 / 0.06), 0 24px 48px -16px rgb(0 0 0 / 0.7);
+  --elev-core: inset 0 1px 0 rgb(242 238 230 / 0.06), 0 1px 2px rgb(0 0 0 / 0.4);
+
+  /* ── Motion: massa & pegas, bukan linear ── */
+  --ease-out: cubic-bezier(0.32, 0.72, 0, 1);
+  --dur-data: 200ms;
+  --dur-panel: 420ms;
 
   /* ── Layout ── */
-  --navbar-height: 52px;
+  --navbar-height: 76px;    /* pulau navbar 56px + jarak atas 12px + napas 8px */
   --max-width: 1280px;
+
+  /* ============================================================
+     ALIAS LAMA — dipertahankan agar komponen lama tetap jalan.
+     Nilai mengikuti token baru. Jangan dipakai di kode baru.
+     ============================================================ */
+  --bg-base: var(--bg);
+  --bg-surface: var(--surface);
+  --bg-elevated: var(--raised);
+  --bg-card: var(--surface);
+  --bg-card-solid: var(--surface);
+  --bg-overlay: rgb(15 16 18 / 0.92);
+
+  --text-primary: var(--fg-1);
+  --text-secondary: var(--fg-2);
+  --text-muted: var(--fg-3);
+  --text-inverse: var(--fg-inverse);
+
+  --border-subtle: var(--line);
+  --border-default: var(--line);
+  --border-hover: var(--line-strong);
+  --border-active: var(--line-strong);
+
+  --accent-primary: var(--accent);
+  --accent-secondary: var(--accent-hover);
+  --accent-glow: transparent;
+
+  --severity-critical: var(--sev-critical);
+  --severity-critical-bg: var(--sev-critical-soft);
+  --severity-high: var(--sev-high);
+  --severity-high-bg: var(--sev-high-soft);
+  --severity-warning: var(--sev-warning);
+  --severity-warning-bg: var(--sev-warning-soft);
+  --severity-normal: var(--sev-normal);
+  --severity-normal-bg: var(--sev-normal-soft);
+  --severity-tsunami: var(--sev-tsunami);
+  --severity-tsunami-bg: var(--sev-tsunami-soft);
+  --severity-ash: var(--sev-ash);
+  --severity-ash-bg: var(--sev-ash-soft);
+
+  --ease-out-expo: var(--ease-out);
+  --ease-out-back: var(--ease-out);
+  --transition-fast: var(--dur-data);
+  --transition-base: var(--dur-panel);
+  --transition-slow: var(--dur-panel);
 }
 
-/* ── Base ── */
+/* ============================================================
+   TAILWIND v4 THEME
+   `inline` agar utilitas merujuk var() langsung (bg-surface → var(--surface)).
+   ============================================================ */
+
+@theme inline {
+  /* Warna */
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-raised: var(--raised);
+  --color-fg-1: var(--fg-1);
+  --color-fg-2: var(--fg-2);
+  --color-fg-3: var(--fg-3);
+  --color-fg-inverse: var(--fg-inverse);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-shell: var(--shell);
+  --color-focus: var(--focus);
+
+  --color-sev-critical: var(--sev-critical);
+  --color-sev-high: var(--sev-high);
+  --color-sev-warning: var(--sev-warning);
+  --color-sev-normal: var(--sev-normal);
+  --color-sev-tsunami: var(--sev-tsunami);
+  --color-sev-ash: var(--sev-ash);
+  --color-sev-on: var(--sev-on);
+  --color-sev-critical-soft: var(--sev-critical-soft);
+  --color-sev-high-soft: var(--sev-high-soft);
+  --color-sev-warning-soft: var(--sev-warning-soft);
+  --color-sev-normal-soft: var(--sev-normal-soft);
+  --color-sev-tsunami-soft: var(--sev-tsunami-soft);
+  --color-sev-ash-soft: var(--sev-ash-soft);
+
+  /* Font (variabel dari next/font di layout.tsx) */
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --font-display: var(--font-instrument-serif), ui-serif, Georgia, serif;
+
+  /* Skala tipe — kontras ukuran besar = hierarki. Min body 16px, label 12px. */
+  --text-display: clamp(2.5rem, 5.2vw + 1rem, 4.75rem);
+  --text-display--line-height: 1.02;
+  --text-display--letter-spacing: -0.035em;
+  --text-display--font-weight: 600;
+  --text-display-lg: clamp(2.5rem, 5.2vw + 1rem, 4.75rem);
+  --text-display-lg--line-height: 1.02;
+  --text-display-lg--letter-spacing: -0.035em;
+  --text-display-lg--font-weight: 600;
+  --text-title: clamp(1.625rem, 2vw + 1rem, 2.5rem);
+  --text-title--line-height: 1.1;
+  --text-title--letter-spacing: -0.025em;
+  --text-title--font-weight: 600;
+  --text-title-lg: clamp(1.625rem, 2vw + 1rem, 2.5rem);
+  --text-title-lg--line-height: 1.1;
+  --text-title-lg--letter-spacing: -0.025em;
+  --text-title-lg--font-weight: 600;
+  --text-heading: 1.1875rem;
+  --text-heading--line-height: 1.3;
+  --text-heading--letter-spacing: -0.012em;
+  --text-heading--font-weight: 600;
+  --text-body: 1rem;
+  --text-body--line-height: 1.6;
+  --text-small: 0.875rem;
+  --text-small--line-height: 1.5;
+  --text-label: 0.75rem;
+  --text-label--line-height: 1.3;
+  --text-label--font-weight: 500;
+  --text-num: 1.0625rem;
+  --text-num--line-height: 1.25;
+  --text-num-lg: 2rem;
+  --text-num-lg--line-height: 1;
+  --text-num-lg--letter-spacing: -0.03em;
+  --text-num-xl: clamp(3.5rem, 6vw + 1rem, 6rem);
+  --text-num-xl--line-height: 0.9;
+  --text-num-xl--letter-spacing: -0.05em;
+
+  /* Radius — lengkung konsentris: cangkang 28 → inti 22; kontrol & badge = pill. */
+  --radius-badge: 9999px;
+  --radius-control: 9999px;
+  --radius-card: 1.375rem;
+  --radius-bezel: 1.75rem;
+  --radius-xs: 0.375rem;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.375rem;
+  --radius-3xl: 1.75rem;
+  --radius-4xl: 2rem;
+
+  /* Spasi density tinggi (basis 4px Tailwind tidak diubah) */
+  --spacing-cell: 0.5rem;    /* 8px — jarak di dalam baris data */
+  --spacing-row: 0.75rem;    /* 12px — padding vertikal baris/list */
+  --spacing-gutter: 1rem;    /* 16px — tepi halaman mobile, padding kartu */
+  --spacing-stack: 2rem;   /* 32px — antar blok dalam section. Jangan beri nama "block": bentrok dengan `inline-block` (inline-size) di Tailwind v4 */
+  --spacing-section: clamp(4rem, 7vw, 7.5rem); /* 64→120px — napas makro antar section */
+  --spacing-tap: 2.75rem;    /* 44px — target sentuh minimum */
+  --spacing-tap-lg: 3rem;    /* 48px — tombol telepon darurat */
+
+  /* Bayangan */
+  --shadow-float: var(--elev-float);
+  --shadow-core: var(--elev-core);
+
+  /* Easing */
+  --ease-data: var(--ease-out);
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+
 html,
 body {
   max-width: 100%;
@@ -67,67 +232,293 @@ body {
 }
 
 body {
-  background-color: var(--bg-base);
-  color: var(--text-primary);
+  background-color: var(--bg);
+  color: var(--fg-1);
+  font-family: var(--font-sans, ui-sans-serif, system-ui, sans-serif);
+  font-size: 1rem;
+  line-height: 1.55;
+  -webkit-text-size-adjust: 100%;
 }
 
-/* ── Tabular Numerals ── */
+/* Atmosfer: satu cahaya Signal yang sangat redup di puncak halaman + grain halus.
+   Keduanya fixed & pointer-events:none (tidak ikut scroll → tanpa repaint). */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(60rem 28rem at 50% -12rem, rgb(255 91 54 / 0.09), transparent 70%),
+    radial-gradient(40rem 24rem at 100% 0%, rgb(242 238 230 / 0.035), transparent 70%);
+}
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ============================================================
+   KOMPONEN DASAR "RADAR MALAM"
+   ============================================================ */
+
+/* Double-bezel: cangkang luar (hairline + padding) membungkus inti (permukaan + highlight dalam).
+   Radius konsentris: inti = cangkang − padding. */
+.bezel {
+  border-radius: var(--radius-bezel);
+  padding: 0.375rem;
+  background: var(--shell);
+  box-shadow: 0 0 0 1px rgb(242 238 230 / 0.07);
+}
+.bezel-core {
+  border-radius: calc(var(--radius-bezel) - 0.375rem);
+  background: var(--surface);
+  box-shadow: var(--elev-core);
+}
+.bezel-signal {
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+/* Kartu yang sudah ada (rounded-card + bg-surface/raised) otomatis mendapat cangkang bezel:
+   cincin luar 5px + hairline 1px lewat box-shadow → tidak menggeser layout, radius ikut konsentris.
+   Panel di atas peta (shadow-float) dikecualikan. Grid kartu wajib ber-gap ≥ 16px. */
+.rounded-card.bg-surface:not(.shadow-float),
+.rounded-card.bg-raised:not(.shadow-float) {
+  box-shadow:
+    inset 0 1px 0 rgb(242 238 230 / 0.05),
+    0 0 0 5px var(--shell),
+    0 0 0 6px rgb(242 238 230 / 0.06);
+}
+
+/* Eyebrow: SATU-SATUNYA level label kapital di situs. 12px, pill. */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.75rem;
+  line-height: 1.2;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+  background: var(--shell);
+  box-shadow: 0 0 0 1px rgb(242 238 230 / 0.08);
+}
+
+/* Aksen serif miring di dalam judul: satu kata per judul, maksimal. */
+.serif-accent {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+/* Tombol pill dengan ikon bersarang ("button-in-button"). */
+.pill-icon {
+  display: inline-flex;
+  height: 2rem;
+  width: 2rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  transition: transform var(--dur-panel) var(--ease-out);
+}
+.group:hover .pill-icon {
+  transform: translate(2px, -1px) scale(1.05);
+}
+
+/* Masuk saat discroll: CSS scroll-driven (tanpa JS). Browser lama: langsung tampil. */
+@supports (animation-timeline: view()) {
+  .reveal {
+    animation: reveal-up linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 40%;
+  }
+}
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: none; }
+}
+
+::selection {
+  background-color: var(--accent);
+  color: var(--fg-inverse);
+}
+
+/* Fokus terlihat untuk keyboard: 2px + offset 2px, kontras ≥ 3:1 di semua permukaan.
+   Tidak dalam @layer, jadi menang atas `outline-none` di komponen lama. */
+:focus-visible {
+  outline: 2px solid var(--focus) !important;
+  outline-offset: 2px;
+}
+
+/* ── Angka tabular ── */
 .tabular-nums {
   font-variant-numeric: tabular-nums;
   font-feature-settings: 'tnum';
 }
 
 /* ============================================================
-   LEAFLET — OpenStreetMap Dark Mode
+   LEAFLET
+   Tanpa blur, radius kecil, hairline, tipografi dari token.
+   Selector di luar @layer → mengalahkan utilitas Tailwind di HTML tooltip.
    ============================================================ */
 
 .leaflet-container {
   width: 100%;
   height: 100%;
-  background-color: var(--bg-base) !important;
+  background-color: var(--bg) !important;
   font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.45;
 }
 
-/* Recalibrated dark filter — sharper labels, less color aberration */
+/* Tile OSM → abu netral gelap. Marker berwarna dan label tile tetap terbaca. */
 .osm-dark-tiles .leaflet-tile {
-  filter: brightness(0.55) invert(1) contrast(2.0) hue-rotate(200deg) saturate(0.3) brightness(0.8);
+  filter: invert(1) grayscale(1) brightness(1.55) contrast(0.85);
 }
 
+/* ── Popup ── */
 .leaflet-popup-content-wrapper {
-  background: var(--bg-elevated) !important;
-  color: var(--text-primary) !important;
-  border-radius: 12px !important;
-  border: 1px solid var(--border-default) !important;
-  box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.7) !important;
-  padding: 4px !important;
-}
-
-.leaflet-popup-tip {
-  background: var(--bg-elevated) !important;
+  background: var(--raised) !important;
+  color: var(--fg-1) !important;
+  border-radius: 6px !important;
+  border: 1px solid var(--line-strong) !important;
+  box-shadow: var(--elev-float) !important;
+  padding: 0 !important;
 }
 
 .leaflet-popup-content {
-  margin: 10px 14px !important;
+  margin: 12px 16px !important;
+  font-size: 1rem !important;
   line-height: 1.5 !important;
 }
 
+.leaflet-popup-tip {
+  background: var(--raised) !important;
+  border: 1px solid var(--line-strong);
+  box-shadow: none !important;
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+  width: 44px;
+  height: 44px;
+  font: 400 22px/44px var(--font-sans, sans-serif);
+  color: var(--fg-2);
+}
+
+.leaflet-container a.leaflet-popup-close-button:hover {
+  color: var(--fg-1);
+}
+
+/* ── Tooltip (marker, poligon, lokasi pengguna) ── */
 .leaflet-tooltip {
-  background: rgba(13, 17, 23, 0.95) !important;
-  color: var(--text-primary) !important;
-  border: 1px solid var(--border-hover) !important;
-  border-radius: 8px !important;
-  font-size: 11px !important;
+  background: var(--raised) !important;
+  color: var(--fg-1) !important;
+  border: 1px solid var(--line-strong) !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
   font-weight: 600 !important;
-  padding: 4px 10px !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
-  backdrop-filter: blur(8px);
+  line-height: 1.35 !important;
+  padding: 6px 10px !important;
+  box-shadow: var(--elev-float) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Pengaman untuk isi tooltip yang dibuat di JS: ukuran teks kecil dinormalisasi
+   di sini tanpa menyentuh JS. */
+.leaflet-tooltip .text-xs {
+  font-size: 14px !important;
+}
+
+.leaflet-tooltip div div {
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  color: var(--fg-3) !important;
+  margin-top: 2px;
 }
 
 .leaflet-tooltip-top:before {
-  border-top-color: rgba(13, 17, 23, 0.95) !important;
+  border-top-color: var(--line-strong) !important;
 }
 
-/* ── Disaster Map Pin ── */
+.leaflet-tooltip-bottom:before {
+  border-bottom-color: var(--line-strong) !important;
+}
+
+.leaflet-tooltip-left:before {
+  border-left-color: var(--line-strong) !important;
+}
+
+.leaflet-tooltip-right:before {
+  border-right-color: var(--line-strong) !important;
+}
+
+/* ── Kontrol zoom bawaan (bila diaktifkan) ── */
+.leaflet-bar {
+  border: 1px solid var(--line-strong) !important;
+  border-radius: 4px !important;
+  box-shadow: var(--elev-float) !important;
+}
+
+.leaflet-bar a,
+.leaflet-bar a:hover {
+  width: 44px !important;
+  height: 44px !important;
+  line-height: 44px !important;
+  background: var(--raised) !important;
+  color: var(--fg-1) !important;
+  border-bottom: 1px solid var(--line) !important;
+  font: 600 20px/44px var(--font-sans, sans-serif) !important;
+}
+
+.leaflet-bar a:hover {
+  background: var(--surface) !important;
+}
+
+.leaflet-bar a:first-child {
+  border-top-left-radius: 4px !important;
+  border-top-right-radius: 4px !important;
+}
+
+.leaflet-bar a:last-child {
+  border-bottom: none !important;
+  border-bottom-left-radius: 4px !important;
+  border-bottom-right-radius: 4px !important;
+}
+
+.leaflet-bar a.leaflet-disabled {
+  color: var(--fg-3) !important;
+  background: var(--surface) !important;
+}
+
+/* ── Atribusi OSM (kewajiban lisensi, harus terbaca) ── */
+.leaflet-control-attribution {
+  background: var(--raised) !important;
+  color: var(--fg-3) !important;
+  font-size: 12px !important;
+  line-height: 1.4 !important;
+  padding: 2px 6px !important;
+  border-top-left-radius: 4px;
+  border: 1px solid var(--line);
+  border-right: none;
+  border-bottom: none;
+}
+
+.leaflet-control-attribution a {
+  color: var(--accent) !important;
+}
+
+/* ── Pin bencana ── */
 .leaflet-marker-icon.disaster-map-marker-pin {
   background: transparent !important;
   border: none !important;
@@ -138,19 +529,24 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform var(--transition-base) var(--ease-out-back);
+  transition: none;
 }
 
 .disaster-pin-container:hover {
-  transform: translateY(-4px) scale(1.15);
   z-index: 999999 !important;
 }
 
-.disaster-pin-container:hover .disaster-pin-body {
-  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.95)) !important;
+/* Ganti glow berwarna (inline di JS) dengan bayangan netral tipis */
+.disaster-pin-body {
+  filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.7)) !important;
+  transition: none !important;
 }
 
-/* ── Ash Polygon Labels ── */
+.disaster-pin-container:hover .disaster-pin-body {
+  filter: drop-shadow(0 0 0 var(--fg-1)) drop-shadow(0 1px 3px rgb(0 0 0 / 0.8)) !important;
+}
+
+/* ── Label poligon abu ── */
 .ash-polygon-center-label-wrapper {
   background: transparent !important;
   border: none !important;
@@ -159,16 +555,16 @@ body {
 }
 
 .ash-polygon-center-label {
-  background: rgba(8, 12, 20, 0.88) !important;
-  border: 1px solid var(--border-hover) !important;
-  border-radius: 6px !important;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6) !important;
-  color: var(--text-primary) !important;
-  font-size: 11px !important;
-  font-weight: 700 !important;
+  background: var(--raised) !important;
+  border: 1px solid var(--line-strong) !important;
+  border-radius: 2px !important;
+  box-shadow: none !important;
+  color: var(--fg-1) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
   text-align: center !important;
-  line-height: 1.25 !important;
-  letter-spacing: 0.3px !important;
+  line-height: 1.3 !important;
+  letter-spacing: 0 !important;
   pointer-events: none !important;
   padding: 2px 6px !important;
   transform: translate(-50%, -50%);
@@ -180,39 +576,18 @@ body {
 }
 
 /* ============================================================
-   ANIMATIONS
+   PENANDA STATUS (dulu animasi tak berujung)
+   Cincin kritis & lokasi pengguna kini statis — severity dibaca
+   dari bentuk, bukan gerakan.
    ============================================================ */
-
-/* Pulsing radar ring for active plumes & user location */
-@keyframes pulse-ring {
-  0% {
-    transform: scale(0.6);
-    opacity: 0.9;
-  }
-  80%, 100% {
-    transform: scale(2.2);
-    opacity: 0;
-  }
-}
 
 .pulse-marker-ring {
   position: absolute;
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  animation: pulse-ring 2.2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
-}
-
-/* User Location GPS Ping */
-@keyframes user-gps-ping {
-  0% {
-    transform: scale(0.8);
-    opacity: 0.8;
-  }
-  100% {
-    transform: scale(2.6);
-    opacity: 0;
-  }
+  animation: none;
+  opacity: 0.85;
 }
 
 .user-gps-ring {
@@ -220,39 +595,35 @@ body {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  animation: user-gps-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  animation: none;
+  transform: scale(1.8);
+  opacity: 0.35;
 }
 
 /* ============================================================
-   SURFACE UTILITIES
+   SURFACE UTILITIES (dipakai komponen lama) — solid, tanpa blur
    ============================================================ */
 
 .surface-card {
-  background: var(--bg-card);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--border-default);
+  background: var(--surface);
+  border: 1px solid var(--line);
 }
 
 .surface-elevated {
-  background: rgba(21, 28, 40, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--border-default);
+  background: var(--raised);
+  border: 1px solid var(--line-strong);
 }
 
 .surface-interactive {
-  background: var(--bg-card);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--border-default);
-  transition: all var(--transition-base) ease;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  transition: background-color var(--dur-data) var(--ease-out),
+    border-color var(--dur-data) var(--ease-out);
 }
 
 .surface-interactive:hover {
-  background: rgba(21, 28, 40, 0.9);
-  border-color: var(--border-hover);
-  transform: translateY(-1px);
+  background: var(--raised);
+  border-color: var(--line-strong);
 }
 
 /* ============================================================
@@ -260,30 +631,35 @@ body {
    ============================================================ */
 
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 8px;
+  height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--bg-base);
+  background: var(--bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: #1a2233;
+  background: var(--line-strong);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #2a3548;
+  background: var(--fg-3);
 }
 
 /* ============================================================
-   RESPONSIVE OVERRIDES
+   REDUCED MOTION — semua animasi & transisi dimatikan
+   (termasuk animate-ping/pulse/spin di komponen lama)
    ============================================================ */
 
-@media (max-width: 640px) {
-  .leaflet-control-attribution {
-    font-size: 8px !important;
-    background: rgba(8, 12, 20, 0.8) !important;
-    color: #5a6478 !important;
-    padding: 0 4px !important;
-    margin: 0 !important;
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal {
+    animation: none !important;
   }
 }

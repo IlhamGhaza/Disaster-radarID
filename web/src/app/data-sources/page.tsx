@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Metadata } from 'next';
 import { Breadcrumbs } from '@/components/breadcrumbs';
-import { Database, Map, ExternalLink, Radio, Wind, Server, Lock } from 'lucide-react';
+import { Database, Map, ExternalLink, Radio, Wind, Lock } from 'lucide-react';
 import { SITE_URL } from '@/config/site';
 
 export const metadata: Metadata = {
@@ -35,14 +35,11 @@ export default function DataSourcesPage() {
       id: 'bmkg',
       name: 'BMKG (Badan Meteorologi, Klimatologi, dan Geofisika)',
       category: 'Kegempaan, Tsunami & Meteorologi',
-      color: '#EF4444',
-      badgeBorder: 'border-red-500/30',
-      badgeBg: 'bg-red-950/40',
       icon: Radio,
       url: 'https://data.bmkg.go.id/',
       urlLabel: 'Portal Data BMKG',
       description:
-        'BMKG menyediakan data telemetri kegempaan otomatis real-time (M≥5.0, gempa dirasakan MMI, katalog seismik 60+ kejadian terakhir) serta sistem peringatan dini tsunami nasional (InaTEWS).',
+        'BMKG menyediakan data kegempaan otomatis (M≥5.0, gempa dirasakan MMI, katalog seismik 60+ kejadian terakhir) serta sistem peringatan dini tsunami nasional (InaTEWS).',
       feeds: ['AutoGempa JSON API', 'Gempa Dirasakan MMI', 'Peringatan Dini Cuaca', 'InaTEWS Tsunami'],
       interval: 'Setiap 2 - 3 Menit',
     },
@@ -50,9 +47,6 @@ export default function DataSourcesPage() {
       id: 'bnpb',
       name: 'BNPB (Badan Nasional Penanggulangan Bencana) & InaRISK',
       category: 'Hidrometeorologi & Peta Kerentanan',
-      color: '#3B82F6',
-      badgeBorder: 'border-blue-500/30',
-      badgeBg: 'bg-blue-950/40',
       icon: Database,
       url: 'https://gis.bnpb.go.id/',
       urlLabel: 'Geoportal BNPB',
@@ -65,24 +59,18 @@ export default function DataSourcesPage() {
       id: 'pvmbg',
       name: 'PVMBG / MAGMA Indonesia (Badan Geologi ESDM)',
       category: 'Aktivitas Gunung Api & Gerakan Tanah',
-      color: '#F97316',
-      badgeBorder: 'border-orange-500/30',
-      badgeBg: 'bg-orange-950/40',
       icon: Database,
       url: 'https://magma.esdm.go.id/',
       urlLabel: 'Portal MAGMA ESDM',
       description:
         'PVMBG bertanggung jawab atas penetapan 4 tingkat status resmi aktivitas gunung api (Level I Normal, Level II Waspada, Level III Siaga, Level IV Awas) untuk 127 gunung api aktif di Indonesia.',
       feeds: ['Tingkat Aktivitas MAGMA', 'Laporan Pengamatan Visual', 'Rekomendasi Zona Bahaya Kawah'],
-      interval: 'Real-time Perubahan Status',
+      interval: 'Katalog status di aplikasi, bukan feed langsung',
     },
     {
       id: 'vaac',
       name: 'Darwin VAAC (Bureau of Meteorology Australia)',
       category: 'Sebaran Abu Vulkanik Aviasi (ICAO)',
-      color: '#FB923C',
-      badgeBorder: 'border-amber-500/30',
-      badgeBg: 'bg-amber-950/40',
       icon: Wind,
       url: 'http://www.bom.gov.au/aviation/volcanic-ash/',
       urlLabel: 'Darwin VAAC Portal',
@@ -95,9 +83,6 @@ export default function DataSourcesPage() {
       id: 'osm',
       name: 'OpenStreetMap (OSM) Cartography',
       category: 'Peta Dasar Geospasial Terbuka',
-      color: '#10B981',
-      badgeBorder: 'border-emerald-500/30',
-      badgeBg: 'bg-emerald-950/40',
       icon: Map,
       url: 'https://www.openstreetmap.org/',
       urlLabel: 'OpenStreetMap Portal',
@@ -109,55 +94,38 @@ export default function DataSourcesPage() {
   ];
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8 bg-[#080C14] text-[#E8ECF1]">
+    <div className="mx-auto max-w-4xl px-gutter py-stack sm:px-6 lg:px-8">
       <Breadcrumbs items={[{ name: 'Sumber Data', url: '/data-sources' }]} />
 
       {/* Hero Header */}
-      <div className="relative mt-4 mb-10 rounded-2xl border border-white/[0.08] bg-gradient-to-b from-[#101420] via-[#0D1017] to-[#070A10] p-6 sm:p-8 overflow-hidden shadow-2xl">
-        <div className="pointer-events-none absolute -top-24 right-0 h-72 w-72 rounded-full bg-blue-600/10 blur-[100px]" />
-
-        <div className="relative z-10 max-w-2xl">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.1] bg-[#141B26]/80 px-3 py-1 text-[11px] font-mono font-semibold tracking-wider text-blue-400 uppercase mb-3 backdrop-blur-md">
-            <Server className="h-3 w-3" />
-            <span>SUMBER RESMI & TERPERCAYA</span>
-          </div>
-
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[#E8ECF1] leading-[1.1]">
-            Sumber Data Resmi
+      <div className="mb-section pt-4">
+        <div className="max-w-2xl">
+          <h1 className="text-display text-fg-1 md:text-display-lg">
+            Sumber Data <span className="serif-accent text-accent">resmi</span>
           </h1>
 
-          <p className="mt-3 text-sm sm:text-base text-[#94A3B8] leading-relaxed">
-            Disaster Radar Indonesia menampilkan data langsung dari lembaga resmi pemerintah seperti BMKG, BNPB, dan PVMBG tanpa mengubah isi aslinya, sehingga data selalu akurat dan dapat dipercaya.
+          <p className="mt-row text-body text-fg-2">
+            Disaster Radar Indonesia menampilkan data langsung dari lembaga resmi pemerintah seperti BMKG, BNPB, dan PVMBG tanpa mengubah isi aslinya. Angka dan status ditampilkan apa adanya dari sumbernya.
           </p>
         </div>
       </div>
 
-      {/* Data Source Cards */}
-      <div className="space-y-6">
+      {/* Data Source List */}
+      <div className="divide-y divide-line">
         {sources.map((src) => {
           const IconComponent = src.icon;
           return (
-            <section
-              key={src.id}
-              className="p-6 sm:p-7 rounded-2xl bg-[#0D1117] border border-white/[0.08] shadow-xl transition-all hover:border-white/[0.16]"
-            >
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
-                <div className="flex items-start gap-3.5">
-                  <div
-                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border mt-0.5"
-                    style={{
-                      backgroundColor: `${src.color}15`,
-                      borderColor: `${src.color}35`,
-                      color: src.color,
-                    }}
-                  >
-                    <IconComponent className="h-5 w-5" />
+            <section key={src.id} className="py-stack first:pt-0">
+              <div className="mb-row flex flex-col justify-between gap-row sm:flex-row sm:items-start">
+                <div className="flex items-start gap-row">
+                  <div className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-control border border-line text-fg-2">
+                    <IconComponent className="h-5 w-5" aria-hidden="true" />
                   </div>
                   <div>
-                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider block" style={{ color: src.color }}>
+                    <span className="block text-small text-fg-3">
                       {src.category}
                     </span>
-                    <h2 className="text-base sm:text-lg font-bold text-[#E8ECF1] mt-0.5">
+                    <h2 className="mt-0.5 text-heading text-fg-1">
                       {src.name}
                     </h2>
                   </div>
@@ -167,47 +135,64 @@ export default function DataSourcesPage() {
                   href={src.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-white/[0.1] bg-white/[0.03] hover:bg-white/[0.08] text-xs font-mono text-[#94A3B8] hover:text-white transition-all self-start sm:self-auto shrink-0"
+                  className="inline-flex min-h-tap shrink-0 items-center gap-1.5 self-start text-small font-semibold text-accent transition-colors duration-120 hover:text-accent-hover"
                 >
                   <span>{src.urlLabel}</span>
-                  <ExternalLink className="h-3 w-3" />
+                  <ExternalLink className="h-4 w-4" aria-hidden="true" />
+                  <span className="sr-only">(membuka tab baru)</span>
                 </a>
               </div>
 
-              <p className="text-xs sm:text-sm text-[#94A3B8] leading-relaxed">
+              <p className="text-body text-fg-2">
                 {src.description}
               </p>
 
-              <div className="mt-5 pt-4 border-t border-white/[0.05] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-mono">
+              <div className="mt-row flex flex-col justify-between gap-cell text-small sm:flex-row sm:items-center">
                 <div className="flex flex-wrap items-center gap-1.5">
                   {src.feeds.map((feed, idx) => (
                     <span
                       key={idx}
-                      className="px-2.5 py-1 rounded-md bg-[#141B26] border border-white/[0.05] text-[#CBD5E1] text-[11px]"
+                      className="rounded-badge border border-line px-1.5 py-0.5 text-fg-2"
                     >
                       {feed}
                     </span>
                   ))}
                 </div>
-                <span className="text-[#64748B] text-[11px] shrink-0">
-                  Sinkronisasi: {src.interval}
+                <span className="shrink-0 text-fg-3">
+                  Sinkronisasi: <span className="font-semibold text-fg-1">{src.interval}</span>
                 </span>
               </div>
             </section>
           );
         })}
 
-        {/* Data Integrity Commitment Card */}
-        <section className="p-6 sm:p-7 rounded-2xl bg-gradient-to-r from-[#0E1524] to-[#0A0F1A] border border-cyan-500/20 shadow-xl space-y-3">
-          <div className="flex items-center gap-2 text-cyan-400">
-            <Lock className="h-5 w-5" />
-            <h2 className="text-base sm:text-lg font-bold text-[#E8ECF1]">
-              Komitmen Integritas & Keaslian Data
+        {/* Apa yang kami ubah dan tidak kami ubah */}
+        <section className="space-y-row py-stack">
+          <div className="flex items-center gap-cell">
+            <Lock className="h-5 w-5 text-fg-2" aria-hidden="true" />
+            <h2 className="text-title text-fg-1">
+              Apa yang kami ubah dan tidak kami ubah
             </h2>
           </div>
-          <p className="text-xs sm:text-sm text-[#94A3B8] leading-relaxed">
-            Sistem kami tidak pernah memodifikasi skala magnitudo gempa, batas koordinat poligon abu, status level gunung api, atau laporan genangan air. Seluruh algoritma bertindak murni sebagai pengagregasi spasial deterministik guna menyajikan gambaran kebencanaan yang objektif bagi masyarakat.
-          </p>
+          <div className="grid grid-cols-1 gap-gutter text-body text-fg-2 sm:grid-cols-2">
+            <div>
+              <h3 className="mb-1 text-body font-semibold text-fg-1">Kami ubah</h3>
+              <ul className="list-disc space-y-1 pl-5 marker:text-fg-3">
+                <li>Waktu kejadian dikonversi ke WIB.</li>
+                <li>Label status ditampilkan dalam bahasa Indonesia.</li>
+                <li>Ketinggian abu dalam Flight Level diberi padanan kaki (ft).</li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="mb-1 text-body font-semibold text-fg-1">Tidak kami ubah</h3>
+              <ul className="list-disc space-y-1 pl-5 marker:text-fg-3">
+                <li>Magnitudo dan kedalaman gempa.</li>
+                <li>Level aktivitas gunung api.</li>
+                <li>Koordinat poligon sebaran abu.</li>
+                <li>Isi laporan kejadian BNPB.</li>
+              </ul>
+            </div>
+          </div>
         </section>
       </div>
     </div>

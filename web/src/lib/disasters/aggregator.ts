@@ -233,7 +233,7 @@ export async function getAggregatedDisasters(
       status: 'online',
       lastUpdated: new Date().toISOString(),
       url: 'https://magma.esdm.go.id/',
-      description: 'Status Aktivitas 127+ Gunung Api Aktif',
+      description: 'Status Aktivitas Gunung Api Aktif',
       eventsCount: pvmbgEvents.length,
     },
     {

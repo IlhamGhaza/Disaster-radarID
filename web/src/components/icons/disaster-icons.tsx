@@ -1,5 +1,6 @@
 import React from 'react';
 import type { DisasterType } from '@/lib/disasters/types';
+import { SEVERITY_HEX } from '@/lib/palette';
 
 interface DisasterIconProps extends React.SVGProps<SVGSVGElement> {
   type: DisasterType | string;
@@ -132,8 +133,11 @@ export function createDisasterMarkerHtml(params: {
   isCritical: boolean;
   title: string;
 }): string {
-  const { type, color, isCritical } = params;
-  const iconSvg = getDisasterSvgString(type, { size: 18, color: '#FFFFFF' });
+  const { type, color: categoryColor, isCritical } = params;
+  // Critical markers always use the critical severity color; others keep the (neutral) category color.
+  const color = isCritical ? SEVERITY_HEX.critical : categoryColor;
+  // Critical: solid disc + dark icon. Others: translucent disc + light icon. Shape differs, not only color.
+  const iconSvg = getDisasterSvgString(type, { size: 18, color: isCritical ? 'var(--sev-on)' : 'var(--fg-1)' });
 
   return `
     <div class="disaster-pin-container group" style="position: relative; width: 32px; height: 40px; cursor: pointer;">
@@ -146,15 +150,14 @@ export function createDisasterMarkerHtml(params: {
         width: 32px;
         height: 40px;
         position: relative;
-        filter: drop-shadow(0 4px 8px ${color}70);
-        transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.7));
       ">
         <svg width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg">
           <!-- Outer Teardrop Pin Silhouette -->
-          <path d="M16 0C7.163 0 0 7.163 0 16C0 26.5 14.2 38.8 15.4 39.8C15.75 40.1 16.25 40.1 16.6 39.8C17.8 38.8 32 26.5 32 16C32 7.163 24.837 0 16 0Z" fill="#0B0F17" stroke="${color}" stroke-width="2.2"/>
+          <path d="M16 0C7.163 0 0 7.163 0 16C0 26.5 14.2 38.8 15.4 39.8C15.75 40.1 16.25 40.1 16.6 39.8C17.8 38.8 32 26.5 32 16C32 7.163 24.837 0 16 0Z" style="fill: var(--surface)" stroke="${color}" stroke-width="2"/>
           <!-- Inner Colored Head Disc -->
-          <circle cx="16" cy="16" r="11.5" fill="${color}" fill-opacity="${isCritical ? '0.9' : '0.4'}"/>
-          <circle cx="16" cy="16" r="11.5" stroke="${color}" stroke-width="1"/>
+          <circle cx="16" cy="16" r="11.5" fill="${color}" fill-opacity="${isCritical ? '1' : '0.3'}"/>
+          <circle cx="16" cy="16" r="11.5" stroke="${color}" stroke-width="${isCritical ? '1' : '1.5'}"/>
         </svg>
         <div style="
           position: absolute;
@@ -194,6 +197,8 @@ export function DisasterIcon({
       fill="none"
       className={className}
       style={color ? { color } : undefined}
+      aria-hidden={props['aria-label'] ? undefined : true}
+      focusable="false"
       dangerouslySetInnerHTML={{ __html: inner }}
       {...props}
     />

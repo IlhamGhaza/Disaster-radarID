@@ -7,13 +7,9 @@ import { formatAltitudeCompact, formatMovementHuman } from '@/lib/aviation-forma
 import { getMagmaVolcanoStatus } from '@/lib/magma-status';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import {
-  Flame,
   MapPin,
   Map,
-  ArrowRight,
   ExternalLink,
-  Clock,
-  Layers,
   Mountain,
   ChevronRight,
   AlertTriangle,
@@ -70,6 +66,26 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
+// Level PVMBG → token severity; selalu disertai nama level dan angka romawi.
+const LEVEL_BADGE: Record<number, string> = {
+  4: 'border-sev-critical bg-sev-critical-soft text-sev-critical',
+  3: 'border-sev-high bg-sev-high-soft text-sev-high',
+  2: 'border-sev-warning bg-sev-warning-soft text-sev-warning',
+  1: 'border-sev-normal bg-sev-normal-soft text-sev-normal',
+};
+const LEVEL_EDGE: Record<number, string> = {
+  4: 'border-l-sev-critical',
+  3: 'border-l-sev-high',
+  2: 'border-l-sev-warning',
+  1: 'border-l-sev-normal',
+};
+const LEVEL_TEXT: Record<number, string> = {
+  4: 'text-sev-critical',
+  3: 'text-sev-high',
+  2: 'text-sev-warning',
+  1: 'text-sev-normal',
+};
+
 export default async function VolcanoDetailPage({ params }: PageProps) {
   const { slug } = await params;
   const data = await getDarwinAdvisories();
@@ -80,35 +96,35 @@ export default async function VolcanoDetailPage({ params }: PageProps) {
 
   if (!latestAdvisory) {
     return (
-      <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8 text-center">
+      <div className="mx-auto max-w-4xl px-gutter py-stack sm:px-6 lg:px-8">
         <Breadcrumbs
           items={[
-            { name: 'Active Ash Areas', url: '/volcanoes' },
+            { name: 'Gunung Api & Abu Vulkanik', url: '/volcanoes' },
             { name: slug.toUpperCase(), url: `/volcanoes/${slug}` },
           ]}
         />
-        <div className="mt-8 rounded-3xl border border-white/10 bg-[#111827]/60 p-10">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#151C28] text-[#8B95A7] mb-4">
-            <Mountain className="h-7 w-7" />
+        <div className="mt-stack rounded-card border border-line bg-surface p-gutter text-center sm:p-stack">
+          <div className="mx-auto mb-row flex h-11 w-11 items-center justify-center rounded-control border border-line text-fg-3">
+            <Mountain className="h-6 w-6" aria-hidden="true" />
           </div>
-          <h1 className="text-xl font-bold text-white sm:text-2xl">
+          <h1 className="text-title text-fg-1 md:text-title-lg">
             {slug.toUpperCase()}
           </h1>
-          <p className="mt-2 text-xs sm:text-sm text-[#8B95A7] max-w-md mx-auto">
-            There is currently no active volcanic ash advisory reported for this volcano in the recent Darwin VAAC feed.
+          <p className="mx-auto mt-cell max-w-md text-body text-fg-2">
+            Tidak ada advisori abu aktif untuk gunung ini di buletin terakhir Darwin VAAC.
           </p>
-          <div className="mt-6 flex justify-center gap-3">
+          <div className="mt-stack flex flex-wrap justify-center gap-row">
             <Link
               href="/volcanoes"
-              className="rounded-xl bg-[#151C28] px-4 py-2 text-xs font-semibold text-white hover:bg-white/10 transition"
+              className="inline-flex min-h-tap items-center rounded-control border border-line-strong px-gutter text-small font-semibold text-fg-1 transition-colors duration-120 hover:border-accent hover:text-accent"
             >
-              Browse Active Ash Areas
+              Lihat sebaran abu aktif
             </Link>
             <Link
               href="/map"
-              className="rounded-xl bg-[#FF6B1A] px-4 py-2 text-xs font-bold text-white hover:bg-[#FF8A3D] transition"
+              className="inline-flex min-h-tap items-center rounded-control bg-accent px-gutter text-small font-semibold text-fg-inverse transition-colors duration-120 hover:bg-accent-hover"
             >
-              Open Live Map
+              Buka peta
             </Link>
           </div>
         </div>
@@ -123,37 +139,32 @@ export default async function VolcanoDetailPage({ params }: PageProps) {
   const magmaStatus = getMagmaVolcanoStatus(latestAdvisory.volcanoName);
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-4xl px-gutter py-stack sm:px-6 lg:px-8">
       <Breadcrumbs
         items={[
-          { name: 'Wilayah Abu Aktif', url: '/volcanoes' },
+          { name: 'Gunung Api & Abu Vulkanik', url: '/volcanoes' },
           { name: latestAdvisory.volcanoName, url: `/volcanoes/${slug}` },
         ]}
       />
 
       {/* Header Banner */}
-      <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-[#111827] p-6 sm:p-8 shadow-2xl">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+      <div className="border-b border-line pb-stack">
+        <div className="flex flex-col gap-gutter sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <div className="flex items-center gap-2 text-xs font-semibold text-[#8B95A7]">
-              <MapPin className="h-3.5 w-3.5 text-[#FF6B1A]" />
+            <div className="flex flex-wrap items-center gap-cell text-small text-fg-2">
+              <MapPin className="h-4 w-4 text-fg-3" aria-hidden="true" />
               <span>{latestAdvisory.area}</span>
-              {latestAdvisory.volcanoCode && <span>· #{latestAdvisory.volcanoCode}</span>}
+              {latestAdvisory.volcanoCode && <span className="font-mono">· #{latestAdvisory.volcanoCode}</span>}
               <span
-                className="ml-2 rounded-full px-2 py-0.5 text-[10px] font-black uppercase tracking-wider"
-                style={{
-                  backgroundColor: magmaStatus.badgeBg,
-                  color: magmaStatus.badgeText,
-                  border: `1px solid ${magmaStatus.badgeBorder}`,
-                }}
+                className={`rounded-badge border px-1.5 py-0.5 text-label ${LEVEL_BADGE[magmaStatus.level] ?? LEVEL_BADGE[1]}`}
               >
                 {magmaStatus.levelRoman} · {magmaStatus.levelName}
               </span>
             </div>
-            <h1 className="mt-1.5 text-3xl font-black text-white sm:text-4xl">
-              Gunung {latestAdvisory.volcanoName}
+            <h1 className="mt-cell text-display text-fg-1 md:text-display-lg">
+<span className="serif-accent text-accent">Gunung</span> {latestAdvisory.volcanoName}
             </h1>
-            <p className="mt-1 text-xs text-[#8B95A7]">
+            <p className="mt-1 font-mono text-small text-fg-2 tabular-nums">
               {latestAdvisory.position
                 ? `Koordinat: ${latestAdvisory.position.latitude.toFixed(2)}°, ${latestAdvisory.position.longitude.toFixed(2)}°`
                 : ''}
@@ -161,14 +172,14 @@ export default async function VolcanoDetailPage({ params }: PageProps) {
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-cell">
             <Link
               href={`/map?lat=${latestAdvisory.position?.latitude || -6}&lng=${latestAdvisory.position?.longitude || 106}&label=${encodeURIComponent(
                 latestAdvisory.volcanoName
               )}`}
-              className="flex items-center gap-1.5 rounded-xl bg-[#FF6B1A] px-4 py-2 text-xs font-bold text-white shadow-md hover:bg-[#FF8A3D] transition"
+              className="inline-flex min-h-tap items-center gap-1.5 rounded-control bg-accent px-gutter text-small font-semibold text-fg-inverse transition-colors duration-120 hover:bg-accent-hover"
             >
-              <Map className="h-3.5 w-3.5" />
+              <Map className="h-4 w-4" aria-hidden="true" />
               <span>Periksa di Peta</span>
             </Link>
           </div>
@@ -176,39 +187,28 @@ export default async function VolcanoDetailPage({ params }: PageProps) {
 
         {/* MAGMA ESDM Activity Status Card */}
         <div
-          className="mt-6 rounded-2xl border p-4 sm:p-5"
-          style={{ backgroundColor: magmaStatus.badgeBg, borderColor: magmaStatus.badgeBorder }}
+          className={`mt-stack rounded-card border border-line border-l-4 bg-surface p-gutter ${LEVEL_EDGE[magmaStatus.level] ?? LEVEL_EDGE[1]}`}
         >
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span
-                className="h-2.5 w-2.5 rounded-full animate-pulse"
-                style={{ backgroundColor: magmaStatus.color }}
-              />
-              <span
-                className="text-xs font-bold uppercase tracking-wider"
-                style={{ color: magmaStatus.badgeText }}
-              >
-                Status Aktivitas MAGMA ESDM (PVMBG)
-              </span>
-            </div>
+          <div className="flex flex-wrap items-center justify-between gap-cell">
+            <span className="text-small font-semibold text-fg-1">
+              Status Aktivitas MAGMA ESDM (PVMBG)
+            </span>
             <span
-              className="text-xs font-black uppercase px-2.5 py-0.5 rounded-full shadow-sm"
-              style={{ backgroundColor: magmaStatus.color, color: '#0B0F17' }}
+              className={`rounded-badge border px-1.5 py-0.5 text-label ${LEVEL_BADGE[magmaStatus.level] ?? LEVEL_BADGE[1]}`}
             >
               {magmaStatus.levelName} ({magmaStatus.levelRoman})
             </span>
           </div>
 
-          <p className="mt-2 text-xs sm:text-sm text-slate-200 leading-relaxed font-medium">
+          <p className="mt-cell text-body text-fg-1">
             {magmaStatus.description}
           </p>
 
-          <div className="mt-3 pt-3 border-t border-white/10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs">
-            <div className="flex items-start gap-1.5 text-slate-300">
-              <AlertTriangle className="h-4 w-4 shrink-0 mt-0.5" style={{ color: magmaStatus.badgeText }} />
+          <div className="mt-row flex flex-col gap-cell border-t border-line pt-row text-small sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-start gap-1.5 text-fg-2">
+              <AlertTriangle className={`mt-0.5 h-4 w-4 shrink-0 ${LEVEL_TEXT[magmaStatus.level] ?? LEVEL_TEXT[1]}`} aria-hidden="true" />
               <span>
-                <strong className="text-white">Rekomendasi / Radius Bahaya:</strong> {magmaStatus.recommendation}
+                <strong className="font-semibold text-fg-1">Rekomendasi / Radius Bahaya:</strong> {magmaStatus.recommendation}
               </span>
             </div>
 
@@ -216,31 +216,32 @@ export default async function VolcanoDetailPage({ params }: PageProps) {
               href={magmaStatus.sourceUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 text-[11px] font-semibold text-[#FF6B1A] hover:text-[#FF8A3D] transition shrink-0"
+              className="inline-flex min-h-tap shrink-0 items-center gap-1 font-semibold text-accent transition-colors duration-120 hover:text-accent-hover"
             >
               <span>Portal MAGMA ESDM</span>
-              <ExternalLink className="h-3 w-3" />
+              <ExternalLink className="h-4 w-4" aria-hidden="true" />
+              <span className="sr-only">(membuka tab baru)</span>
             </a>
           </div>
         </div>
 
         {/* Key Metrics */}
-        <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <div className="rounded-xl bg-[#0B0F17]/80 p-3.5 border border-white/5">
-            <span className="text-[10px] text-[#8B95A7] uppercase block">Ketinggian Abu</span>
-            <span className="text-sm font-bold text-white">
+        <div className="mt-gutter grid grid-cols-1 gap-x-stack gap-y-row sm:grid-cols-3">
+          <div>
+            <span className="block text-label text-fg-3">Ketinggian Abu</span>
+            <span className="font-mono text-num font-bold text-fg-1 tabular-nums">
               {formatAltitudeCompact(latestAdvisory.primaryFlightLevel)}
             </span>
           </div>
-          <div className="rounded-xl bg-[#0B0F17]/80 p-3.5 border border-white/5">
-            <span className="text-[10px] text-[#8B95A7] uppercase block">Arah Pergerakan</span>
-            <span className="text-sm font-semibold text-amber-300">
+          <div>
+            <span className="block text-label text-fg-3">Arah Pergerakan</span>
+            <span className="text-body font-semibold text-fg-1">
               {formatMovementHuman(latestAdvisory.primaryMovement)}
             </span>
           </div>
-          <div className="rounded-xl bg-[#0B0F17]/80 p-3.5 border border-white/5">
-            <span className="text-[10px] text-[#8B95A7] uppercase block">Pembaruan Terakhir</span>
-            <span className="text-xs font-semibold text-slate-300">
+          <div>
+            <span className="block text-label text-fg-3">Pembaruan Terakhir</span>
+            <span className="font-mono text-body text-fg-1 tabular-nums">
               {formatWibDateTime(latestAdvisory.dtg)}
             </span>
           </div>
@@ -248,39 +249,38 @@ export default async function VolcanoDetailPage({ params }: PageProps) {
       </div>
 
       {/* Advisory History Section */}
-      <div className="mt-8">
-        <h2 className="text-lg font-bold text-white mb-4">
-          Riwayat Buletin {latestAdvisory.volcanoName} ({history.length})
+      <div className="mt-stack">
+        <h2 className="mb-row text-title text-fg-1">
+          Riwayat Buletin {latestAdvisory.volcanoName} <span className="font-mono text-fg-3 tabular-nums">({history.length})</span>
         </h2>
 
-        <div className="space-y-3">
+        <div className="divide-y divide-line border-y border-line">
           {history.map((h) => (
             <div
               key={h.id}
-              className="surface-card rounded-xl p-4 border border-white/5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
+              className="flex flex-col gap-cell py-row sm:flex-row sm:items-center sm:justify-between"
             >
               <div>
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-bold text-white">
+                <div className="flex flex-wrap items-baseline gap-x-cell">
+                  <span className="text-body font-bold text-fg-1">
                     Buletin #{h.advisoryNumber}
                   </span>
-                  <span className="text-xs text-[#8B95A7]">
+                  <span className="font-mono text-small text-fg-3 tabular-nums">
                     {formatWibDateTime(h.dtg)}
                   </span>
                 </div>
-                <div className="mt-1 text-xs text-[#8B95A7] flex items-center gap-3">
-                  <span>Alt: <strong className="text-white">{h.primaryFlightLevel}</strong></span>
-                  <span>•</span>
-                  <span>Arah: <strong className="text-amber-300">{h.primaryMovement}</strong></span>
+                <div className="mt-1 flex flex-wrap items-center gap-x-row font-mono text-small text-fg-2">
+                  <span>Alt: <strong className="font-semibold text-fg-1">{h.primaryFlightLevel}</strong></span>
+                  <span>Arah: <strong className="font-semibold text-fg-1">{h.primaryMovement}</strong></span>
                 </div>
               </div>
 
               <Link
                 href={`/advisories/${h.id}`}
-                className="flex items-center gap-1 text-xs font-semibold text-[#FF6B1A] hover:text-[#FF8A3D] transition self-end sm:self-auto"
+                className="inline-flex min-h-tap items-center gap-1 self-start text-small font-semibold text-accent transition-colors duration-120 hover:text-accent-hover sm:self-auto"
               >
                 <span>Lihat Buletin</span>
-                <ChevronRight className="h-3.5 w-3.5" />
+                <ChevronRight className="h-4 w-4" aria-hidden="true" />
               </Link>
             </div>
           ))}

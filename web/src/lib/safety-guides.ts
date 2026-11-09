@@ -276,7 +276,7 @@ export const DISASTER_SAFETY_GUIDES: Record<DisasterType, SafetyGuideItem> = {
     disasterType: 'tsunami',
     title: 'Panduan Evakuasi Cepat Bencana Tsunami',
     subtitle: 'Golden Time 15-30 Menit: Lari ke Tempat Tinggi',
-    tagline: 'Gempa Kuat di Pesisir? Segera Lari ke Tempat Tinggi Tanpa Menunggu!',
+    tagline: 'Setelah Gempa Kuat di Pesisir, Segera Lari ke Tempat Tinggi Tanpa Menunggu',
     color: '#06B6D4',
     emergencyHotlines: [
       { name: 'BMKG Peringatan Tsunami', number: '021-6546316', role: 'Pusat Gempa & Tsunami' },

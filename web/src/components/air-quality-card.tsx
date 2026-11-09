@@ -249,24 +249,20 @@ export function AirQualityCard({
       <div
         role="region"
         aria-label="Cek Kualitas Udara di Lokasi Anda"
-        className="relative rounded-2xl border border-white/[0.12] bg-gradient-to-b from-[#111726] via-[#0D121F] to-[#080C14] p-5 sm:p-6 shadow-2xl shadow-black/80 backdrop-blur-xl overflow-hidden"
+        className="bezel-core p-gutter sm:p-6"
       >
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 shadow-lg shadow-cyan-500/10">
-            <Compass className={`h-6 w-6 ${locating ? 'animate-spin' : ''}`} />
-          </div>
+        <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+          <Compass
+            className={`h-6 w-6 shrink-0 text-fg-2 ${locating ? 'animate-spin motion-reduce:animate-none' : ''}`}
+            aria-hidden="true"
+          />
 
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2">
-              <span className="font-mono text-xs font-bold uppercase tracking-wider text-cyan-400">
-                LOKASI BELUM DIKETAHUI
-              </span>
-            </div>
-            <h3 className="text-base font-bold text-white mt-0.5">
-              Cek Kualitas Udara di Sekitar Anda
-            </h3>
-            <p className="text-xs text-[#94A3B8] mt-1 leading-relaxed max-w-xl">
-              Nyalakan GPS atau pilih kota Anda untuk mengetahui seberapa bersih udara hari ini dan menerima peringatan otomatis bila udara sedang tidak sehat.
+          <div className="min-w-0 flex-1">
+            <p className="text-label text-fg-3">Lokasi belum diketahui</p>
+            <h3 className="mt-0.5 text-heading text-fg-1">Cek Kualitas Udara di Sekitar Anda</h3>
+            <p className="mt-1 max-w-[65ch] text-small text-fg-2">
+              Nyalakan GPS atau pilih kota Anda untuk mengetahui seberapa bersih udara hari ini dan menerima
+              peringatan otomatis bila udara sedang tidak sehat.
             </p>
           </div>
 
@@ -274,26 +270,26 @@ export function AirQualityCard({
             type="button"
             onClick={handleRequestGps}
             disabled={locating}
-            className="w-full sm:w-auto shrink-0 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-cyan-500/50 bg-cyan-500/20 hover:bg-cyan-500/30 active:scale-95 text-cyan-300 font-bold text-xs tracking-wide transition shadow-lg shadow-cyan-950/50"
+            className="flex min-h-tap w-full shrink-0 items-center justify-center gap-2 rounded-control bg-accent px-4 text-body font-semibold text-fg-inverse transition-colors duration-120 hover:bg-accent-hover disabled:opacity-60 sm:w-auto"
           >
-            <Navigation className={`h-4 w-4 ${locating ? 'animate-spin' : ''}`} />
+            <Navigation className="h-4 w-4" aria-hidden="true" />
             <span>{locating ? 'Mencari Lokasi...' : 'Nyalakan GPS'}</span>
           </button>
         </div>
 
         {/* Quick-pick city presets if GPS is off */}
-        <div className="mt-4 pt-3 border-t border-white/[0.08]">
-          <div className="flex flex-wrap items-center gap-2 text-xs">
-            <span className="text-[11px] font-mono text-[#64748B] flex items-center gap-1">
-              <MapPin className="h-3 w-3" />
-              Atau pilih kota:
-            </span>
+        <div className="mt-4 border-t border-line pt-3">
+          <p className="mb-1.5 flex items-center gap-1 text-small text-fg-3">
+            <MapPin className="h-4 w-4" aria-hidden="true" />
+            Atau pilih kota:
+          </p>
+          <div className="flex flex-wrap gap-2">
             {POPULAR_CITIES.map((city) => (
               <button
                 key={city.label}
                 type="button"
                 onClick={() => handleSelectCity(city)}
-                className="px-2.5 py-1 rounded-lg border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.08] hover:border-cyan-500/40 text-[11px] font-mono text-[#CBD5E1] transition active:scale-95"
+                className="min-h-tap rounded-control border border-line-strong px-3 text-small text-fg-1 transition-colors duration-120 hover:border-accent hover:text-accent md:min-h-10"
               >
                 {city.label}
               </button>
@@ -305,27 +301,56 @@ export function AirQualityCard({
   }
 
   // -------------------------------------------------------------
-  // STATE 2: Loading skeleton
+  // STATE 2: Loading skeleton (statis; tidak berdenyut)
   // -------------------------------------------------------------
   if (loading && !data) {
     return (
-      <div className="rounded-2xl border border-white/[0.08] bg-[#0D1117]/90 p-4 sm:p-5 backdrop-blur-xl animate-pulse">
-        <div className="flex items-center justify-between pb-3 border-b border-white/[0.06]">
-          <div className="h-4 w-32 bg-white/10 rounded" />
-          <div className="h-4 w-16 bg-white/10 rounded-full" />
-        </div>
-        <div className="mt-4 flex items-center gap-4">
-          <div className="h-12 w-16 bg-white/10 rounded-xl" />
+      <div
+        role="status"
+        aria-live="polite"
+        className="bezel-core p-gutter sm:p-5"
+      >
+        <p className="text-small text-fg-3">
+          {locating ? 'Mencari lokasi Anda...' : 'Memuat data kualitas udara...'}
+        </p>
+        <div className="mt-3 flex items-center gap-4" aria-hidden="true">
+          <div className="h-12 w-20 rounded-control bg-raised" />
           <div className="flex-1 space-y-2">
-            <div className="h-4 w-3/4 bg-white/10 rounded" />
-            <div className="h-3 w-1/2 bg-white/10 rounded" />
+            <div className="h-4 w-3/4 rounded-badge bg-raised" />
+            <div className="h-3 w-1/2 rounded-badge bg-raised" />
           </div>
         </div>
       </div>
     );
   }
 
-  if (!data) return null;
+  // -------------------------------------------------------------
+  // STATE 2b: Error — fetch selesai tapi tidak ada data
+  // -------------------------------------------------------------
+  if (!data) {
+    return (
+      <div
+        role="status"
+        className="flex flex-col items-start gap-3 bezel-core p-gutter sm:flex-row sm:items-center sm:justify-between"
+      >
+        <div className="flex items-start gap-2">
+          <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-sev-warning" aria-hidden="true" />
+          <p className="text-small text-fg-2">
+            <strong className="font-semibold text-fg-1">Data kualitas udara gagal dimuat.</strong> Periksa koneksi
+            internet, lalu coba lagi.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => runLocationDetection()}
+          className="flex min-h-tap shrink-0 items-center gap-2 rounded-control border border-line-strong px-4 text-small font-semibold text-fg-1 transition-colors duration-120 hover:bg-raised"
+        >
+          <RefreshCw className="h-4 w-4" aria-hidden="true" />
+          Coba lagi
+        </button>
+      </div>
+    );
+  }
 
   const isUnhealthy = isAirQualityUnhealthy(data.ispu);
   const historyList = data.history || data.hourlyHistory || [];
@@ -334,6 +359,20 @@ export function AirQualityCard({
       ? historyList[selectedHourIndex]
       : null;
 
+  // Kategori dari lib berupa huruf kapital ("TIDAK SEHAT"); tampilkan sebagai kalimat biasa.
+  const sentenceCase = (s: string) => (s ? s.charAt(0) + s.slice(1).toLowerCase() : s);
+  // Warna batang dipetakan ke token severity (Baik → normal, Sedang → tsunami/biru, Tidak sehat → warning, lebih buruk → critical).
+  const barToken = (ispu: number) =>
+    ispu <= 50
+      ? 'var(--sev-normal)'
+      : ispu <= 100
+      ? 'var(--sev-tsunami)'
+      : ispu <= 200
+      ? 'var(--sev-warning)'
+      : 'var(--sev-critical)';
+
+  const rangeLabel = timeRange === '1d' ? '24 Jam' : timeRange === '7d' ? '7 Hari' : '30 Hari';
+
   // -------------------------------------------------------------
   // STATE 3: Ready with ISPU Telemetry, Clickable 24h Trend & Notification
   // -------------------------------------------------------------
@@ -341,67 +380,51 @@ export function AirQualityCard({
     <div
       role="region"
       aria-label="Pemantauan Kualitas Udara ISPU"
-      className="relative rounded-2xl border border-white/[0.08] bg-gradient-to-b from-[#0F1420] via-[#0D1117] to-[#090D15] p-4 sm:p-5 shadow-2xl shadow-black/60 backdrop-blur-xl overflow-hidden group"
+      className="bezel-core"
+      style={{ borderLeft: `4px solid ${data.color}` }}
     >
-      {/* Top ambient color glow based on ISPU status */}
-      <div
-        className="pointer-events-none absolute -top-12 right-0 h-36 w-36 rounded-full blur-[80px] opacity-25"
-        style={{ backgroundColor: data.color }}
-      />
-
       {/* Header bar */}
-      <div className="flex items-center justify-between gap-2 pb-3 border-b border-white/[0.06] text-xs">
-        <div className="flex items-center gap-2 min-w-0">
-          <div
-            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border"
-            style={{
-              backgroundColor: data.bgColor,
-              borderColor: data.borderColor,
-              color: data.color,
-            }}
-          >
-            <Wind className="h-3.5 w-3.5" />
-          </div>
-          <div className="min-w-0">
-            <div className="flex items-center gap-1.5">
-              <span className="font-mono font-bold tracking-wider text-[#E8ECF1] uppercase text-[11px]">
-                KUALITAS UDARA
+      <div className="flex items-center justify-between gap-2 border-b border-line py-1 pl-gutter pr-1">
+        <div className="min-w-0">
+          <p className="flex items-center gap-2 text-small font-semibold text-fg-1">
+            <Wind className="h-4 w-4 shrink-0 text-fg-2" aria-hidden="true" />
+            Kualitas udara
+            <span className="hidden font-normal text-fg-3 sm:inline">(Indeks ISPU)</span>
+          </p>
+          <p className="flex min-w-0 items-center gap-1 text-small text-fg-2">
+            <MapPin className="h-3.5 w-3.5 shrink-0 text-fg-3" aria-hidden="true" />
+            <span className="truncate">{effectiveLabel}</span>
+            {userLoc?.isGps && (
+              <span className="shrink-0 rounded-badge border border-line-strong px-1 text-label font-normal text-fg-2">
+                GPS
               </span>
-              <span className="text-[10px] font-mono text-[#64748B] hidden sm:inline">(Indeks ISPU)</span>
-            </div>
-            <div className="flex items-center gap-1 text-[11px] text-[#8B95A7] truncate">
-              <MapPin className="h-3 w-3 shrink-0 text-[#64748B]" />
-              <span className="truncate">{effectiveLabel}</span>
-              {userLoc?.isGps && (
-                <span className="text-[9px] font-mono text-cyan-400 bg-cyan-500/10 px-1 py-0.2 rounded border border-cyan-500/20 shrink-0">
-                  GPS
-                </span>
-              )}
-            </div>
-          </div>
+            )}
+          </p>
         </div>
 
-        <div className="flex items-center gap-1.5 shrink-0">
+        <div className="flex shrink-0 items-center">
           {/* Web Notification Toggle */}
           <button
             type="button"
             onClick={handleToggleNotification}
-            className={`p-1.5 rounded-lg border transition ${
-              notifPermission === 'granted'
-                ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-400'
-                : 'border-white/[0.08] text-[#8B95A7] hover:text-white hover:bg-white/[0.04]'
+            className={`flex size-tap items-center justify-center rounded-control transition-colors duration-120 hover:bg-raised ${
+              notifPermission === 'granted' ? 'text-sev-normal' : 'text-fg-2 hover:text-fg-1'
             }`}
             title={
               notifPermission === 'granted'
                 ? 'Notifikasi Udara Tidak Sehat Sudah Aktif'
                 : 'Nyalakan Notifikasi Jika Udara Tidak Sehat'
             }
-            aria-label="Pengaturan Notifikasi Kualitas Udara"
+            aria-label={
+              notifPermission === 'granted'
+                ? 'Notifikasi Udara Tidak Sehat Sudah Aktif'
+                : 'Nyalakan Notifikasi Jika Udara Tidak Sehat'
+            }
           >
             {notifPermission === 'granted' ? (
-              <BellRing className="h-3.5 w-3.5" />
+              <BellRing className="h-4 w-4" aria-hidden="true" />
             ) : (
-              <Bell className="h-3.5 w-3.5" />
+              <Bell className="h-4 w-4" aria-hidden="true" />
             )}
           </button>
 
@@ -410,260 +433,232 @@ export function AirQualityCard({
             type="button"
             onClick={() => fetchAqi(effectiveLat, effectiveLng, effectiveLabel)}
             disabled={loading}
-            className="p-1.5 rounded-lg border border-white/[0.08] text-[#8B95A7] hover:text-white hover:bg-white/[0.04] transition"
+            className="flex size-tap items-center justify-center rounded-control text-fg-2 transition-colors duration-120 hover:bg-raised hover:text-fg-1"
             title="Perbarui Data Kualitas Udara"
-            aria-label="Refresh Kualitas Udara"
+            aria-label="Perbarui Data Kualitas Udara"
           >
-            <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin text-cyan-400' : ''}`} />
+            <RefreshCw
+              className={`h-4 w-4 ${loading ? 'animate-spin motion-reduce:animate-none' : ''}`}
+              aria-hidden="true"
+            />
           </button>
         </div>
       </div>
 
-      {/* Unhealthy Warning Strip with Notification Opt-In Prompt */}
-      {isUnhealthy && notifPermission !== 'granted' && (
-        <div className="mt-3 p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between gap-3 text-xs">
-          <div className="flex items-center gap-2 min-w-0">
-            <AlertTriangle className="h-4 w-4 text-amber-400 shrink-0" />
-            <span className="text-[11px] text-amber-200 truncate">
-              Perhatian: Udara sedang kurang sehat ({data.category})!
-            </span>
-          </div>
-          <button
-            type="button"
-            onClick={handleToggleNotification}
-            className="shrink-0 px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 font-bold text-[10px] border border-amber-500/40 transition active:scale-95 flex items-center gap-1"
-          >
-            <Bell className="h-3 w-3" />
-            <span>Nyalakan Peringatan</span>
-          </button>
-        </div>
-      )}
-
-      {/* Main ISPU Gauge & Status */}
-      <div className="mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-3.5">
-          <div
-            className="flex flex-col items-center justify-center px-3.5 py-2 rounded-xl border font-mono tabular-nums shadow-lg"
-            style={{
-              backgroundColor: data.bgColor,
-              borderColor: data.borderColor,
-            }}
-          >
-            <span className="text-2xl sm:text-3xl font-black leading-none" style={{ color: data.color }}>
-              {data.ispu}
-            </span>
-            <span className="text-[9px] font-bold tracking-widest uppercase mt-0.5 text-[#8B95A7]">
-              ISPU
-            </span>
-          </div>
-
-          <div>
-            <span
-              className="inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border font-mono"
-              style={{
-                backgroundColor: data.bgColor,
-                borderColor: data.borderColor,
-                color: data.color,
-              }}
-            >
-              {data.category}
-            </span>
-            <p className="text-xs text-[#94A3B8] mt-1 line-clamp-2 max-w-md leading-relaxed">
-              {data.advice}
+      <div className="p-gutter">
+        {/* Unhealthy Warning Strip with Notification Opt-In Prompt */}
+        {isUnhealthy && notifPermission !== 'granted' && (
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-2 rounded-control border border-line border-l-4 border-l-sev-warning bg-sev-warning-soft py-1 pl-3 pr-1">
+            <p className="flex min-w-0 items-center gap-2 text-small text-fg-1">
+              <AlertTriangle className="h-4 w-4 shrink-0 text-sev-warning" aria-hidden="true" />
+              <span>Perhatian: udara sedang kurang sehat ({sentenceCase(data.category)}).</span>
             </p>
-          </div>
-        </div>
-
-        {/* Quick pollutant pills */}
-        <div className="grid grid-cols-3 sm:grid-cols-3 gap-2 rounded-xl border border-white/[0.06] bg-[#070A10]/70 p-2 text-center text-xs font-mono shrink-0">
-          <div>
-            <span className="text-[9px] text-[#64748B] block">Debu PM2.5</span>
-            <span className="font-bold text-[#E8ECF1] tabular-nums">
-              {data.pm25.toFixed(1)} <span className="text-[9px] text-[#64748B] font-normal">µg/m³</span>
-            </span>
-          </div>
-          <div>
-            <span className="text-[9px] text-[#64748B] block">Debu PM10</span>
-            <span className="font-bold text-[#E8ECF1] tabular-nums">
-              {data.pm10.toFixed(1)} <span className="text-[9px] text-[#64748B] font-normal">µg/m³</span>
-            </span>
-          </div>
-          <div>
-            <span className="text-[9px] text-[#64748B] block">Standar AQI</span>
-            <span className="font-bold text-amber-400 tabular-nums">
-              {data.usAqi}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* History Toggle & Interactive Clickable Bar Graph with 1D, 7D, 30D Selector */}
-      {historyList && historyList.length > 0 && (
-        <div className="mt-4 pt-3 border-t border-white/[0.06]">
-          <div className="flex flex-wrap items-center justify-between gap-2 mb-2.5">
-            <div className="flex items-center gap-2">
-              <span className="text-[10px] font-mono tracking-wider text-[#8B95A7] uppercase flex items-center gap-1.5">
-                <Activity className="h-3 w-3 text-cyan-400" />
-                <span>Riwayat ISPU</span>
-              </span>
-
-              {/* Time Range Selector: 24 Jam (1D), 7 Hari (1W), 30 Hari (1M) */}
-              <div className="flex items-center rounded-lg bg-[#060A12] p-0.5 border border-white/[0.08] shadow-inner">
-                <button
-                  type="button"
-                  onClick={() => handleRangeChange('1d')}
-                  disabled={rangeLoading}
-                  className={`px-2 py-0.5 rounded text-[10px] font-mono transition-all ${
-                    timeRange === '1d'
-                      ? 'bg-cyan-500 text-black font-bold shadow-sm'
-                      : 'text-[#94A3B8] hover:text-white'
-                  }`}
-                  title="Riwayat 24 jam terakhir (per jam)"
-                >
-                  24 Jam
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleRangeChange('7d')}
-                  disabled={rangeLoading}
-                  className={`px-2 py-0.5 rounded text-[10px] font-mono transition-all ${
-                    timeRange === '7d'
-                      ? 'bg-cyan-500 text-black font-bold shadow-sm'
-                      : 'text-[#94A3B8] hover:text-white'
-                  }`}
-                  title="Riwayat 7 hari terakhir (1 minggu)"
-                >
-                  7 Hari
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleRangeChange('30d')}
-                  disabled={rangeLoading}
-                  className={`px-2 py-0.5 rounded text-[10px] font-mono transition-all ${
-                    timeRange === '30d'
-                      ? 'bg-cyan-500 text-black font-bold shadow-sm'
-                      : 'text-[#94A3B8] hover:text-white'
-                  }`}
-                  title="Riwayat 30 hari terakhir (1 bulan)"
-                >
-                  30 Hari
-                </button>
-              </div>
-            </div>
-
             <button
               type="button"
-              onClick={() => setShowHistory(!showHistory)}
-              className="text-[10px] font-mono text-cyan-400 hover:text-cyan-300 flex items-center gap-1"
+              onClick={handleToggleNotification}
+              className="flex min-h-tap shrink-0 items-center gap-1.5 rounded-control px-3 text-small font-semibold text-accent transition-colors duration-120 hover:bg-surface hover:text-accent-hover md:min-h-10"
             >
-              <span>{showHistory ? 'Tutup' : 'Buka Grafik'}</span>
-              {showHistory ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
+              <Bell className="h-4 w-4" aria-hidden="true" />
+              <span>Nyalakan Peringatan</span>
             </button>
           </div>
+        )}
 
-          {showHistory && (
-            <div className="space-y-2 animate-in fade-in duration-200">
-              {/* Bars container */}
-              <div
-                className={`flex items-end justify-between gap-1 h-14 pt-2 px-1 rounded-lg bg-[#060910] border border-white/[0.04] transition-opacity ${
-                  rangeLoading ? 'opacity-50' : 'opacity-100'
-                }`}
-                role="group"
-                aria-label={`Grafik Kualitas Udara ${timeRange === '1d' ? '24 Jam' : timeRange === '7d' ? '7 Hari' : '30 Hari'}`}
-              >
-                {historyList.map((h, i) => {
-                  const maxIspu = 250;
-                  const heightPercent = Math.min(100, Math.max(14, (h.ispu / maxIspu) * 100));
-                  const isSelected = selectedHourIndex === i;
-                  const isCurrent = i === historyList.length - 1;
-                  const barColor =
-                    h.ispu <= 50
-                      ? '#10B981'
-                      : h.ispu <= 100
-                      ? '#3B82F6'
-                      : h.ispu <= 200
-                      ? '#F59E0B'
-                      : '#EF4444';
+        {/* Angka utama: ISPU besar + kategori + saran */}
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div className="flex items-start gap-4">
+            <p className="shrink-0 leading-none">
+              <span className="font-mono text-num-xl font-semibold tabular-nums text-fg-1">{data.ispu}</span>
+              <span className="mt-1 block text-label font-normal text-fg-3">ISPU</span>
+            </p>
+            <div className="min-w-0">
+              <p className="flex items-center gap-2 text-heading text-fg-1">
+                <span
+                  aria-hidden="true"
+                  className="h-3 w-3 shrink-0 rounded-badge"
+                  style={{ backgroundColor: data.color }}
+                />
+                {sentenceCase(data.category)}
+              </p>
+              <p className="mt-1 line-clamp-2 max-w-[60ch] text-small text-fg-2">{data.advice}</p>
+            </div>
+          </div>
 
-                  return (
+          {/* Polutan: angka mono + satuan */}
+          <dl className="grid shrink-0 grid-cols-3 gap-x-5 border-t border-line pt-3 sm:border-l sm:border-t-0 sm:pl-5 sm:pt-0">
+            <div>
+              <dt className="text-label font-normal text-fg-3">Debu PM2.5</dt>
+              <dd className="font-mono text-num tabular-nums text-fg-1">
+                {data.pm25.toFixed(1)} <span className="text-label font-normal text-fg-3">µg/m³</span>
+              </dd>
+            </div>
+            <div>
+              <dt className="text-label font-normal text-fg-3">Debu PM10</dt>
+              <dd className="font-mono text-num tabular-nums text-fg-1">
+                {data.pm10.toFixed(1)} <span className="text-label font-normal text-fg-3">µg/m³</span>
+              </dd>
+            </div>
+            <div>
+              <dt className="text-label font-normal text-fg-3">Standar AQI</dt>
+              <dd className="font-mono text-num tabular-nums text-fg-1">
+                {data.usAqi} <span className="text-label font-normal text-fg-3">US AQI</span>
+              </dd>
+            </div>
+          </dl>
+        </div>
+
+        {/* History Toggle & Interactive Clickable Bar Graph with 1D, 7D, 30D Selector */}
+        {historyList && historyList.length > 0 && (
+          <div className="mt-4 border-t border-line pt-3">
+            <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="flex items-center gap-1.5 text-small font-semibold text-fg-1">
+                  <Activity className="h-4 w-4 text-fg-2" aria-hidden="true" />
+                  Riwayat ISPU
+                </span>
+
+                {/* Time Range Selector */}
+                <div role="group" aria-label="Rentang riwayat" className="flex rounded-control border border-line-strong p-0.5">
+                  {(
+                    [
+                      { id: '1d', label: '24 Jam', title: 'Riwayat 24 jam terakhir (per jam)' },
+                      { id: '7d', label: '7 Hari', title: 'Riwayat 7 hari terakhir (1 minggu)' },
+                      { id: '30d', label: '30 Hari', title: 'Riwayat 30 hari terakhir (1 bulan)' },
+                    ] as const
+                  ).map((r) => (
                     <button
-                      key={i}
+                      key={r.id}
                       type="button"
-                      onClick={() => setSelectedHourIndex(isSelected ? null : i)}
-                      className="flex-1 flex flex-col items-center justify-end h-full relative cursor-pointer group/bar focus:outline-none"
-                      title={`${h.label} — ISPU ${h.ispu} (${h.category})`}
-                      aria-label={`${h.label}, ISPU ${h.ispu}`}
+                      onClick={() => handleRangeChange(r.id)}
+                      disabled={rangeLoading}
+                      aria-pressed={timeRange === r.id}
+                      title={r.title}
+                      className={`min-h-10 rounded-badge px-3 text-small transition-colors duration-120 ${
+                        timeRange === r.id
+                          ? 'bg-accent font-semibold text-fg-inverse'
+                          : 'text-fg-2 hover:text-fg-1'
+                      }`}
                     >
-                      <div
-                        className={`w-full rounded-t transition-all duration-150 ${
-                          isSelected
-                            ? 'ring-2 ring-white brightness-150 scale-x-110 shadow-lg'
-                            : 'hover:brightness-125'
-                        }`}
-                        style={{
-                          height: `${heightPercent}%`,
-                          backgroundColor: barColor,
-                          opacity: isSelected ? 1 : isCurrent ? 1 : 0.75,
-                        }}
-                      />
-
-                      {/* Small current dot */}
-                      {isCurrent && !isSelected && (
-                        <span className="absolute -bottom-1 h-1 w-1 rounded-full bg-cyan-400" />
-                      )}
-
-                      {/* Hover Tooltip for desktop */}
-                      <div className="absolute bottom-full mb-1 hidden group-hover/bar:flex flex-col items-center pointer-events-none z-30">
-                        <div className="rounded bg-[#0A0E17] border border-white/20 p-1 px-1.5 text-[9px] font-mono whitespace-nowrap shadow-xl">
-                          <span className="font-bold text-white">{h.label}</span> — {h.ispu}
-                        </div>
-                      </div>
+                      {r.label}
                     </button>
-                  );
-                })}
+                  ))}
+                </div>
               </div>
 
-              {/* Ticker labels below chart */}
-              <div className="flex items-center justify-between text-[9px] font-mono text-[#5A6478] px-1">
-                <span>{timeRange === '1d' ? '24 jam lalu' : timeRange === '7d' ? '7 hari lalu' : '30 hari lalu'}</span>
-                <span>{timeRange === '1d' ? '12 jam lalu' : timeRange === '7d' ? '3 hari lalu' : '15 hari lalu'}</span>
-                <span className="text-cyan-400 font-bold">{timeRange === '1d' ? 'Saat ini' : 'Hari ini'}</span>
-              </div>
+              <button
+                type="button"
+                onClick={() => setShowHistory(!showHistory)}
+                aria-expanded={showHistory}
+                className="flex min-h-tap items-center gap-1 text-small font-semibold text-accent hover:text-accent-hover md:min-h-10"
+              >
+                <span>{showHistory ? 'Tutup' : 'Buka Grafik'}</span>
+                {showHistory ? (
+                  <ChevronUp className="h-4 w-4" aria-hidden="true" />
+                ) : (
+                  <ChevronDown className="h-4 w-4" aria-hidden="true" />
+                )}
+              </button>
+            </div>
 
-              {/* Click Detail Callout: Displays the exact number when clicked */}
-              {selectedPoint ? (
-                <div className="mt-2.5 p-2.5 rounded-xl border border-cyan-500/30 bg-cyan-950/20 flex items-center justify-between gap-3 text-xs backdrop-blur-sm animate-in fade-in slide-in-from-top-1">
-                  <div className="flex items-center gap-2 min-w-0">
-                    <span className="font-mono text-[11px] font-bold text-cyan-300 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/20 shrink-0">
-                      {timeRange === '1d' ? `Jam ${selectedPoint.label}` : selectedPoint.label}
-                    </span>
-                    <span className="text-[#CBD5E1] text-[11px] truncate">
-                      ISPU: <strong className="text-white font-mono text-sm">{selectedPoint.ispu}</strong>{' '}
-                      <span className="text-[#94A3B8]">({selectedPoint.category})</span>
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2 shrink-0">
-                    <span className="text-[11px] font-mono text-[#94A3B8]">
-                      PM2.5: <strong className="text-white">{selectedPoint.pm25.toFixed(1)}</strong> µg/m³
-                    </span>
+            {showHistory && (
+              <div className="space-y-2">
+                {/* Bars container */}
+                <div
+                  className={`flex h-16 items-end justify-between gap-1 rounded-control border border-line bg-bg px-1 pt-2 transition-opacity duration-120 ${
+                    rangeLoading ? 'opacity-50' : 'opacity-100'
+                  }`}
+                  role="group"
+                  aria-label={`Grafik Kualitas Udara ${rangeLabel}`}
+                  aria-busy={rangeLoading}
+                >
+                  {historyList.map((h, i) => {
+                    const maxIspu = 250;
+                    const heightPercent = Math.min(100, Math.max(14, (h.ispu / maxIspu) * 100));
+                    const isSelected = selectedHourIndex === i;
+                    const isCurrent = i === historyList.length - 1;
+
+                    return (
+                      <button
+                        key={i}
+                        type="button"
+                        onClick={() => setSelectedHourIndex(isSelected ? null : i)}
+                        className="group/bar relative flex h-full flex-1 cursor-pointer flex-col items-center justify-end"
+                        title={`${h.label} — ISPU ${h.ispu} (${h.category})`}
+                        aria-label={`${h.label}, ISPU ${h.ispu}, ${sentenceCase(h.category)}`}
+                        aria-pressed={isSelected}
+                      >
+                        <div
+                          className={`w-full rounded-t-[2px] ${isSelected ? 'outline-2 outline-offset-1 outline-fg-1' : ''}`}
+                          style={{
+                            height: `${heightPercent}%`,
+                            backgroundColor: barToken(h.ispu),
+                            opacity: isSelected || isCurrent ? 1 : 0.7,
+                          }}
+                        />
+
+                        {/* Penanda "saat ini" */}
+                        {isCurrent && !isSelected && (
+                          <span aria-hidden="true" className="absolute -bottom-1 h-1 w-1 rounded-full bg-fg-1" />
+                        )}
+
+                        {/* Hover Tooltip for desktop */}
+                        <div className="pointer-events-none absolute bottom-full z-30 mb-1 hidden flex-col items-center group-hover/bar:flex">
+                          <div className="whitespace-nowrap rounded-badge border border-line-strong bg-raised px-1.5 py-0.5 font-mono text-label font-normal text-fg-1">
+                            <span className="font-semibold">{h.label}</span> — {h.ispu}
+                          </div>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Ticker labels below chart */}
+                <div className="flex items-center justify-between px-1 text-label font-normal text-fg-3">
+                  <span>{timeRange === '1d' ? '24 jam lalu' : timeRange === '7d' ? '7 hari lalu' : '30 hari lalu'}</span>
+                  <span>{timeRange === '1d' ? '12 jam lalu' : timeRange === '7d' ? '3 hari lalu' : '15 hari lalu'}</span>
+                  <span className="font-semibold text-fg-1">{timeRange === '1d' ? 'Saat ini' : 'Hari ini'}</span>
+                </div>
+
+                {/* Click Detail Callout: Displays the exact number when clicked */}
+                {selectedPoint ? (
+                  <div
+                    role="status"
+                    className="flex flex-wrap items-center justify-between gap-2 rounded-control border border-line-strong bg-raised py-1 pl-3 pr-1 text-small"
+                  >
+                    <p className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-0.5">
+                      <span className="font-mono font-semibold tabular-nums text-fg-1">
+                        {timeRange === '1d' ? `Jam ${selectedPoint.label}` : selectedPoint.label}
+                      </span>
+                      <span className="text-fg-2">
+                        ISPU <strong className="font-mono font-semibold tabular-nums text-fg-1">{selectedPoint.ispu}</strong>{' '}
+                        ({sentenceCase(selectedPoint.category)})
+                      </span>
+                      <span className="text-fg-2">
+                        PM2.5{' '}
+                        <strong className="font-mono font-semibold tabular-nums text-fg-1">
+                          {selectedPoint.pm25.toFixed(1)}
+                        </strong>{' '}
+                        µg/m³
+                      </span>
+                    </p>
                     <button
                       type="button"
                       onClick={() => setSelectedHourIndex(null)}
-                      className="px-2 py-0.5 rounded bg-white/[0.06] hover:bg-white/10 text-[10px] font-mono text-cyan-300 transition"
+                      className="flex min-h-tap shrink-0 items-center rounded-control px-3 font-semibold text-accent hover:bg-surface hover:text-accent-hover md:min-h-10"
                     >
                       Tutup
                     </button>
                   </div>
-                </div>
-              ) : (
-                <p className="text-[10px] text-[#64748B] text-center font-mono py-0.5">
-                  👆 Sentuh atau klik batang mana saja untuk melihat angka detail {timeRange === '1d' ? 'jam' : 'hari'} tersebut
-                </p>
-              )}
-            </div>
-          )}
-        </div>
-      )}
+                ) : (
+                  <p className="py-0.5 text-center text-label font-normal text-fg-3">
+                    Sentuh atau klik batang mana saja untuk melihat angka detail {timeRange === '1d' ? 'jam' : 'hari'} tersebut
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

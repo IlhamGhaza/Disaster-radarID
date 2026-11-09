@@ -3,15 +3,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { VolcanoAdvisory } from '@/lib/types';
-import { getVolcanoColor } from '@/lib/palette';
 import { formatWibDateTime } from '@/lib/parser/date-utils';
-import {
-  Flame,
-  ArrowRight,
-  RefreshCw,
-  Clock,
-  Radio,
-} from 'lucide-react';
+import { ArrowRight, RefreshCw } from 'lucide-react';
 
 interface LiveAdvisoryTickerProps {
   initialAdvisories: VolcanoAdvisory[];
@@ -92,127 +85,112 @@ export function LiveAdvisoryTicker({
   }, [handleRefresh]);
 
   return (
-    <div className="mt-16">
-      {/* Live Status Bar */}
-      <div className="mb-6 flex items-center justify-between rounded-2xl border border-slate-800/80 bg-slate-900/40 px-4 py-3 backdrop-blur-md">
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2">
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
-            </span>
-            <span className="text-xs font-bold text-emerald-400">LIVE</span>
-          </div>
-          <span className="h-4 w-px bg-slate-800" />
-          <span className="text-xs font-semibold text-slate-300">
-            {totalActive} Active Advisories
+    <section className="mt-section" aria-labelledby="ticker-heading">
+      {/* Status bar: satu-satunya indikator "data live" (polling 3 menit) */}
+      <div className="mb-stack flex flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded-card border border-line bg-surface px-gutter py-2">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-small">
+          <span className="inline-flex items-center gap-2 font-semibold text-fg-1">
+            <span
+              aria-hidden="true"
+              className="h-2 w-2 rounded-full bg-sev-normal animate-pulse motion-reduce:animate-none"
+            />
+            LIVE
           </span>
-          <span className="h-4 w-px bg-slate-800 hidden sm:block" />
-          <span className="text-xs text-slate-400 hidden sm:block">
-            Source: Darwin VAAC
+          <span className="text-fg-1">
+            <span className="font-mono tabular-nums">{totalActive}</span> Active Advisories
           </span>
+          <span className="hidden text-fg-3 sm:inline">Source: Darwin VAAC</span>
         </div>
 
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1.5 text-xs text-slate-400">
-            <Clock className="h-3 w-3" />
-            <span suppressHydrationWarning>Synced {mounted ? relativeTime : 'just now'}</span>
-          </div>
+        <div className="flex items-center gap-2">
+          <span className="text-small text-fg-3" suppressHydrationWarning>
+            Synced {mounted ? relativeTime : 'just now'}
+          </span>
           <button
+            type="button"
             onClick={handleRefresh}
             disabled={isRefreshing}
-            className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-800 bg-slate-950/80 text-slate-400 transition hover:bg-slate-900 hover:text-white disabled:opacity-50"
-            title="Refresh data now"
+            className="flex size-tap items-center justify-center rounded-control border border-line text-fg-2 transition-colors duration-120 hover:bg-raised hover:text-fg-1 disabled:opacity-50"
             aria-label="Refresh advisory data"
           >
-            <RefreshCw className={`h-3.5 w-3.5 ${isRefreshing ? 'animate-spin text-red-500' : ''}`} />
+            <RefreshCw
+              aria-hidden="true"
+              className={`h-4 w-4 ${isRefreshing ? 'animate-spin motion-reduce:animate-none' : ''}`}
+            />
           </button>
         </div>
       </div>
 
+      {/* Ringkasan perubahan untuk pembaca layar */}
+      <p role="status" aria-atomic="true" className="sr-only" suppressHydrationWarning>
+        {totalActive} active advisories, updated {formatWibDateTime(updatedAt)}.
+      </p>
+
       {/* Section Header */}
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
-          <Flame className="h-5 w-5 text-red-500" />
-          <h2 className="text-sm font-bold uppercase tracking-wider text-slate-300">
-            Current Active Volcano Plumes
-          </h2>
-        </div>
-        <span className="text-xs text-slate-400" suppressHydrationWarning>
+      <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
+        <h2 id="ticker-heading" className="text-title text-fg-1 md:text-title-lg">
+          Current Active Volcano Plumes
+        </h2>
+        <span className="font-mono text-small tabular-nums text-fg-3" suppressHydrationWarning>
           Updated: {formatWibDateTime(updatedAt)}
         </span>
       </div>
 
       {/* Advisory Cards Grid */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {advisories.slice(0, 4).map((adv) => {
-          const color = getVolcanoColor(adv.volcanoName);
-          return (
-            <Link
-              key={adv.id}
-              href={`/advisories/${adv.id}`}
-              className={`group relative overflow-hidden rounded-2xl border bg-slate-900/60 p-5 shadow-lg backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 ${
-                hasNewData
-                  ? 'border-emerald-500/50 advisory-card-glow'
-                  : 'border-slate-800 hover:border-red-500/50 hover:bg-slate-900/90'
-              }`}
-            >
-              <div
-                className="absolute top-0 left-0 right-0 h-1"
-                style={{ backgroundColor: color }}
-              />
-              {/* Glassmorphism overlay on hover */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-
-              <div className="relative flex items-start justify-between">
-                <div>
-                  <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-                    {adv.area}
-                  </span>
-                  <h3 className="mt-1 text-lg font-black text-white group-hover:text-red-400 transition-colors">
-                    {adv.volcanoName}
-                  </h3>
-                </div>
-                <span className="rounded-md bg-slate-800 px-2 py-0.5 text-[11px] font-mono font-semibold text-slate-300">
-                  #{adv.advisoryNumber}
-                </span>
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {advisories.slice(0, 4).map((adv) => (
+          <Link
+            key={adv.id}
+            href={`/advisories/${adv.id}`}
+            className={`group flex flex-col rounded-card border border-l-4 border-l-sev-ash p-gutter transition-colors duration-120 ${
+              hasNewData
+                ? 'border-sev-ash bg-sev-ash-soft'
+                : 'border-line bg-surface hover:border-line-strong hover:bg-raised'
+            }`}
+          >
+            <div className="flex items-start justify-between gap-2">
+              <div className="min-w-0">
+                <p className="text-label text-sev-ash">Ash</p>
+                <h3 className="mt-0.5 text-heading text-fg-1">{adv.volcanoName}</h3>
+                <p className="text-small text-fg-3">{adv.area}</p>
               </div>
+              <span className="shrink-0 rounded-badge border border-line px-1.5 py-0.5 font-mono text-label font-normal tabular-nums text-fg-2">
+                #{adv.advisoryNumber}
+              </span>
+            </div>
 
-              <div className="relative mt-4 space-y-1.5 text-xs text-slate-300">
-                <div className="flex justify-between">
-                  <span className="text-slate-400">Flight Level:</span>
-                  <span className="font-bold text-red-400">{adv.primaryFlightLevel}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-400">Movement:</span>
-                  <span className="font-semibold text-amber-300">{adv.primaryMovement}</span>
-                </div>
-              </div>
+            <dl className="mt-3 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-small">
+              <dt className="text-fg-3">Flight Level</dt>
+              <dd className="text-right font-mono font-semibold tabular-nums text-fg-1">
+                {adv.primaryFlightLevel}
+              </dd>
+              <dt className="text-fg-3">Movement</dt>
+              <dd className="text-right font-mono tabular-nums text-fg-1">{adv.primaryMovement}</dd>
+            </dl>
 
-              <div className="relative mt-4 flex items-center justify-between border-t border-slate-800/80 pt-3 text-[11px] text-slate-400">
-                <span>{adv.polygons.length} polygon layers</span>
-                <span className="flex items-center gap-1 text-red-400 font-semibold group-hover:translate-x-0.5 transition-transform">
-                  <span>Details</span>
-                  <ArrowRight className="h-3 w-3" />
-                </span>
-              </div>
-            </Link>
-          );
-        })}
+            <div className="mt-auto flex items-center justify-between border-t border-line pt-2 text-small">
+              <span className="text-fg-3">{adv.polygons.length} polygon layers</span>
+              <span className="inline-flex items-center gap-1 font-semibold text-accent group-hover:text-accent-hover">
+                Details
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </span>
+            </div>
+          </Link>
+        ))}
       </div>
 
       {/* Show all link if more than 4 */}
       {advisories.length > 4 && (
-        <div className="mt-6 text-center">
+        <div className="mt-stack">
           <Link
             href="/advisories"
-            className="inline-flex items-center gap-2 rounded-xl border border-slate-800 bg-slate-900/60 px-5 py-2.5 text-sm font-semibold text-slate-300 backdrop-blur-sm transition hover:bg-slate-900 hover:text-white hover:border-red-500/40"
+            className="inline-flex min-h-tap items-center gap-2 rounded-control border border-line px-4 text-body font-semibold text-accent transition-colors duration-120 hover:border-line-strong hover:text-accent-hover"
           >
-            <span>View All {advisories.length} Advisories</span>
-            <ArrowRight className="h-4 w-4" />
+            View All {advisories.length} Advisories
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
         </div>
       )}
-    </div>
+    </section>
   );
 }

@@ -37,7 +37,7 @@ export const SITE_CONFIG = {
     magmaDataSource: 'https://magma.esdm.go.id/',
     bomDataSource: 'https://www.bom.gov.au/products/Volc_ash_recent.shtml',
   },
-  themeColor: '#0B0F17',
+  themeColor: '#0A0B0D', // = --bg (globals.css)
   locale: 'id_ID',
   keywords: [
     // Top-ranking Indonesian search queries (High Search Volume)

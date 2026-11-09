@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { DISASTER_CATEGORIES, getAggregatedDisasters } from '@/lib/disasters/aggregator';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { SITE_URL } from '@/config/site';
-import { ChevronRight, ArrowRight, Map, Layers, Radio, Shield, Compass } from 'lucide-react';
+import { ChevronRight, ArrowRight, Map, Layers, Shield, Compass } from 'lucide-react';
 import { DisasterIcon } from '@/components/icons/disaster-icons';
 
 export const metadata: Metadata = {
@@ -33,6 +33,23 @@ export const metadata: Metadata = {
   },
 };
 
+function formatWibTime(isoString: string): string {
+  const d = new Date(isoString);
+  if (isNaN(d.getTime())) return '-';
+  return new Intl.DateTimeFormat('id-ID', {
+    timeZone: 'Asia/Jakarta',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(d);
+}
+
+// Kategori dengan laporan diberi bobot (latar surface, ikon terang); yang kosong surut ke latar halaman.
+function categoryRowClass(count: number): string {
+  return `group flex flex-col justify-between rounded-card border p-gutter transition-colors duration-120 hover:border-line-strong hover:bg-raised ${
+    count > 0 ? 'border-line-strong bg-surface' : 'border-line bg-bg'
+  }`;
+}
+
 export default async function DisastersIndexPage() {
   const data = await getAggregatedDisasters('LIVE');
   const { counts } = data;
@@ -47,44 +64,39 @@ export default async function DisastersIndexPage() {
   const marineCategories = DISASTER_CATEGORIES.filter((c) => marineTypes.includes(c.type));
 
   const totalActiveIncidents = counts.total || 0;
+  const updatedWib = formatWibTime(data.lastUpdated);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 bg-[#080C14] text-[#E8ECF1]">
+    <div className="mx-auto max-w-7xl px-gutter py-stack sm:px-6 lg:px-8">
       <Breadcrumbs items={[{ name: 'Kategori Bencana', url: '/disasters' }]} />
 
       {/* Hero Header */}
-      <div className="relative mt-4 mb-12 rounded-2xl border border-white/[0.08] bg-gradient-to-b from-[#0F1420] via-[#0A0E17] to-[#070A10] p-6 sm:p-8 overflow-hidden shadow-2xl">
-        <div className="pointer-events-none absolute -top-24 right-0 h-80 w-80 rounded-full bg-red-600/10 blur-[100px]" />
-
-        <div className="relative z-10 max-w-3xl">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.1] bg-[#121824]/80 px-3 py-1 text-[11px] font-mono font-semibold tracking-wider text-red-400 uppercase mb-4 backdrop-blur-md">
-            <Radio className="h-3 w-3 animate-pulse" />
-            <span>PANTAUAN BENCANA SELURUH INDONESIA</span>
-            <span className="text-white/20">•</span>
-            <span className="text-emerald-400 font-bold tabular-nums">
-              {totalActiveIncidents} Laporan Terkini
-            </span>
-          </div>
-
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[#E8ECF1] leading-[1.1]">
-            Daftar Bencana yang Dipantau di Indonesia
+      <div className="mb-section pt-4">
+        <div className="max-w-3xl">
+          <h1 className="text-display text-fg-1 text-balance md:text-display-lg">
+            Daftar <span className="serif-accent text-accent">bencana</span> yang Dipantau di Indonesia
           </h1>
 
-          <p className="mt-4 text-sm sm:text-base text-[#94A3B8] leading-relaxed max-w-2xl">
+          <p className="mt-cell font-mono text-small text-fg-2 tabular-nums">
+            <span className="font-semibold text-fg-1">{totalActiveIncidents}</span> Laporan Terkini
+            <span className="text-fg-3"> · data {updatedWib} WIB</span>
+          </p>
+
+          <p className="mt-gutter max-w-2xl text-body text-fg-2">
             Pilih jenis bencana di bawah untuk melihat laporan kejadian hari ini, peta wilayah yang terdampak, serta langkah penyelamatan diri sesuai panduan BPBD dan BMKG.
           </p>
 
-          <div className="mt-6 flex flex-wrap items-center gap-2.5 text-xs font-mono">
-            <div className="flex items-center gap-1.5 rounded-md border border-white/[0.06] bg-[#070A10] px-3 py-1.5 text-[#8B95A7]">
-              <Compass className="h-3 w-3 text-red-400" />
+          <div className="mt-gutter flex flex-wrap items-center gap-x-gutter gap-y-cell text-small text-fg-2">
+            <div className="flex items-center gap-1.5">
+              <Compass className="h-4 w-4 text-fg-3" aria-hidden="true" />
               <span>4 Bencana Gempa & Bumi</span>
             </div>
-            <div className="flex items-center gap-1.5 rounded-md border border-white/[0.06] bg-[#070A10] px-3 py-1.5 text-[#8B95A7]">
-              <Layers className="h-3 w-3 text-blue-400" />
+            <div className="flex items-center gap-1.5">
+              <Layers className="h-4 w-4 text-fg-3" aria-hidden="true" />
               <span>5 Bencana Cuaca & Air</span>
             </div>
-            <div className="flex items-center gap-1.5 rounded-md border border-white/[0.06] bg-[#070A10] px-3 py-1.5 text-[#8B95A7]">
-              <Shield className="h-3 w-3 text-cyan-400" />
+            <div className="flex items-center gap-1.5">
+              <Shield className="h-4 w-4 text-fg-3" aria-hidden="true" />
               <span>1 Bencana Laut</span>
             </div>
           </div>
@@ -92,67 +104,53 @@ export default async function DisastersIndexPage() {
       </div>
 
       {/* Main Categories by Clusters */}
-      <div className="space-y-12">
+      <div className="space-y-section">
         {/* Cluster 1: Geologi */}
         <div>
-          <div className="flex items-center justify-between gap-4 mb-4 border-b border-white/[0.06] pb-3">
-            <div className="flex items-center gap-2.5">
-              <div className="h-2.5 w-2.5 rounded-full bg-red-500 shadow-sm shadow-red-500/50" />
-              <h2 className="text-base sm:text-lg font-bold uppercase tracking-wider text-[#E8ECF1]">
+          <div className="mb-gutter flex flex-wrap items-baseline justify-between gap-x-gutter gap-y-1 border-b border-line pb-row">
+            <div className="flex items-center gap-cell">
+              <div className="h-4 w-1 rounded-badge bg-line-strong" aria-hidden="true" />
+              <h2 className="text-title text-fg-1 md:text-title-lg">
                 Bencana Gempa & Gunung Api (Geologi)
               </h2>
             </div>
-            <span className="text-xs font-mono text-[#64748B] hidden sm:inline">
+            <span className="text-small text-fg-3">
               Data Resmi BMKG & PVMBG MAGMA
             </span>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {geologyCategories.map((cat) => {
               const count = counts.byType[cat.type] || 0;
               return (
-                <Link
-                  key={cat.type}
-                  href={`/disasters/${cat.type}`}
-                  className="group flex flex-col justify-between rounded-xl border border-white/[0.07] bg-[#0D1117] p-5 transition-all duration-200 hover:border-white/[0.2] hover:bg-[#141B26] hover:-translate-y-1 shadow-lg shadow-black/40"
-                >
+                <Link key={cat.type} href={`/disasters/${cat.type}`} className={categoryRowClass(count)}>
                   <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <div
-                        className="flex h-11 w-11 items-center justify-center rounded-xl"
-                        style={{ backgroundColor: cat.bgRgba, color: cat.color }}
-                      >
-                        <DisasterIcon type={cat.type} size={22} color={cat.color} />
+                    <div className="mb-row flex items-center justify-between gap-cell">
+                      <div className="flex h-11 w-11 items-center justify-center rounded-control border border-line">
+                        <DisasterIcon type={cat.type} size={22} color={count > 0 ? 'var(--fg-1)' : 'var(--fg-3)'} />
                       </div>
                       {count > 0 ? (
-                        <span
-                          className="px-2.5 py-1 rounded-full text-xs font-mono font-bold tracking-wider tabular-nums border"
-                          style={{
-                            color: cat.color,
-                            backgroundColor: cat.bgRgba,
-                            borderColor: cat.borderRgba,
-                          }}
-                        >
+                        <span className="font-mono text-num font-semibold text-fg-1 tabular-nums">
                           {count} Aktif
                         </span>
                       ) : (
-                        <span className="px-2 py-0.5 rounded-full text-[10px] font-mono text-[#64748B] bg-white/[0.03]">
-                          Nihil
+                        <span className="text-small text-fg-3">
+                          Tidak ada laporan
                         </span>
                       )}
                     </div>
 
-                    <h3 className="text-base font-bold text-[#E8ECF1] group-hover:text-white transition-colors">
+                    <h3 className="text-heading text-fg-1">
                       {cat.label}
                     </h3>
-                    <p className="mt-2 text-xs leading-relaxed text-[#94A3B8] line-clamp-3">
+                    <p className="mt-1 line-clamp-3 text-small text-fg-2">
                       {cat.description}
                     </p>
                   </div>
 
-                  <div className="mt-6 pt-3.5 border-t border-white/[0.05] flex items-center justify-between text-xs font-semibold" style={{ color: cat.color }}>
-                    <span className="truncate text-[11px] text-[#64748B]">{cat.officialSources[0]}</span>
-                    <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform shrink-0 ml-2" />
+                  <div className="mt-gutter flex items-center justify-between border-t border-line pt-row text-small">
+                    <span className="truncate text-fg-3">{cat.officialSources[0]}</span>
+                    <ChevronRight className="ml-2 h-4 w-4 shrink-0 text-fg-3 group-hover:text-accent" aria-hidden="true" />
                   </div>
                 </Link>
               );
@@ -162,64 +160,50 @@ export default async function DisastersIndexPage() {
 
         {/* Cluster 2: Hidrometeorologi */}
         <div>
-          <div className="flex items-center justify-between gap-4 mb-4 border-b border-white/[0.06] pb-3">
-            <div className="flex items-center gap-2.5">
-              <div className="h-2.5 w-2.5 rounded-full bg-blue-500 shadow-sm shadow-blue-500/50" />
-              <h2 className="text-base sm:text-lg font-bold uppercase tracking-wider text-[#E8ECF1]">
+          <div className="mb-gutter flex flex-wrap items-baseline justify-between gap-x-gutter gap-y-1 border-b border-line pb-row">
+            <div className="flex items-center gap-cell">
+              <div className="h-4 w-1 rounded-badge bg-line-strong" aria-hidden="true" />
+              <h2 className="text-title text-fg-1 md:text-title-lg">
                 Bencana Cuaca, Banjir, & Air (Hidrometeorologi)
               </h2>
             </div>
-            <span className="text-xs font-mono text-[#64748B] hidden sm:inline">
+            <span className="text-small text-fg-3">
               Data Resmi BMKG Cuaca & BNPB
             </span>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {hydroCategories.map((cat) => {
               const count = counts.byType[cat.type] || 0;
               return (
-                <Link
-                  key={cat.type}
-                  href={`/disasters/${cat.type}`}
-                  className="group flex flex-col justify-between rounded-xl border border-white/[0.07] bg-[#0D1117] p-5 transition-all duration-200 hover:border-white/[0.2] hover:bg-[#141B26] hover:-translate-y-1 shadow-lg shadow-black/40"
-                >
+                <Link key={cat.type} href={`/disasters/${cat.type}`} className={categoryRowClass(count)}>
                   <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <div
-                        className="flex h-11 w-11 items-center justify-center rounded-xl"
-                        style={{ backgroundColor: cat.bgRgba, color: cat.color }}
-                      >
-                        <DisasterIcon type={cat.type} size={22} color={cat.color} />
+                    <div className="mb-row flex items-center justify-between gap-cell">
+                      <div className="flex h-11 w-11 items-center justify-center rounded-control border border-line">
+                        <DisasterIcon type={cat.type} size={22} color={count > 0 ? 'var(--fg-1)' : 'var(--fg-3)'} />
                       </div>
                       {count > 0 ? (
-                        <span
-                          className="px-2.5 py-1 rounded-full text-xs font-mono font-bold tracking-wider tabular-nums border"
-                          style={{
-                            color: cat.color,
-                            backgroundColor: cat.bgRgba,
-                            borderColor: cat.borderRgba,
-                          }}
-                        >
+                        <span className="font-mono text-num font-semibold text-fg-1 tabular-nums">
                           {count} Aktif
                         </span>
                       ) : (
-                        <span className="px-2 py-0.5 rounded-full text-[10px] font-mono text-[#64748B] bg-white/[0.03]">
-                          Nihil
+                        <span className="text-small text-fg-3">
+                          Tidak ada laporan
                         </span>
                       )}
                     </div>
 
-                    <h3 className="text-base font-bold text-[#E8ECF1] group-hover:text-white transition-colors">
+                    <h3 className="text-heading text-fg-1">
                       {cat.label}
                     </h3>
-                    <p className="mt-2 text-xs leading-relaxed text-[#94A3B8] line-clamp-3">
+                    <p className="mt-1 line-clamp-3 text-small text-fg-2">
                       {cat.description}
                     </p>
                   </div>
 
-                  <div className="mt-6 pt-3.5 border-t border-white/[0.05] flex items-center justify-between text-xs font-semibold" style={{ color: cat.color }}>
-                    <span className="truncate text-[11px] text-[#64748B]">{cat.officialSources[0]}</span>
-                    <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform shrink-0 ml-2" />
+                  <div className="mt-gutter flex items-center justify-between border-t border-line pt-row text-small">
+                    <span className="truncate text-fg-3">{cat.officialSources[0]}</span>
+                    <ChevronRight className="ml-2 h-4 w-4 shrink-0 text-fg-3 group-hover:text-accent" aria-hidden="true" />
                   </div>
                 </Link>
               );
@@ -229,64 +213,50 @@ export default async function DisastersIndexPage() {
 
         {/* Cluster 3: Pesisir */}
         <div>
-          <div className="flex items-center justify-between gap-4 mb-4 border-b border-white/[0.06] pb-3">
-            <div className="flex items-center gap-2.5">
-              <div className="h-2.5 w-2.5 rounded-full bg-cyan-500 shadow-sm shadow-cyan-500/50" />
-              <h2 className="text-base sm:text-lg font-bold uppercase tracking-wider text-[#E8ECF1]">
+          <div className="mb-gutter flex flex-wrap items-baseline justify-between gap-x-gutter gap-y-1 border-b border-line pb-row">
+            <div className="flex items-center gap-cell">
+              <div className="h-4 w-1 rounded-badge bg-line-strong" aria-hidden="true" />
+              <h2 className="text-title text-fg-1 md:text-title-lg">
                 Bencana Gelombang & Pesisir Laut
               </h2>
             </div>
-            <span className="text-xs font-mono text-[#64748B] hidden sm:inline">
+            <span className="text-small text-fg-3">
               Data Resmi BMKG Maritim & BNPB
             </span>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {marineCategories.map((cat) => {
               const count = counts.byType[cat.type] || 0;
               return (
-                <Link
-                  key={cat.type}
-                  href={`/disasters/${cat.type}`}
-                  className="group flex flex-col justify-between rounded-xl border border-white/[0.07] bg-[#0D1117] p-5 transition-all duration-200 hover:border-white/[0.2] hover:bg-[#141B26] hover:-translate-y-1 shadow-lg shadow-black/40"
-                >
+                <Link key={cat.type} href={`/disasters/${cat.type}`} className={categoryRowClass(count)}>
                   <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <div
-                        className="flex h-11 w-11 items-center justify-center rounded-xl"
-                        style={{ backgroundColor: cat.bgRgba, color: cat.color }}
-                      >
-                        <DisasterIcon type={cat.type} size={22} color={cat.color} />
+                    <div className="mb-row flex items-center justify-between gap-cell">
+                      <div className="flex h-11 w-11 items-center justify-center rounded-control border border-line">
+                        <DisasterIcon type={cat.type} size={22} color={count > 0 ? 'var(--fg-1)' : 'var(--fg-3)'} />
                       </div>
                       {count > 0 ? (
-                        <span
-                          className="px-2.5 py-1 rounded-full text-xs font-mono font-bold tracking-wider tabular-nums border"
-                          style={{
-                            color: cat.color,
-                            backgroundColor: cat.bgRgba,
-                            borderColor: cat.borderRgba,
-                          }}
-                        >
+                        <span className="font-mono text-num font-semibold text-fg-1 tabular-nums">
                           {count} Aktif
                         </span>
                       ) : (
-                        <span className="px-2 py-0.5 rounded-full text-[10px] font-mono text-[#64748B] bg-white/[0.03]">
-                          Nihil
+                        <span className="text-small text-fg-3">
+                          Tidak ada laporan
                         </span>
                       )}
                     </div>
 
-                    <h3 className="text-base font-bold text-[#E8ECF1] group-hover:text-white transition-colors">
+                    <h3 className="text-heading text-fg-1">
                       {cat.label}
                     </h3>
-                    <p className="mt-2 text-xs leading-relaxed text-[#94A3B8] line-clamp-3">
+                    <p className="mt-1 line-clamp-3 text-small text-fg-2">
                       {cat.description}
                     </p>
                   </div>
 
-                  <div className="mt-6 pt-3.5 border-t border-white/[0.05] flex items-center justify-between text-xs font-semibold" style={{ color: cat.color }}>
-                    <span className="truncate text-[11px] text-[#64748B]">{cat.officialSources[0]}</span>
-                    <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform shrink-0 ml-2" />
+                  <div className="mt-gutter flex items-center justify-between border-t border-line pt-row text-small">
+                    <span className="truncate text-fg-3">{cat.officialSources[0]}</span>
+                    <ChevronRight className="ml-2 h-4 w-4 shrink-0 text-fg-3 group-hover:text-accent" aria-hidden="true" />
                   </div>
                 </Link>
               );
@@ -295,27 +265,23 @@ export default async function DisastersIndexPage() {
         </div>
       </div>
 
-      {/* Main Map CTA Tactical Strip */}
-      <div className="mt-14 p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-red-950/40 via-[#0D1117] to-[#0A0E17] border border-red-500/20 shadow-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+      {/* Strip CTA peta */}
+      <div className="mt-section flex flex-col justify-between gap-gutter border-t border-line pt-stack sm:flex-row sm:items-center">
         <div className="max-w-xl">
-          <div className="inline-flex items-center gap-1.5 text-xs font-mono font-bold tracking-wider text-red-400 mb-2 uppercase">
-            <Map className="h-3.5 w-3.5" />
-            VISUALISASI INTEGRAL
-          </div>
-          <h2 className="text-xl sm:text-2xl font-bold text-[#E8ECF1]">
-            Ingin Melihat Seluruh Bencana Dalam Satu Peta?
+          <h2 className="text-title text-fg-1 md:text-title-lg">
+            Semua jenis bencana di satu peta
           </h2>
-          <p className="text-xs sm:text-sm text-[#94A3B8] mt-1.5 leading-relaxed">
-            Akses Peta Radar Interaktif untuk memvisualisasikan seluruh 10 layer bahaya secara simultan di wilayah kepulauan Indonesia.
+          <p className="mt-1 text-body text-fg-2">
+            {DISASTER_CATEGORIES.length} jenis bencana di atas tampil bersama di peta Indonesia.
           </p>
         </div>
         <Link
           href="/map"
-          className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-red-600 to-orange-500 text-white font-bold text-xs sm:text-sm shrink-0 shadow-lg shadow-red-600/30 transition-all hover:from-red-500 hover:to-orange-400 hover:-translate-y-0.5"
+          className="inline-flex min-h-tap shrink-0 items-center justify-center gap-2 rounded-control bg-accent px-5 text-body font-semibold text-fg-inverse transition-colors duration-120 hover:bg-accent-hover"
         >
-          <Map className="h-4 w-4" />
-          <span>Buka Peta Radar Live</span>
-          <ArrowRight className="h-4 w-4" />
+          <Map className="h-4 w-4" aria-hidden="true" />
+          <span>Buka peta</span>
+          <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </Link>
       </div>
     </div>

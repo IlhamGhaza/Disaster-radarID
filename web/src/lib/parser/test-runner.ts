@@ -112,8 +112,8 @@ assert(outsideResult.nearestAshDistanceKm > 0, 'Distance to nearest ash should b
 console.log(`  - Location check outside plume (Medan): ${outsideResult.statusLabel} (${outsideResult.nearestAshDistanceKm} km from nearest ash)`);
 
 // Test Aviation Format
-assert(formatFlightLevelHuman('FL150').includes('15,000 ft'), 'FL150 format failed');
-assert(formatMovementHuman('MOV NW 05KT').includes('Northwest'), 'Movement NW format failed');
+assert(formatFlightLevelHuman('FL150').includes('15.000 ft'), 'FL150 format failed');
+assert(formatMovementHuman('MOV NW 05KT').includes('Barat Laut'), 'Movement NW format failed');
 console.log('✓ Geo Checker and Aviation Format tests passed!');
 
 console.log('--- Testing MAGMA ESDM Volcano Activity Status ---');

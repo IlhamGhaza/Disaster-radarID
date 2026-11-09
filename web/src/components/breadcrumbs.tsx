@@ -18,24 +18,25 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
   return (
     <>
       <JsonLd data={getBreadcrumbJsonLd(allItems)} />
-      <nav aria-label="Breadcrumbs" className="mb-6 flex items-center text-xs text-slate-400">
-        <ol className="flex flex-wrap items-center gap-1.5">
+      <nav aria-label="Breadcrumbs" className="mb-stack flex items-center text-small text-fg-2">
+        <ol className="flex flex-wrap items-center gap-x-1.5">
           {allItems.map((item, index) => {
             const isLast = index === allItems.length - 1;
+            const label = item.name;
             return (
               <li key={item.url} className="flex items-center gap-1.5">
-                {index > 0 && <ChevronRight className="h-3 w-3 text-slate-600" />}
+                {index > 0 && <ChevronRight className="h-4 w-4 text-fg-3" aria-hidden="true" />}
                 {isLast ? (
-                  <span className="font-semibold text-slate-200" aria-current="page">
-                    {item.name}
+                  <span className="font-semibold text-fg-1" aria-current="page">
+                    {label}
                   </span>
                 ) : (
                   <Link
                     href={item.url}
-                    className="flex items-center gap-1 transition hover:text-slate-200"
+                    className="inline-flex min-h-tap items-center gap-1 rounded-control text-fg-2 underline-offset-2 transition-colors duration-120 hover:text-fg-1 hover:underline md:min-h-0 md:py-1"
                   >
-                    {index === 0 && <Home className="h-3.5 w-3.5" />}
-                    <span>{item.name}</span>
+                    {index === 0 && <Home className="h-4 w-4" aria-hidden="true" />}
+                    <span>{label}</span>
                   </Link>
                 )}
               </li>

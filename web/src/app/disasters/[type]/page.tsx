@@ -7,19 +7,14 @@ import { DisasterType } from '@/lib/disasters/types';
 import { DISASTER_SAFETY_GUIDES } from '@/lib/safety-guides';
 import { formatWibDateTime } from '@/lib/parser/date-utils';
 import { Breadcrumbs } from '@/components/breadcrumbs';
-import { SITE_CONFIG, SITE_URL } from '@/config/site';
+import { SITE_URL } from '@/config/site';
 import { DisasterIcon } from '@/components/icons/disaster-icons';
 import {
   MapPin,
-  ExternalLink,
   ChevronRight,
   ShieldAlert,
   BookOpen,
   Map,
-  Clock,
-  Radio,
-  AlertTriangle,
-  ArrowRight,
 } from 'lucide-react';
 
 interface CategoryPageProps {
@@ -122,6 +117,36 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
   };
 }
 
+// Severity → label Indonesia + token. Warna tidak pernah sendirian: selalu ada label teks.
+const SEVERITY_LABEL: Record<string, string> = {
+  critical: 'Kritis',
+  high: 'Tinggi',
+  moderate: 'Waspada',
+  low: 'Rendah',
+};
+const SEVERITY_BADGE: Record<string, string> = {
+  critical: 'border-sev-critical bg-sev-critical-soft text-sev-critical',
+  high: 'border-sev-high bg-sev-high-soft text-sev-high',
+  moderate: 'border-sev-warning bg-sev-warning-soft text-sev-warning',
+  low: 'border-line-strong bg-surface text-fg-2',
+};
+const SEVERITY_EDGE: Record<string, string> = {
+  critical: 'border-l-sev-critical',
+  high: 'border-l-sev-high',
+  moderate: 'border-l-sev-warning',
+  low: 'border-l-line-strong',
+};
+
+function formatWibTime(isoString: string): string {
+  const d = new Date(isoString);
+  if (isNaN(d.getTime())) return '-';
+  return new Intl.DateTimeFormat('id-ID', {
+    timeZone: 'Asia/Jakarta',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(d);
+}
+
 export default async function CategoryDetailPage({ params }: CategoryPageProps) {
   const { type } = await params;
   const categoryMeta = DISASTER_CATEGORIES.find((c) => c.type === type);
@@ -136,8 +161,8 @@ export default async function CategoryDetailPage({ params }: CategoryPageProps) 
   const guide = DISASTER_SAFETY_GUIDES[type as DisasterType] || DISASTER_SAFETY_GUIDES.earthquake;
 
   return (
-    <div className="w-full bg-[#080C14] text-[#E8ECF1] overflow-x-hidden min-h-screen">
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <div className="w-full overflow-x-hidden">
+      <div className="mx-auto max-w-7xl px-gutter py-stack sm:px-6 lg:px-8">
         <Breadcrumbs
           items={[
             { name: 'Kategori Bencana', url: '/disasters' },
@@ -146,58 +171,36 @@ export default async function CategoryDetailPage({ params }: CategoryPageProps) 
         />
 
         {/* Hero Header */}
-        <div className="relative mt-4 mb-10 rounded-2xl border border-white/[0.08] bg-gradient-to-b from-[#140E16] via-[#0D1017] to-[#070A10] p-5 sm:p-8 overflow-hidden shadow-2xl">
-          <div
-            className="pointer-events-none absolute -top-24 right-0 h-72 w-72 rounded-full blur-[120px] opacity-20"
-            style={{ backgroundColor: categoryMeta.color }}
-          />
-
-          <div className="relative z-10 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+        <div className="mb-section pt-4">
+          <div className="flex flex-col gap-gutter md:flex-row md:items-end md:justify-between">
             <div className="max-w-2xl">
-              <div
-                className="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[11px] font-mono font-semibold tracking-wider uppercase mb-3 backdrop-blur-md"
-                style={{
-                  backgroundColor: categoryMeta.bgRgba,
-                  borderColor: categoryMeta.borderRgba,
-                  color: categoryMeta.color,
-                }}
-              >
-                <span className="relative flex h-2 w-2">
-                  <span
-                    className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"
-                    style={{ backgroundColor: categoryMeta.color }}
-                  />
-                  <span
-                    className="relative inline-flex h-2 w-2 rounded-full"
-                    style={{ backgroundColor: categoryMeta.color }}
-                  />
-                </span>
-                <span>PEMANTAUAN {categoryMeta.label.toUpperCase()}</span>
+              <div className="mb-row flex h-11 w-11 items-center justify-center rounded-control border border-line">
+                <DisasterIcon type={categoryMeta.type} size={24} color="var(--fg-1)" />
               </div>
 
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[#E8ECF1] leading-[1.1]">
+              <h1 className="text-display text-fg-1 text-balance md:text-display-lg">
                 {seo.h1}
               </h1>
 
-              <p className="mt-3 text-sm sm:text-base text-[#94A3B8] leading-relaxed">
+              <p className="mt-row text-body text-fg-2">
                 {seo.description}
               </p>
             </div>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
+            <div className="flex shrink-0 flex-col items-stretch gap-row sm:flex-row sm:items-center">
               <Link
                 href="/map"
-                className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-red-600 to-orange-500 text-white font-bold text-xs shadow-lg shadow-red-600/25 transition-all hover:from-red-500 hover:to-orange-400 hover:-translate-y-0.5"
+                className="inline-flex min-h-tap items-center justify-center gap-2 rounded-control bg-accent px-gutter text-small font-semibold text-fg-inverse transition-colors duration-120 hover:bg-accent-hover"
               >
-                <Map className="h-4 w-4 shrink-0" />
-                <span>Buka di Peta Radar</span>
+                <Map className="h-4 w-4 shrink-0" aria-hidden="true" />
+                <span>Buka peta</span>
               </Link>
               <a
                 href="#panduan"
-                className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-[#0D1117] border border-white/[0.12] text-[#E8ECF1] font-semibold text-xs hover:bg-[#151C28] hover:text-white transition"
+                className="inline-flex min-h-tap items-center justify-center gap-2 rounded-control border border-line-strong px-gutter text-small font-semibold text-fg-1 transition-colors duration-120 hover:border-accent hover:text-accent"
               >
-                <BookOpen className="h-4 w-4 text-orange-400 shrink-0" />
+                <BookOpen className="h-4 w-4 shrink-0" aria-hidden="true" />
                 <span>Panduan Evakuasi</span>
               </a>
             </div>
@@ -205,99 +208,78 @@ export default async function CategoryDetailPage({ params }: CategoryPageProps) 
         </div>
 
         {/* Active Events List */}
-        <section className="mb-14">
-          <div className="flex items-center justify-between gap-4 mb-5 border-b border-white/[0.06] pb-3">
-            <div className="flex items-center gap-2">
-              <Radio className="h-4 w-4 text-red-400 animate-pulse shrink-0" />
-              <h2 className="text-sm sm:text-base font-bold text-[#E8ECF1] uppercase tracking-wide">
+        <section className="mb-section">
+          <div className="mb-gutter flex flex-wrap items-baseline justify-between gap-x-gutter gap-y-1 border-b border-line pb-row">
+            <div className="flex items-baseline gap-cell">
+              <h2 className="text-title text-fg-1 md:text-title-lg">
                 Laporan Kejadian Terkini
               </h2>
-              <span className="rounded-full bg-white/10 px-2 py-0.5 text-[11px] font-mono font-bold text-[#8B95A7] tabular-nums">
+              <span className="font-mono text-small text-fg-2 tabular-nums">
                 {categoryEvents.length} Aktif
               </span>
             </div>
-            <span className="text-[11px] font-mono text-[#64748B] hidden sm:inline">
-              Data Resmi Multi-Lembaga
+            <span className="font-mono text-small text-fg-3 tabular-nums">
+              Data {formatWibTime(data.lastUpdated)} WIB
             </span>
           </div>
 
           {categoryEvents.length === 0 ? (
-            <div className="p-8 sm:p-12 rounded-2xl border border-white/[0.08] bg-[#0D1117] text-center">
-              <ShieldAlert className="mx-auto h-8 w-8 text-[#64748B]" />
-              <h3 className="mt-3 text-sm font-semibold text-[#E8ECF1]">
-                Nihil kejadian aktif terpantau saat ini
+            <div className="rounded-card border border-line bg-surface p-gutter text-center sm:p-stack">
+              <ShieldAlert className="mx-auto h-6 w-6 text-fg-3" aria-hidden="true" />
+              <h3 className="mt-cell text-heading font-semibold text-fg-1">
+                Tidak ada laporan {categoryMeta.label.toLowerCase()} dari {categoryMeta.officialSources[0]}
               </h3>
-              <p className="mt-1 text-xs text-[#94A3B8]">
-                Kondisi telemetri untuk {categoryMeta.label} berada dalam ambang batas aman.
+              <p className="mt-1 text-small text-fg-2">
+                Per data {formatWibTime(data.lastUpdated)} WIB. Tetap ikuti arahan BPBD setempat.
               </p>
             </div>
           ) : (
-            <div className="grid sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               {categoryEvents.map((ev) => (
                 <div
                   key={ev.id}
-                  className="rounded-2xl border border-white/[0.08] bg-[#0D1117] p-4 sm:p-5 hover:border-white/[0.18] transition-all duration-200 flex flex-col justify-between min-w-0 shadow-xl"
+                  className={`flex min-w-0 flex-col justify-between rounded-card border border-line border-l-4 bg-surface p-gutter transition-colors duration-120 hover:border-line-strong ${SEVERITY_EDGE[ev.severity] ?? SEVERITY_EDGE.low}`}
                 >
                   <div>
                     {/* Event Header Status */}
-                    <div className="flex items-center justify-between gap-2 mb-2.5 min-w-0">
+                    <div className="mb-cell flex min-w-0 items-center justify-between gap-cell">
                       <span
-                        className="px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase tracking-wider border shrink-0"
-                        style={{
-                          backgroundColor:
-                            ev.severity === 'critical'
-                              ? 'rgba(239, 68, 68, 0.15)'
-                              : ev.severity === 'high'
-                              ? 'rgba(249, 115, 22, 0.15)'
-                              : 'rgba(245, 158, 11, 0.15)',
-                          borderColor:
-                            ev.severity === 'critical'
-                              ? 'rgba(239, 68, 68, 0.4)'
-                              : ev.severity === 'high'
-                              ? 'rgba(249, 115, 22, 0.4)'
-                              : 'rgba(245, 158, 11, 0.4)',
-                          color:
-                            ev.severity === 'critical'
-                              ? '#EF4444'
-                              : ev.severity === 'high'
-                              ? '#F97316'
-                              : '#EAB308',
-                        }}
+                        className={`shrink-0 rounded-badge border px-1.5 py-0.5 text-label ${SEVERITY_BADGE[ev.severity] ?? SEVERITY_BADGE.low}`}
                       >
-                        {ev.severity.toUpperCase()}
+                        {SEVERITY_LABEL[ev.severity] ?? ev.severity}
                       </span>
-                      <span className="text-[11px] font-mono text-[#8B95A7] truncate">
+                      <span className="truncate font-mono text-small text-fg-3 tabular-nums">
                         {formatWibDateTime(ev.eventTime)}
                       </span>
                     </div>
 
-                    <h3 className="text-base sm:text-lg font-bold text-[#E8ECF1] leading-snug break-words">
+                    <h3 className="break-words text-heading text-fg-1">
                       {ev.title}
                     </h3>
 
                     {ev.description && (
-                      <p className="mt-2 text-xs text-[#94A3B8] leading-relaxed line-clamp-3">
+                      <p className="mt-1 line-clamp-3 text-small text-fg-2">
                         {ev.description}
                       </p>
                     )}
 
                     {/* Specialized Telemetry Grid */}
-                    <div className="mt-4 grid grid-cols-2 gap-2 rounded-xl border border-white/[0.06] bg-[#070A10] p-2.5 text-xs font-mono">
+                    <div className="mt-row grid grid-cols-2 gap-x-gutter gap-y-cell border-t border-line pt-row text-small">
                       {/* Earthquake Specific Telemetry */}
                       {type === 'earthquake' && (
                         <>
                           {ev.metadata?.magnitude !== undefined && (
                             <div className="min-w-0">
-                              <span className="text-[10px] text-[#64748B] block">MAGNITUDO</span>
-                              <span className="text-red-400 font-bold block text-sm">
+                              <span className="block text-label text-fg-3">Magnitudo</span>
+                              <span className="block font-mono text-num-lg font-bold text-fg-1 tabular-nums">
                                 M {ev.metadata.magnitude.toFixed(1)}
                               </span>
                             </div>
                           )}
                           {ev.metadata?.depth && (
                             <div className="min-w-0">
-                              <span className="text-[10px] text-[#64748B] block">KEDALAMAN</span>
-                              <span className="text-amber-400 font-bold block">
+                              <span className="block text-label text-fg-3">Kedalaman</span>
+                              <span className="block font-mono text-num font-semibold text-fg-1 tabular-nums">
                                 {ev.metadata.depth}
                               </span>
                             </div>
@@ -310,15 +292,15 @@ export default async function CategoryDetailPage({ params }: CategoryPageProps) 
                         <>
                           {ev.metadata?.magmaLevelName && (
                             <div className="min-w-0">
-                              <span className="text-[10px] text-[#64748B] block">STATUS PVMBG</span>
-                              <span className="text-orange-400 font-bold block">
+                              <span className="block text-label text-fg-3">Status PVMBG</span>
+                              <span className="block font-semibold text-fg-1">
                                 {ev.metadata.magmaLevelName}
                               </span>
                             </div>
                           )}
                           <div className="min-w-0">
-                            <span className="text-[10px] text-[#64748B] block">SUMBER DATA</span>
-                            <span className="text-[#E8ECF1] truncate block">MAGMA ESDM</span>
+                            <span className="block text-label text-fg-3">Sumber data</span>
+                            <span className="block truncate text-fg-1">MAGMA ESDM</span>
                           </div>
                         </>
                       )}
@@ -328,17 +310,17 @@ export default async function CategoryDetailPage({ params }: CategoryPageProps) 
                         <>
                           {ev.metadata?.confidence && (
                             <div className="min-w-0">
-                              <span className="text-[10px] text-[#64748B] block">KEPERCAYAAN</span>
-                              <span className="text-orange-400 font-bold block">
+                              <span className="block text-label text-fg-3">Kepercayaan</span>
+                              <span className="block font-mono font-semibold text-fg-1">
                                 {String(ev.metadata.confidence)}
                               </span>
                             </div>
                           )}
                           {ev.metadata?.affectedAreaHa && (
                             <div className="min-w-0">
-                              <span className="text-[10px] text-[#64748B] block">LUAS LAHAN</span>
-                              <span className="text-amber-400 font-bold block">
-                                {ev.metadata.affectedAreaHa} Ha
+                              <span className="block text-label text-fg-3">Luas lahan</span>
+                              <span className="block font-mono font-semibold text-fg-1 tabular-nums">
+                                {ev.metadata.affectedAreaHa} ha
                               </span>
                             </div>
                           )}
@@ -348,8 +330,8 @@ export default async function CategoryDetailPage({ params }: CategoryPageProps) 
                       {/* Flood Specific Telemetry */}
                       {type === 'flood' && ev.metadata?.waterLevelCm && (
                         <div className="min-w-0">
-                          <span className="text-[10px] text-[#64748B] block">TMA AIR</span>
-                          <span className="text-blue-400 font-bold block">
+                          <span className="block text-label text-fg-3">Tinggi muka air</span>
+                          <span className="block font-mono font-semibold text-fg-1 tabular-nums">
                             {ev.metadata.waterLevelCm} cm
                           </span>
                         </div>
@@ -357,16 +339,16 @@ export default async function CategoryDetailPage({ params }: CategoryPageProps) 
 
                       {/* Coordinates (Common) */}
                       <div className="min-w-0">
-                        <span className="text-[10px] text-[#64748B] block">KOORDINAT</span>
-                        <span className="text-[#E8ECF1] truncate block tabular-nums">
+                        <span className="block text-label text-fg-3">Koordinat</span>
+                        <span className="block truncate font-mono text-fg-1 tabular-nums">
                           {ev.latitude !== undefined && ev.longitude !== undefined
                             ? `${ev.latitude.toFixed(2)}°, ${ev.longitude.toFixed(2)}°`
                             : 'Terpantau'}
                         </span>
                       </div>
                       <div className="min-w-0">
-                        <span className="text-[10px] text-[#64748B] block">STATUS</span>
-                        <span className="text-emerald-400 truncate block">
+                        <span className="block text-label text-fg-3">Status</span>
+                        <span className="block truncate text-fg-1">
                           {ev.status || 'Aktif'}
                         </span>
                       </div>
@@ -374,17 +356,17 @@ export default async function CategoryDetailPage({ params }: CategoryPageProps) 
                   </div>
 
                   {/* Card Bottom Action */}
-                  <div className="mt-4 pt-3 border-t border-white/[0.06] flex items-center justify-between gap-3 text-xs">
-                    <div className="flex items-center gap-1.5 text-[#8B95A7] min-w-0 flex-1">
-                      <MapPin className="h-3.5 w-3.5 text-red-400 shrink-0" />
+                  <div className="mt-row flex items-center justify-between gap-row border-t border-line pt-cell text-small">
+                    <div className="flex min-w-0 flex-1 items-center gap-1.5 text-fg-2">
+                      <MapPin className="h-4 w-4 shrink-0 text-fg-3" aria-hidden="true" />
                       <span className="truncate">{ev.locationName || 'Indonesia'}</span>
                     </div>
                     <Link
                       href={`/map?lat=${ev.latitude}&lng=${ev.longitude}&label=${encodeURIComponent(ev.title)}`}
-                      className="inline-flex items-center gap-1 text-[#F97316] hover:text-[#FB923C] font-semibold text-xs transition shrink-0"
+                      className="inline-flex min-h-tap shrink-0 items-center gap-1 font-semibold text-accent transition-colors duration-120 hover:text-accent-hover"
                     >
                       <span>Pusatkan Peta</span>
-                      <ChevronRight className="h-3.5 w-3.5" />
+                      <ChevronRight className="h-4 w-4" aria-hidden="true" />
                     </Link>
                   </div>
                 </div>
@@ -394,74 +376,70 @@ export default async function CategoryDetailPage({ params }: CategoryPageProps) 
         </section>
 
         {/* Embedded Evacuation & Safety Guide */}
-        <section
-          id="panduan"
-          className="mb-14 p-5 sm:p-8 rounded-2xl border border-white/[0.08] bg-[#0D1117] shadow-xl"
-        >
-          <div className="max-w-2xl mb-6">
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-orange-400">
-              PANDUAN TANGGAP DARURAT
+        <section id="panduan" className="mb-section scroll-mt-20 border-t border-line pt-stack">
+          <div className="mb-stack max-w-2xl">
+            <span className="block text-small text-fg-3">
+              Panduan tanggap darurat
             </span>
-            <h2 className="text-xl sm:text-2xl font-black text-[#E8ECF1] mt-1">
+            <h2 className="mt-0.5 text-title text-fg-1 md:text-title-lg">
               {guide.title}
             </h2>
-            <p className="text-xs sm:text-sm text-[#94A3B8] mt-1">{guide.tagline}</p>
+            <p className="mt-1 text-body text-fg-2">{guide.tagline}</p>
           </div>
 
           {/* Action Steps */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
+          <ol className="mb-stack grid grid-cols-1 gap-x-stack gap-y-gutter sm:grid-cols-2 lg:grid-cols-4">
             {guide.duringAction.map((step) => (
-              <div
-                key={step.step}
-                className="p-4 rounded-xl bg-[#080C14] border border-white/[0.06]"
-              >
-                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-orange-500/20 text-orange-400 font-mono font-bold text-xs mb-2">
+              <li key={step.step} className="border-t-2 border-line-strong pt-row">
+                <div className="font-mono text-num font-bold text-fg-1 tabular-nums">
                   0{step.step}
                 </div>
-                <h4 className="text-xs font-bold text-[#E8ECF1]">{step.title}</h4>
-                <p className="text-[11px] text-[#8B95A7] mt-1 leading-relaxed">
+                <h4 className="mt-1 text-body font-bold text-fg-1">{step.title}</h4>
+                <p className="mt-1 text-small text-fg-2">
                   {step.instruction}
                 </p>
-              </div>
+              </li>
             ))}
-          </div>
+          </ol>
 
           {/* Hotlines */}
-          <div className="pt-6 border-t border-white/[0.06] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-xs font-mono font-bold text-[#8B95A7] uppercase mr-1">
+          <div className="flex flex-col justify-between gap-gutter border-t border-line pt-gutter sm:flex-row sm:items-center">
+            <div className="flex flex-wrap items-center gap-cell">
+              <span className="mr-1 text-small font-semibold text-fg-2">
                 Hotline Darurat:
               </span>
               {guide.emergencyHotlines.map((hotline) => (
                 <a
                   key={hotline.number}
                   href={`tel:${hotline.number}`}
-                  className="px-3 py-1.5 rounded-lg bg-red-950/40 border border-red-500/30 text-xs text-red-300 font-mono font-bold hover:bg-red-900/40 transition"
+                  className="inline-flex min-h-tap items-center rounded-control border border-line-strong px-row text-small text-fg-1 transition-colors duration-120 hover:border-accent hover:text-accent"
                 >
-                  {hotline.name}: {hotline.number}
+                  {hotline.name}: <span className="ml-1 font-mono font-bold tabular-nums">{hotline.number}</span>
                 </a>
               ))}
             </div>
             <Link
               href="/safety-guide"
-              className="text-xs font-semibold text-orange-400 hover:text-orange-300 transition shrink-0"
+              className="inline-flex min-h-tap shrink-0 items-center gap-1 text-small font-semibold text-accent transition-colors duration-120 hover:text-accent-hover"
             >
-              Lihat Panduan Lengkap Semua Bencana →
+              Lihat Panduan Lengkap Semua Bencana
+              <ChevronRight className="h-4 w-4" aria-hidden="true" />
             </Link>
           </div>
         </section>
 
         {/* Official Data Source Attribution */}
-        <div className="p-4 sm:p-5 rounded-xl border border-white/[0.06] bg-[#0A0E17] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-[#8B95A7]">
+        <div className="flex flex-col justify-between gap-cell border-t border-line pt-gutter text-small text-fg-2 sm:flex-row sm:items-center">
           <div>
-            <span className="font-bold text-[#E8ECF1]">Otoritas Sumber Data Resmi: </span>
+            <span className="font-semibold text-fg-1">Otoritas Sumber Data Resmi: </span>
             <span>{categoryMeta.officialSources.join(', ')}</span>
           </div>
           <Link
             href="/data-sources"
-            className="text-orange-400 hover:text-orange-300 transition shrink-0 font-medium"
+            className="inline-flex min-h-tap shrink-0 items-center gap-1 font-semibold text-accent transition-colors duration-120 hover:text-accent-hover"
           >
-            Pelajari Metodologi Sumber Data →
+            Lihat cara data diambil
+            <ChevronRight className="h-4 w-4" aria-hidden="true" />
           </Link>
         </div>
       </div>

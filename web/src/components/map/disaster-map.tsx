@@ -5,7 +5,7 @@ import type { Map as LeafletMap, LayerGroup } from 'leaflet';
 import Link from 'next/link';
 import { DisasterEvent, DisasterType, TimelinePeriod, DisasterSourceHealth, DisasterHazardZone } from '@/lib/disasters/types';
 import { VolcanoAdvisory, LatLng } from '@/lib/types';
-import { LAYER_COLORS } from '@/lib/palette';
+import { LAYER_COLORS, CATEGORY_MARKER_COLORS } from '@/lib/palette';
 import { formatWibDateTime } from '@/lib/parser/date-utils';
 import { searchIndonesiaPlaces, IndonesiaPlace } from '@/lib/indonesia-places';
 import { getAllMonitoredVolcanoes, MonitoredVolcanoItem } from '@/lib/magma-status';
@@ -72,17 +72,24 @@ function getRelativeTime(dateStr?: string): string {
 }
 
 // Visual styling and labels for each disaster category
+const SEVERITY_LABEL: Record<string, string> = {
+  critical: 'Kritis',
+  high: 'Tinggi',
+  moderate: 'Waspada',
+  low: 'Rendah',
+};
+
 const DISASTER_VISUALS: Record<DisasterType, { color: string; label: string }> = {
-  earthquake: { color: '#EF4444', label: 'Gempa Bumi' },
-  flood: { color: '#3B82F6', label: 'Banjir' },
-  volcano: { color: '#F97316', label: 'Gunung Api' },
-  'volcanic-ash': { color: '#FB923C', label: 'Abu Vulkanik' },
-  landslide: { color: '#D97706', label: 'Tanah Longsor' },
-  'forest-fire': { color: '#EA580C', label: 'Karhutla' },
-  'extreme-weather': { color: '#8B5CF6', label: 'Cuaca Ekstrem' },
-  tsunami: { color: '#06B6D4', label: 'Tsunami' },
-  drought: { color: '#EAB308', label: 'Kekeringan' },
-  'coastal-hazard': { color: '#0284C7', label: 'Bahaya Pesisir' },
+  earthquake: { color: CATEGORY_MARKER_COLORS.earthquake, label: 'Gempa Bumi' },
+  flood: { color: CATEGORY_MARKER_COLORS.flood, label: 'Banjir' },
+  volcano: { color: CATEGORY_MARKER_COLORS.volcano, label: 'Gunung Api' },
+  'volcanic-ash': { color: CATEGORY_MARKER_COLORS['volcanic-ash'], label: 'Abu Vulkanik' },
+  landslide: { color: CATEGORY_MARKER_COLORS.landslide, label: 'Tanah Longsor' },
+  'forest-fire': { color: CATEGORY_MARKER_COLORS['forest-fire'], label: 'Karhutla' },
+  'extreme-weather': { color: CATEGORY_MARKER_COLORS['extreme-weather'], label: 'Cuaca Ekstrem' },
+  tsunami: { color: CATEGORY_MARKER_COLORS.tsunami, label: 'Tsunami' },
+  drought: { color: CATEGORY_MARKER_COLORS.drought, label: 'Kekeringan' },
+  'coastal-hazard': { color: CATEGORY_MARKER_COLORS['coastal-hazard'], label: 'Bahaya Pesisir' },
 };
 
 export default function DisasterMap({
@@ -293,9 +300,9 @@ export default function DisasterMap({
       const L = LModule.default;
       const markerHtml = `
         <div class="relative flex h-8 w-8 items-center justify-center select-none" style="transform: translate(-50%, -50%);">
-          <span class="user-gps-ring" style="background-color: rgba(59, 130, 246, 0.35); border: 1.5px solid #3B82F6;"></span>
-          <div class="relative flex h-4 w-4 items-center justify-center rounded-full bg-white shadow-lg border-2 border-[#3B82F6]">
-            <div class="h-2 w-2 rounded-full bg-[#3B82F6]"></div>
+          <span class="user-gps-ring" style="background-color: color-mix(in srgb, var(--accent) 35%, transparent); border: 1.5px solid var(--accent);"></span>
+          <div class="relative flex h-4 w-4 items-center justify-center rounded-full bg-fg-1 border-2 border-accent">
+            <div class="h-2 w-2 rounded-full bg-accent"></div>
           </div>
         </div>
       `;
@@ -308,7 +315,7 @@ export default function DisasterMap({
         }),
       });
 
-      userMarker.bindTooltip(`📍 ${label}`, {
+      userMarker.bindTooltip(`${label}`, {
         permanent: false,
         direction: 'top',
         className: 'user-tooltip',
@@ -493,9 +500,9 @@ export default function DisasterMap({
         // Hover tooltip
         marker.bindTooltip(
           `
-          <div class="text-xs">
-            <span class="font-bold text-white">${ev.title}</span>
-            <div class="text-[10px] text-[#8B95A7] mt-0.5">${ev.locationName || ''} • ${getRelativeTime(ev.eventTime)}</div>
+          <div class="text-small">
+            <span class="font-bold text-fg-1">${ev.title}</span>
+            <div class="text-label text-fg-2 mt-0.5">${ev.locationName || ''} • ${getRelativeTime(ev.eventTime)}</div>
           </div>
           `,
           { direction: 'top', className: 'disaster-tooltip' }
@@ -546,9 +553,9 @@ export default function DisasterMap({
 
           polygon.bindTooltip(
             `
-            <div class="text-xs">
-              <span class="font-bold text-[#FF8A3D]">Abu Vulkanik ${adv.volcanoName}</span>
-              <div class="text-[10px] text-white/80">${poly.type.toUpperCase()} • FL ${poly.topFlightLevel || adv.primaryFlightLevel}</div>
+            <div class="text-small">
+              <span class="font-bold text-accent">Abu Vulkanik ${adv.volcanoName}</span>
+              <div class="text-label text-fg-2">${poly.type.toUpperCase()} • FL ${poly.topFlightLevel || adv.primaryFlightLevel}</div>
             </div>
             `,
             { sticky: true, className: 'ash-tooltip' }
@@ -596,10 +603,10 @@ export default function DisasterMap({
 
         circle.bindTooltip(
           `
-          <div class="text-xs">
-            <span class="font-bold text-white">${hz.name}</span>
-            <div class="text-[10px] text-amber-400 font-semibold mt-0.5">Tingkat Risiko: ${hz.riskLevel} (${hz.source})</div>
-            <div class="text-[10px] text-[#8B95A7] mt-0.5">${hz.description}</div>
+          <div class="text-small">
+            <span class="font-bold text-fg-1">${hz.name}</span>
+            <div class="text-label text-sev-warning font-semibold mt-0.5">Tingkat Risiko: ${hz.riskLevel} (${hz.source})</div>
+            <div class="text-label text-fg-2 mt-0.5">${hz.description}</div>
           </div>
           `,
           { sticky: true }
@@ -624,7 +631,7 @@ export default function DisasterMap({
     : null;
 
   return (
-    <div className="relative h-full w-full overflow-hidden bg-[#0B0F17]">
+    <div className="relative h-full w-full overflow-hidden bg-raised">
       {/* 1. Map Canvas with OpenStreetMap dark mode transformation */}
       <div ref={mapContainerRef} className="h-full w-full osm-dark-tiles" />
 
@@ -633,14 +640,14 @@ export default function DisasterMap({
         ref={searchContainerRef}
         className="absolute top-3 left-3 right-3 sm:top-4 sm:left-auto sm:right-4 sm:w-80 z-[1010] pointer-events-auto"
       >
-        <div className="relative flex items-center rounded-2xl border border-white/15 bg-[#0B0F17]/90 backdrop-blur-xl shadow-2xl">
-          <Search className="ml-3.5 h-4 w-4 text-[#8B95A7] shrink-0" />
+        <div className="relative flex items-center rounded-card border border-line-strong bg-raised shadow-float">
+          <Search className="ml-3.5 h-4 w-4 text-fg-2 shrink-0" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => handleSearchChange(e.target.value)}
             placeholder="Cari kota, kabupaten, gunung api..."
-            className="w-full bg-transparent px-3 py-2.5 text-xs text-white placeholder-[#8B95A7] focus:outline-none"
+            className="min-h-tap w-full bg-transparent px-3 text-body text-fg-1 placeholder:text-fg-3"
           />
           {searchQuery && (
             <button
@@ -651,7 +658,7 @@ export default function DisasterMap({
                 setVolcanoSuggestions([]);
                 setShowSuggestions(false);
               }}
-              className="mr-2 text-[#8B95A7] hover:text-white p-1"
+              className="mr-2 text-fg-2 hover:text-fg-1 p-1"
             >
               <X className="h-3.5 w-3.5" />
             </button>
@@ -661,18 +668,19 @@ export default function DisasterMap({
             onClick={handleLocateUser}
             disabled={isLocatingGps}
             title="Deteksi Lokasi Saya (GPS)"
-            className="mr-2.5 flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 text-[#8B95A7] hover:text-white transition"
+                aria-label="Deteksi lokasi saya (GPS)"
+            className="mr-0.5 flex size-tap items-center justify-center rounded-lg bg-surface hover:bg-surface text-fg-2 hover:text-fg-1 transition"
           >
-            <Crosshair className={`h-3.5 w-3.5 ${isLocatingGps ? 'animate-spin text-[#FF6B1A]' : ''}`} />
+            <Crosshair className={`h-3.5 w-3.5 ${isLocatingGps ? 'animate-spin text-accent' : ''}`} />
           </button>
         </div>
 
         {/* Autocomplete Dropdown */}
         {showSuggestions && (suggestions.length > 0 || volcanoSuggestions.length > 0) && (
-          <div className="absolute top-full mt-2 w-full max-h-72 overflow-y-auto rounded-2xl border border-white/15 bg-[#0B0F17]/95 p-2 shadow-2xl backdrop-blur-2xl z-[1020]">
+          <div className="absolute top-full mt-2 w-full max-h-72 overflow-y-auto rounded-card border border-line-strong bg-raised p-2 shadow-float z-[1020]">
             {suggestions.length > 0 && (
               <div className="mb-2">
-                <span className="px-2 text-[10px] font-bold uppercase tracking-wider text-[#8B95A7]">
+                <span className="px-2 text-label font-bold text-fg-2">
                   Kota / Wilayah
                 </span>
                 {suggestions.map((p) => (
@@ -680,9 +688,9 @@ export default function DisasterMap({
                     key={`${p.name}-${p.coordinates.latitude}`}
                     type="button"
                     onClick={() => handleSelectPlace(p)}
-                    className="flex w-full items-center gap-2 rounded-xl px-2.5 py-2 text-left text-xs text-[#CBD5E1] hover:bg-white/10 transition"
+                    className="flex w-full items-center gap-2 rounded-xl px-2.5 py-2 text-left text-small text-fg-2 hover:bg-surface transition"
                   >
-                    <MapPin className="h-3.5 w-3.5 text-[#3B82F6] shrink-0" />
+                    <MapPin className="h-3.5 w-3.5 text-accent shrink-0" />
                     <span className="truncate">{p.name}</span>
                   </button>
                 ))}
@@ -691,7 +699,7 @@ export default function DisasterMap({
 
             {volcanoSuggestions.length > 0 && (
               <div>
-                <span className="px-2 text-[10px] font-bold uppercase tracking-wider text-[#FF6B1A]">
+                <span className="px-2 text-label font-bold text-accent">
                   Gunung Api (PVMBG)
                 </span>
                 {volcanoSuggestions.map((v) => (
@@ -699,14 +707,14 @@ export default function DisasterMap({
                     key={v.volcanoSlug}
                     type="button"
                     onClick={() => handleSelectVolcano(v)}
-                    className="flex w-full items-center justify-between rounded-xl px-2.5 py-2 text-left text-xs text-[#CBD5E1] hover:bg-white/10 transition"
+                    className="flex w-full items-center justify-between rounded-xl px-2.5 py-2 text-left text-small text-fg-2 hover:bg-surface transition"
                   >
                     <div className="flex items-center gap-2 truncate">
-                      <Mountain className="h-3.5 w-3.5 text-[#FF6B1A] shrink-0" />
+                      <Mountain className="h-3.5 w-3.5 text-accent shrink-0" />
                       <span className="truncate font-semibold">{v.volcanoName}</span>
                     </div>
                     <span
-                      className="text-[10px] px-2 py-0.5 rounded-full font-bold uppercase"
+                      className="text-label px-2 py-0.5 rounded-full font-bold"
                       style={{ backgroundColor: v.badgeBg, color: v.badgeText }}
                     >
                       {v.levelName}
@@ -730,8 +738,8 @@ export default function DisasterMap({
 
       {/* 4. Timeline Bar (LIVE / 1H / 6H / 24H / 30D) */}
       <div className="absolute bottom-3 sm:bottom-6 left-1/2 -translate-x-1/2 z-[1000] pointer-events-auto max-w-[calc(100vw-1rem)]">
-        <div className="flex items-center gap-1 rounded-2xl border border-white/15 bg-[#0B0F17]/90 px-1.5 sm:px-2 py-1.5 backdrop-blur-xl shadow-2xl">
-          <span className="flex items-center gap-1 px-2 text-[10px] font-bold uppercase tracking-wider text-[#8B95A7] hidden sm:flex">
+        <div className="flex items-center gap-1 rounded-card border border-line-strong bg-raised px-1.5 sm:px-2 py-1.5 shadow-float">
+          <span className="flex items-center gap-1 px-2 text-label font-bold text-fg-2 hidden sm:flex">
             <Clock className="h-3 w-3" />
             <span>Periode:</span>
           </span>
@@ -748,14 +756,15 @@ export default function DisasterMap({
               key={item.id}
               type="button"
               onClick={() => handleTimelineChange(item.id as TimelinePeriod)}
-              className={`rounded-xl px-2.5 sm:px-3 py-1 text-xs font-bold transition whitespace-nowrap ${
+              aria-pressed={selectedTimeline === item.id}
+              className={`min-h-tap sm:min-h-9 rounded-control px-2.5 sm:px-3 text-small font-semibold transition-colors duration-120 whitespace-nowrap ${
                 selectedTimeline === item.id
-                  ? 'bg-gradient-to-r from-[#EF4444] to-[#F97316] text-white shadow-md shadow-red-500/20'
-                  : 'text-[#8B95A7] hover:text-white hover:bg-white/5'
+                  ? 'bg-accent text-fg-inverse'
+                  : 'text-fg-2 hover:text-fg-1 hover:bg-surface'
               }`}
             >
               {item.id === 'LIVE' && (
-                <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400 mr-1 sm:mr-1.5 animate-pulse" />
+                <span aria-hidden="true" className="inline-block h-1.5 w-1.5 rounded-full bg-sev-normal mr-1 sm:mr-1.5 animate-pulse motion-reduce:animate-none" />
               )}
               <span className="sm:hidden">{item.shortLabel}</span>
               <span className="hidden sm:inline">{item.label}</span>
@@ -771,23 +780,25 @@ export default function DisasterMap({
           <button
             type="button"
             onClick={() => setShowLayersMenu(!showLayersMenu)}
-            className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/15 bg-[#0B0F17]/90 text-[#CBD5E1] hover:text-white hover:bg-[#151C28] backdrop-blur-xl shadow-xl transition"
+            className="flex size-tap items-center justify-center rounded-control border border-line-strong bg-raised text-fg-2 hover:text-fg-1 hover:bg-surface shadow-float transition-colors duration-120"
             title="Kelola Layer Peta"
+            aria-label="Kelola Layer Peta"
+            aria-expanded={showLayersMenu}
           >
             <Layers className="h-4 w-4" />
           </button>
 
           {/* Layer Controls Popover */}
           {showLayersMenu && (
-            <div className="absolute bottom-12 left-0 w-64 max-h-[75vh] overflow-y-auto rounded-3xl border border-white/15 bg-[#0B0F17]/95 p-4 shadow-2xl backdrop-blur-2xl z-[1001] animate-in fade-in slide-in-from-bottom-2">
-              <div className="flex items-center justify-between pb-3 border-b border-white/10 mb-3">
-                <span className="text-xs font-bold uppercase tracking-wider text-white">
+            <div className="absolute bottom-12 left-0 w-64 max-h-[50svh] sm:max-h-[75vh] overflow-y-auto rounded-card border border-line-strong bg-raised p-4 shadow-float z-[1001]">
+              <div className="flex items-center justify-between pb-3 border-b border-line mb-3">
+                <span className="text-small font-bold text-fg-1">
                   Layer Kebencanaan
                 </span>
                 <button
                   type="button"
                   onClick={() => setShowLayersMenu(false)}
-                  className="text-[#8B95A7] hover:text-white"
+                  className="text-fg-2 hover:text-fg-1"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -795,7 +806,7 @@ export default function DisasterMap({
 
               {/* Live Event Categories */}
               <div className="space-y-1.5">
-                <span className="text-[10px] font-bold uppercase text-[#8B95A7]">
+                <span className="text-label font-bold text-fg-2">
                   Kejadian Terkini (Live)
                 </span>
                 {(Object.keys(activeCategories) as DisasterType[]).map((cat) => {
@@ -808,43 +819,43 @@ export default function DisasterMap({
                       key={cat}
                       type="button"
                       onClick={() => toggleCategory(cat)}
-                      className={`flex w-full items-center justify-between px-2.5 py-1.5 rounded-xl text-xs font-medium transition ${
-                        isActive ? 'bg-white/10 text-white font-bold' : 'text-[#8B95A7] hover:bg-white/5'
+                      className={`flex w-full items-center justify-between px-2.5 py-1.5 rounded-xl text-small font-medium transition ${
+                        isActive ? 'bg-surface text-fg-1 font-bold' : 'text-fg-2 hover:bg-surface'
                       }`}
                     >
                       <div className="flex items-center gap-2.5 truncate">
                         <DisasterIcon type={cat} size={15} color={visual.color} />
                         <span className="truncate">{visual.label}</span>
                       </div>
-                      <span className="text-[10px] text-[#8B95A7]">{count}</span>
+                      <span className="text-label text-fg-2">{count}</span>
                     </button>
                   );
                 })}
               </div>
 
               {/* Hazard & Forecast Sublayers */}
-              <div className="pt-3 mt-3 border-t border-white/10 space-y-2">
-                <span className="text-[10px] font-bold uppercase text-[#8B95A7]">
+              <div className="pt-3 mt-3 border-t border-line space-y-2">
+                <span className="text-label font-bold text-fg-2">
                   Zona Bahaya & Prakiraan
                 </span>
 
-                <label className="flex items-center justify-between text-xs text-[#CBD5E1] cursor-pointer">
+                <label className="flex items-center justify-between text-small text-fg-2 cursor-pointer">
                   <span>Prakiraan Abu (+6h/+12h/+18h)</span>
                   <input
                     type="checkbox"
                     checked={showAshForecast}
                     onChange={(e) => setShowAshForecast(e.target.checked)}
-                    className="rounded accent-[#FF6B1A]"
+                    className="rounded accent-accent"
                   />
                 </label>
 
-                <label className="flex items-center justify-between text-xs text-[#CBD5E1] cursor-pointer">
+                <label className="flex items-center justify-between text-small text-fg-2 cursor-pointer">
                   <span>Zona Risiko InaRISK BNPB</span>
                   <input
                     type="checkbox"
                     checked={showHazardZones}
                     onChange={(e) => setShowHazardZones(e.target.checked)}
-                    className="rounded accent-[#3B82F6]"
+                    className="rounded accent-accent"
                   />
                 </label>
               </div>
@@ -856,10 +867,10 @@ export default function DisasterMap({
         <button
           type="button"
           onClick={() => setShowAirQualityModal(!showAirQualityModal)}
-          className={`flex h-10 w-10 items-center justify-center rounded-2xl border backdrop-blur-xl shadow-xl transition ${
+          className={`flex size-tap items-center justify-center rounded-card border shadow-float transition ${
             showAirQualityModal
-              ? 'border-cyan-500/50 bg-cyan-500/20 text-cyan-400'
-              : 'border-white/15 bg-[#0B0F17]/90 text-[#CBD5E1] hover:text-white hover:bg-[#151C28]'
+              ? 'border-accent bg-accent/15 text-accent'
+              : 'border-line-strong bg-raised text-fg-2 hover:text-fg-1 hover:bg-surface'
           }`}
           title="Kualitas Udara & ISPU"
           aria-label="Kualitas Udara & ISPU"
@@ -871,26 +882,29 @@ export default function DisasterMap({
         <button
           type="button"
           onClick={() => setShowSourceStatus(!showSourceStatus)}
-          className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/15 bg-[#0B0F17]/90 text-[#CBD5E1] hover:text-white hover:bg-[#151C28] backdrop-blur-xl shadow-xl transition"
+          className="flex size-tap items-center justify-center rounded-control border border-line-strong bg-raised text-fg-2 hover:text-fg-1 hover:bg-surface shadow-float transition-colors duration-120"
           title="Status Sumber Data Resmi"
+          aria-label="Status Sumber Data Resmi"
         >
           <Radio className="h-4 w-4" />
         </button>
 
         {/* Zoom Controls */}
-        <div className="flex flex-col rounded-2xl border border-white/15 bg-[#0B0F17]/90 backdrop-blur-xl shadow-xl overflow-hidden">
+        <div className="flex flex-col rounded-card border border-line-strong bg-raised shadow-float overflow-hidden">
           <button
             type="button"
             onClick={() => mapInstanceRef.current?.zoomIn()}
-            className="flex h-8 w-10 items-center justify-center text-[#8B95A7] hover:text-white hover:bg-white/5 transition"
+            aria-label="Perbesar peta"
+            className="flex size-tap items-center justify-center text-fg-2 hover:text-fg-1 hover:bg-surface transition-colors duration-120"
           >
             <Plus className="h-3.5 w-3.5" />
           </button>
-          <div className="h-px w-full bg-white/10" />
+          <div className="h-px w-full bg-surface" />
           <button
             type="button"
             onClick={() => mapInstanceRef.current?.zoomOut()}
-            className="flex h-8 w-10 items-center justify-center text-[#8B95A7] hover:text-white hover:bg-white/5 transition"
+            aria-label="Perkecil peta"
+            className="flex size-tap items-center justify-center text-fg-2 hover:text-fg-1 hover:bg-surface transition-colors duration-120"
           >
             <Minus className="h-3.5 w-3.5" />
           </button>
@@ -899,49 +913,52 @@ export default function DisasterMap({
 
       {/* 6. Source Health Dialog */}
       {showSourceStatus && (
-        <div className="absolute bottom-20 left-16 w-72 rounded-3xl border border-white/15 bg-[#0B0F17]/95 p-4 shadow-2xl backdrop-blur-2xl z-[1001] animate-in fade-in">
-          <div className="flex items-center justify-between pb-2 border-b border-white/10 mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-white">
+        <div className="absolute bottom-20 left-16 w-72 rounded-card border border-line-strong bg-raised p-4 shadow-float z-[1001]">
+          <div className="flex items-center justify-between pb-2 border-b border-line mb-3">
+            <span className="text-small font-bold text-fg-1">
               Status Sumber Data
             </span>
             <button
               type="button"
               onClick={() => setShowSourceStatus(false)}
-              className="text-[#8B95A7] hover:text-white"
+              aria-label="Tutup status sumber data"
+              className="-mr-2 -my-2 flex size-tap items-center justify-center rounded-control text-fg-2 hover:bg-surface hover:text-fg-1"
             >
-              <X className="h-4 w-4" />
+              <X className="h-4 w-4" aria-hidden="true" />
             </button>
           </div>
           <div className="space-y-2">
             {(sources || []).map((src) => (
               <div
                 key={src.id}
-                className="flex items-center justify-between p-2 rounded-xl bg-white/5 text-xs"
+                className="flex items-center justify-between gap-2 p-2 rounded-control bg-surface text-small"
               >
                 <div>
-                  <div className="font-semibold text-white">{src.name}</div>
-                  <div className="text-[10px] text-[#8B95A7]">{src.description}</div>
+                  <div className="font-semibold text-fg-1">{src.name}</div>
+                  <div className="text-label text-fg-2">{src.description}</div>
                 </div>
                 <span
-                  className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                  className={`inline-flex items-center gap-1 text-label font-bold px-2 py-0.5 rounded-full ${
                     src.status === 'online'
-                      ? 'bg-emerald-500/20 text-emerald-400'
-                      : 'bg-amber-500/20 text-amber-400'
-                  }`}
+                      ? 'bg-sev-normal-soft text-sev-normal'
+                      : src.status === 'degraded'
+                      ? 'bg-sev-warning-soft text-sev-warning'
+                      : 'bg-sev-critical-soft text-sev-critical'
+                  } shrink-0`}
                 >
-                  ● {src.status === 'online' ? 'Online' : 'Degraded'}
+                  {src.status === 'online' ? 'Merespons' : src.status === 'degraded' ? 'Data cadangan' : 'Gagal dimuat'}
                 </span>
               </div>
             ))}
           </div>
-          <div className="mt-3 pt-2 border-t border-white/10 flex justify-between items-center text-[10px] text-[#8B95A7]">
+          <div className="mt-3 pt-2 border-t border-line flex justify-between items-center text-label text-fg-2">
             <span>Diperbarui: {relativeTime}</span>
             <button
               type="button"
               onClick={onRefresh}
-              className="text-[#FF6B1A] hover:underline font-semibold"
+              className={`-mr-2 flex min-h-tap items-center rounded-control px-2 font-semibold text-accent hover:bg-surface ${isLoading ? 'opacity-60' : ''}`}
             >
-              Sinkronkan Sekarang
+              {isLoading ? 'Menyinkronkan…' : 'Sinkronkan Sekarang'}
             </button>
           </div>
         </div>
@@ -949,12 +966,12 @@ export default function DisasterMap({
 
       {/* 6b. Air Quality (ISPU) Floating Panel */}
       {showAirQualityModal && (
-        <div className="absolute top-16 left-3 right-3 sm:left-16 sm:right-auto sm:top-20 z-[1001] sm:w-96 max-w-md animate-in fade-in slide-in-from-left-4 pointer-events-auto">
+        <div className="absolute top-16 left-3 right-3 sm:left-16 sm:right-auto sm:top-20 z-[1001] sm:w-96 max-w-md pointer-events-auto">
           <div className="relative">
             <button
               type="button"
               onClick={() => setShowAirQualityModal(false)}
-              className="absolute top-3 right-3 z-30 rounded-lg p-1 text-[#8B95A7] hover:text-white hover:bg-white/10"
+              className="absolute top-3 right-3 z-30 rounded-lg p-1 text-fg-2 hover:text-fg-1 hover:bg-surface"
               aria-label="Tutup Panel Kualitas Udara"
             >
               <X className="h-4 w-4" />
@@ -974,21 +991,21 @@ export default function DisasterMap({
         type="button"
         onClick={handleLocateUser}
         disabled={isLocatingGps}
-        className={`absolute bottom-28 right-3 sm:bottom-6 sm:right-4 z-[1000] flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-[#0B0F17]/95 text-white shadow-2xl backdrop-blur-xl transition-all duration-200 active:scale-90 hover:bg-[#151C28] hover:border-cyan-500/50 hover:text-cyan-400 group pointer-events-auto ${
-          isLocatingGps ? 'animate-pulse text-cyan-400 border-cyan-500/60' : ''
+        className={`absolute bottom-28 right-3 sm:bottom-6 sm:right-4 z-[1000] flex h-11 w-11 items-center justify-center rounded-full border border-line-strong bg-raised text-fg-1 shadow-float transition-colors duration-120 hover:bg-surface hover:border-accent hover:text-accent group pointer-events-auto ${
+          isLocatingGps ? 'text-accent border-accent' : ''
         }`}
         title="Pusatkan ke Lokasi Saya / Tersimpan (GPS)"
         aria-label="Pusatkan ke Lokasi Saya"
       >
         <Crosshair
-          className={`h-5 w-5 transition-transform duration-300 ${
-            isLocatingGps ? 'animate-spin text-cyan-400' : 'group-hover:rotate-45'
+          className={`h-5 w-5 transition-transform duration-120 ${
+            isLocatingGps ? 'animate-spin motion-reduce:animate-none text-accent' : ''
           }`}
         />
         {cachedUserLoc && (
           <span className="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-500 border border-[#0B0F17]" />
+            
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-accent border border-fg-1" />
           </span>
         )}
       </button>
@@ -997,43 +1014,43 @@ export default function DisasterMap({
       <button
         type="button"
         onClick={() => setShowMobileActivitySheet(true)}
-        className="sm:hidden absolute bottom-16 right-3 z-[1000] flex items-center gap-2 px-3 py-2 rounded-2xl border border-white/20 bg-[#0B0F17]/95 text-white shadow-2xl backdrop-blur-xl active:scale-95 transition pointer-events-auto"
+        className="sm:hidden absolute bottom-16 right-3 z-[1000] flex min-h-tap items-center gap-2 px-3 rounded-card border border-line-strong bg-raised text-fg-1 shadow-float transition pointer-events-auto"
       >
         <span className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500" />
+          
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-sev-critical" />
         </span>
-        <span className="text-xs font-black tracking-wide">Aktivitas</span>
-        <span className="rounded-full bg-white/10 px-1.5 py-0.5 text-[10px] font-bold text-[#CBD5E1]">
+        <span className="text-small font-bold">Aktivitas</span>
+        <span className="rounded-full bg-surface px-1.5 py-0.5 text-label font-bold text-fg-2">
           {filteredEvents.length}
         </span>
       </button>
 
       {/* 7b. Mobile Aktivitas Terkini Bottom Sheet Drawer */}
       {showMobileActivitySheet && (
-        <div className="sm:hidden fixed inset-0 z-[1050] flex flex-col justify-end bg-black/60 backdrop-blur-sm animate-in fade-in">
+        <div className="sm:hidden fixed inset-0 z-[1050] flex flex-col justify-end bg-bg/85">
           {/* Backdrop dismiss */}
           <div className="flex-1" onClick={() => setShowMobileActivitySheet(false)} />
 
-          <div className="relative max-h-[75vh] w-full rounded-t-3xl border-t border-x border-white/20 bg-[#0B0F17]/98 backdrop-blur-2xl p-4 shadow-2xl flex flex-col animate-in slide-in-from-bottom-5 pointer-events-auto">
+          <div className="relative max-h-[75vh] w-full rounded-t-card border-t border-x border-line-strong bg-raised p-4 shadow-float flex flex-col pointer-events-auto">
             {/* Drag Handle */}
-            <div className="mx-auto mb-3 h-1.5 w-12 rounded-full bg-white/20" />
+            <div className="mx-auto mb-3 h-1.5 w-12 rounded-full bg-surface" />
 
             {/* Header */}
-            <div className="flex items-center justify-between pb-3 border-b border-white/10 mb-2">
+            <div className="flex items-center justify-between pb-3 border-b border-line mb-2">
               <div className="flex items-center gap-2">
-                <span className="flex h-2.5 w-2.5 rounded-full bg-red-500 animate-pulse" />
-                <h3 className="text-sm font-black text-white uppercase tracking-wider">
+                <span aria-hidden="true" className="flex h-2.5 w-2.5 rounded-full bg-sev-critical" />
+                <h3 className="text-sm font-bold text-fg-1">
                   Aktivitas Bencana Terkini
                 </h3>
-                <span className="rounded-full bg-white/10 px-2 py-0.5 text-[11px] font-bold text-[#8B95A7]">
+                <span className="rounded-full bg-surface px-2 py-0.5 text-label font-bold text-fg-2">
                   {filteredEvents.length}
                 </span>
               </div>
               <button
                 type="button"
                 onClick={() => setShowMobileActivitySheet(false)}
-                className="rounded-xl p-1.5 text-[#8B95A7] hover:bg-white/10 hover:text-white"
+                className="flex size-tap items-center justify-center rounded-control text-fg-2 hover:bg-surface hover:text-fg-1"
                 aria-label="Tutup aktivitas"
               >
                 <X className="h-5 w-5" />
@@ -1043,7 +1060,7 @@ export default function DisasterMap({
             {/* Event list */}
             <div className="overflow-y-auto space-y-2 py-1 flex-1 pr-1">
               {filteredEvents.length === 0 ? (
-                <div className="py-8 text-center text-xs text-[#8B95A7]">
+                <div className="py-8 text-center text-small text-fg-2">
                   Tidak ada laporan bencana pada rentang waktu ini.
                 </div>
               ) : (
@@ -1064,48 +1081,52 @@ export default function DisasterMap({
                         handleFocusEvent(ev);
                         setShowMobileActivitySheet(false);
                       }}
-                      className="flex w-full items-start gap-3 p-3 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] active:bg-white/[0.12] border border-white/5 text-left transition"
+                      className="flex w-full items-start gap-3 p-3 rounded-card bg-surface hover:bg-surface active:bg-surface border border-line text-left transition"
                     >
                       <div
-                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-white/10"
+                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-line"
                         style={{ backgroundColor: `${visual.color}25`, color: visual.color }}
                       >
                         <DisasterIcon type={ev.type} size={18} color={visual.color} />
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-2">
-                          <span className="truncate text-xs font-bold text-white">
+                          <span className="truncate text-small font-bold text-fg-1">
                             {ev.title}
                           </span>
                           <span
-                            className="shrink-0 text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded"
+                            className="shrink-0 text-label font-bold px-1.5 py-0.5 rounded"
                             style={{
                               backgroundColor:
                                 ev.severity === 'critical'
-                                  ? '#EF444430'
+                                  ? 'var(--sev-critical-soft)'
                                   : ev.severity === 'high'
-                                  ? '#F9731630'
-                                  : '#EAB30830',
+                                  ? 'var(--sev-high-soft)'
+                                  : ev.severity === 'moderate'
+                        ? 'var(--sev-warning-soft)'
+                        : 'var(--surface)',
                               color:
                                 ev.severity === 'critical'
-                                  ? '#F87171'
+                                  ? 'var(--sev-critical)'
                                   : ev.severity === 'high'
-                                  ? '#FB923C'
-                                  : '#FDE047',
+                                  ? 'var(--sev-high)'
+                                  : ev.severity === 'moderate'
+                        ? 'var(--sev-warning)'
+                        : 'var(--fg-2)',
                             }}
                           >
-                            {ev.severity}
+                            {SEVERITY_LABEL[ev.severity] ?? ev.severity}
                           </span>
                         </div>
-                        <div className="flex flex-wrap items-center gap-1.5 text-[10px] text-[#8B95A7] mt-1">
+                        <div className="flex flex-wrap items-center gap-1.5 text-label text-fg-2 mt-1">
                           <span>{ev.locationName || 'Indonesia'}</span>
                           <span>•</span>
                           <span>{getRelativeTime(ev.eventTime)}</span>
                           {distFromUser !== null && (
                             <>
                               <span>•</span>
-                              <span className="text-[#38BDF8] font-bold">
-                                📍 {distFromUser.toFixed(1)} km
+                              <span className="text-accent font-bold">
+                                {distFromUser.toFixed(1)} km dari Anda
                               </span>
                             </>
                           )}
@@ -1122,25 +1143,27 @@ export default function DisasterMap({
 
       {/* 7c. Collapsible Recent Activity Panel (Desktop right side) */}
       <div className="hidden lg:block absolute top-20 right-4 w-72 z-[1000] pointer-events-auto">
-        <div className="rounded-3xl border border-white/15 bg-[#0B0F17]/90 backdrop-blur-xl shadow-2xl overflow-hidden">
-          <div
+        <div className="rounded-card border border-line-strong bg-raised shadow-float overflow-hidden">
+          <button
+            type="button"
             onClick={() => setShowRecentActivity(!showRecentActivity)}
-            className="flex items-center justify-between p-3.5 cursor-pointer hover:bg-white/5 transition"
+            aria-expanded={showRecentActivity}
+            className="flex w-full min-h-tap items-center justify-between p-3.5 text-left cursor-pointer hover:bg-surface transition"
           >
-            <div className="flex items-center gap-2">
-              <span className="flex h-2 w-2 rounded-full bg-red-500 animate-ping" />
-              <span className="text-xs font-bold uppercase tracking-wider text-white">
+            <span className="flex items-center gap-2">
+              <span className="flex h-2 w-2 rounded-full bg-fg-3" aria-hidden="true" />
+              <span className="text-small font-bold text-fg-1">
                 Aktivitas Terkini
               </span>
-            </div>
-            <div className="flex items-center gap-1.5 text-xs text-[#8B95A7]">
-              <span>{filteredEvents.length}</span>
-              {showRecentActivity ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-            </div>
-          </div>
+            </span>
+            <span className="flex items-center gap-1.5 text-small text-fg-2">
+              <span className="font-mono tabular-nums">{filteredEvents.length}</span>
+              {showRecentActivity ? <ChevronUp className="h-4 w-4" aria-hidden="true" /> : <ChevronDown className="h-4 w-4" aria-hidden="true" />}
+            </span>
+          </button>
 
           {showRecentActivity && (
-            <div className="max-h-80 overflow-y-auto p-2 space-y-1.5 border-t border-white/10">
+            <div className={`max-h-80 overflow-y-auto p-2 space-y-1.5 border-t border-line empty:before:block empty:before:p-2 empty:before:text-small empty:before:text-fg-2 empty:before:content-['Tidak_ada_laporan_bencana_pada_rentang_waktu_ini.'] ${isLoading ? 'opacity-60' : ''}`}>
               {filteredEvents.slice(0, 10).map((ev) => {
                 const visual = DISASTER_VISUALS[ev.type] || DISASTER_VISUALS.earthquake;
                 const distFromUser = cachedUserLoc
@@ -1155,25 +1178,25 @@ export default function DisasterMap({
                     key={ev.id}
                     type="button"
                     onClick={() => handleFocusEvent(ev)}
-                    className="flex w-full items-start gap-2.5 p-2 rounded-2xl text-left hover:bg-white/10 transition group"
+                    className="flex w-full items-start gap-2.5 p-2 rounded-card text-left hover:bg-surface transition group"
                   >
                     <div
-                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-white/10"
+                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-line"
                       style={{ backgroundColor: `${visual.color}25`, color: visual.color }}
                     >
                       <DisasterIcon type={ev.type} size={18} color={visual.color} />
                     </div>
                     <div className="truncate flex-1 min-w-0">
-                      <div className="truncate text-xs font-bold text-white group-hover:text-[#FF8A3D] transition">
+                      <div className="truncate text-small font-bold text-fg-1 group-hover:text-accent transition">
                         {ev.title}
                       </div>
-                      <div className="flex flex-wrap items-center gap-1.5 text-[10px] text-[#8B95A7] mt-0.5">
+                      <div className="flex flex-wrap items-center gap-1.5 text-label text-fg-2 mt-0.5">
                         <span>{ev.locationName || 'Indonesia'}</span>
                         <span>•</span>
                         <span>{getRelativeTime(ev.eventTime)}</span>
                         {distFromUser !== null && (
-                          <span className="text-[#38BDF8] font-semibold">
-                            • 📍 {distFromUser.toFixed(1)} km
+                          <span className="text-accent font-semibold">
+                            • {distFromUser.toFixed(1)} km dari Anda
                           </span>
                         )}
                       </div>
@@ -1188,69 +1211,73 @@ export default function DisasterMap({
 
       {/* 8. Floating Event Detail Panel & Safety Guide */}
       {selectedEvent && (
-        <div className="absolute top-24 left-4 right-4 sm:left-auto sm:right-4 sm:w-96 max-h-[80vh] overflow-y-auto z-[1001] rounded-3xl border border-white/15 bg-[#0B0F17]/95 p-5 shadow-2xl backdrop-blur-2xl text-white animate-in fade-in slide-in-from-right-4 pointer-events-auto">
-          <div className="flex items-start justify-between gap-2 pb-3 border-b border-white/10">
+        <div role="region" aria-label="Detail kejadian" className="absolute top-24 left-4 right-4 sm:left-auto sm:right-4 sm:w-96 max-h-[80vh] overflow-y-auto z-[1001] rounded-card border border-line-strong bg-raised p-5 shadow-float text-fg-1 pointer-events-auto">
+          <div className="flex items-start justify-between gap-2 pb-3 border-b border-line">
             <div>
               <div className="flex items-center gap-2">
                 <div
-                  className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-white/10"
+                  className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-line"
                   style={{
-                    backgroundColor: `${DISASTER_VISUALS[selectedEvent.type]?.color || '#EF4444'}25`,
-                    color: DISASTER_VISUALS[selectedEvent.type]?.color || '#EF4444',
+                    backgroundColor: 'var(--surface)',
+                    color: 'var(--fg-1)',
                   }}
                 >
                   <DisasterIcon
                     type={selectedEvent.type}
                     size={14}
-                    color={DISASTER_VISUALS[selectedEvent.type]?.color || '#EF4444'}
+                    color="var(--fg-1)"
                   />
                 </div>
                 <span
-                  className="px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider"
+                  className="px-2 py-0.5 rounded-full text-label font-bold"
                   style={{
                     backgroundColor:
                       selectedEvent.severity === 'critical'
-                        ? 'rgba(239, 68, 68, 0.2)'
+                        ? 'var(--sev-critical-soft)'
                         : selectedEvent.severity === 'high'
-                        ? 'rgba(249, 115, 22, 0.2)'
-                        : 'rgba(245, 158, 11, 0.2)',
+                        ? 'var(--sev-high-soft)'
+                        : selectedEvent.severity === 'moderate'
+                        ? 'var(--sev-warning-soft)'
+                        : 'var(--surface)',
                     color:
                       selectedEvent.severity === 'critical'
-                        ? '#F87171'
+                        ? 'var(--sev-critical)'
                         : selectedEvent.severity === 'high'
-                        ? '#FB923C'
-                        : '#FCD34D',
+                        ? 'var(--sev-high)'
+                        : selectedEvent.severity === 'moderate'
+                        ? 'var(--sev-warning)'
+                        : 'var(--fg-2)',
                   }}
                 >
-                  {selectedEvent.severity.toUpperCase()}
+                  {SEVERITY_LABEL[selectedEvent.severity] ?? selectedEvent.severity}
                 </span>
-                <span className="text-[11px] text-[#8B95A7]">
+                <span className="text-label text-fg-2">
                   {formatWibDateTime(selectedEvent.eventTime)}
                 </span>
               </div>
-              <h2 className="text-base font-black text-white mt-1.5 leading-snug">
+              <h2 className="text-base font-bold text-fg-1 mt-1.5 leading-snug">
                 {selectedEvent.title}
               </h2>
             </div>
             <button
               type="button"
               onClick={() => setSelectedEvent(null)}
-              className="p-1.5 text-[#8B95A7] hover:text-white rounded-lg hover:bg-white/10"
+              className="p-1.5 text-fg-2 hover:text-fg-1 rounded-lg hover:bg-surface"
             >
               <X className="h-4 w-4" />
             </button>
           </div>
 
-          <div className="mt-3 space-y-3 text-xs">
-            <p className="text-[#CBD5E1] leading-relaxed">{selectedEvent.description}</p>
+          <div className="mt-3 space-y-3 text-small">
+            <p className="text-fg-2 leading-relaxed">{selectedEvent.description}</p>
 
             {/* Location */}
-            <div className="p-3 rounded-2xl bg-white/5 border border-white/5">
-              <span className="text-[10px] font-bold uppercase text-[#8B95A7]">Lokasi Kejadian</span>
-              <div className="text-white font-semibold mt-0.5">
+            <div className="p-3 rounded-card bg-surface border border-line">
+              <span className="text-label font-bold text-fg-2">Lokasi Kejadian</span>
+              <div className="text-fg-1 font-semibold mt-0.5">
                 {selectedEvent.locationName || 'Indonesia'}
               </div>
-              <div className="text-[10px] text-[#8B95A7] mt-0.5">
+              <div className="text-label text-fg-2 mt-0.5">
                 Koordinat: {selectedEvent.latitude.toFixed(4)}°, {selectedEvent.longitude.toFixed(4)}°
               </div>
             </div>
@@ -1259,42 +1286,42 @@ export default function DisasterMap({
             <button
               type="button"
               onClick={() => setShowSafetyGuide(!showSafetyGuide)}
-              className="flex w-full items-center justify-between p-3 rounded-2xl bg-gradient-to-r from-red-600/20 to-orange-600/20 border border-red-500/40 text-left hover:brightness-110 transition shadow-lg shadow-red-950/20"
+              className="flex min-h-tap w-full items-center justify-between gap-2 p-3 rounded-card border border-line-strong text-left hover:border-accent transition-colors duration-120"
             >
               <div className="flex items-center gap-2">
-                <BookOpen className="h-4 w-4 text-red-400 shrink-0" />
+                <BookOpen className="h-4 w-4 text-accent shrink-0" aria-hidden="true" />
                 <div>
-                  <div className="font-bold text-white">Panduan Evakuasi & Keselamatan</div>
-                  <div className="text-[10px] text-red-300">
+                  <div className="font-bold text-fg-1">Panduan Evakuasi & Keselamatan</div>
+                  <div className="text-label text-fg-2">
                     Langkah penyelamatan mandiri saat di zona bencana
                   </div>
                 </div>
               </div>
               {showSafetyGuide ? (
-                <ChevronUp className="h-4 w-4 text-red-300" />
+                <ChevronUp className="h-4 w-4 text-fg-2" aria-hidden="true" />
               ) : (
-                <ChevronDown className="h-4 w-4 text-red-300" />
+                <ChevronDown className="h-4 w-4 text-fg-2" aria-hidden="true" />
               )}
             </button>
 
             {/* Expandable Safety Steps */}
             {showSafetyGuide && activeGuide && (
-              <div className="p-3 rounded-2xl bg-[#151C28] border border-white/10 space-y-2.5 animate-in fade-in">
-                <div className="font-bold text-white text-xs flex items-center gap-1.5">
-                  <AlertTriangle className="h-3.5 w-3.5 text-amber-400" />
+              <div className="p-3 rounded-card bg-surface border border-line space-y-2.5">
+                <div className="font-bold text-fg-1 text-small flex items-center gap-1.5">
+                  <AlertTriangle className="h-3.5 w-3.5 text-sev-warning" />
                   <span>{activeGuide.subtitle}</span>
                 </div>
                 {activeGuide.duringAction.slice(0, 3).map((step) => (
-                  <div key={step.step} className="flex items-start gap-2 text-[11px]">
-                    <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-red-500/30 text-red-300 text-[10px] font-bold">
+                  <div key={step.step} className="flex items-start gap-2 text-label">
+                    <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-badge border border-line-strong text-fg-1 text-label font-bold">
                       {step.step}
                     </span>
-                    <span className="text-[#CBD5E1]">{step.instruction}</span>
+                    <span className="text-fg-2">{step.instruction}</span>
                   </div>
                 ))}
                 <Link
                   href="/safety-guide"
-                  className="block text-center text-[10px] font-bold text-[#FF8A3D] hover:underline pt-1"
+                  className="block text-center text-label font-bold text-accent hover:underline pt-1"
                 >
                   Buka Panduan Lengkap Seluruh Bencana →
                 </Link>
@@ -1305,13 +1332,13 @@ export default function DisasterMap({
             {selectedEvent.type === 'volcano' && selectedEvent.metadata?.volcanoSlug && (
               <Link
                 href={`/volcanoes/${selectedEvent.metadata.volcanoSlug}`}
-                className="flex items-center justify-between p-3 rounded-2xl bg-orange-950/30 border border-orange-500/30 hover:bg-orange-900/40 text-orange-200 transition"
+                className="flex items-center justify-between p-3 rounded-card bg-sev-high-soft border border-sev-high hover:bg-sev-high-soft text-sev-high transition"
               >
                 <div className="flex items-center gap-2">
-                  <Mountain className="h-4 w-4 text-orange-400" />
+                  <Mountain className="h-4 w-4 text-sev-high" />
                   <span>Lihat Detail & Riwayat Erupsi Gunung</span>
                 </div>
-                <ChevronRight className="h-4 w-4 text-orange-400" />
+                <ChevronRight className="h-4 w-4 text-sev-high" />
               </Link>
             )}
 
@@ -1319,24 +1346,24 @@ export default function DisasterMap({
             {selectedEvent.type === 'volcanic-ash' && selectedEvent.metadata?.advisoryId && (
               <Link
                 href={`/advisories/${selectedEvent.metadata.advisoryId}`}
-                className="flex items-center justify-between p-3 rounded-2xl bg-amber-950/30 border border-amber-500/30 hover:bg-amber-900/40 text-amber-200 transition"
+                className="flex items-center justify-between p-3 rounded-card bg-sev-warning-soft border border-sev-warning hover:bg-sev-warning-soft text-sev-warning transition"
               >
                 <div className="flex items-center gap-2">
-                  <Flame className="h-4 w-4 text-amber-400" />
+                  <Flame className="h-4 w-4 text-sev-warning" />
                   <span>Buka Advisori Darwin VAAC Lengkap</span>
                 </div>
-                <ChevronRight className="h-4 w-4 text-amber-400" />
+                <ChevronRight className="h-4 w-4 text-sev-warning" />
               </Link>
             )}
 
             {/* Official Source Attribution */}
-            <div className="pt-2 border-t border-white/10 flex items-center justify-between text-[11px] text-[#8B95A7]">
+            <div className="pt-2 border-t border-line flex items-center justify-between text-label text-fg-2">
               <span>Sumber: {selectedEvent.source.name}</span>
               <a
                 href={selectedEvent.source.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1 text-[#FF8A3D] hover:underline font-semibold"
+                className="flex items-center gap-1 text-accent hover:underline font-semibold"
               >
                 <span>Portal Resmi</span>
                 <ExternalLink className="h-3 w-3" />

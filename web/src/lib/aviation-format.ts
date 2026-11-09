@@ -5,22 +5,22 @@
  */
 
 const DIRECTION_NAMES: Record<string, string> = {
-  N: 'North',
-  NNE: 'North-Northeast',
-  NE: 'Northeast',
-  ENE: 'East-Northeast',
-  E: 'East',
-  ESE: 'East-Southeast',
-  SE: 'Southeast',
-  SSE: 'South-Southeast',
-  S: 'South',
-  SSW: 'South-Southwest',
-  SW: 'Southwest',
-  WSW: 'West-Southwest',
-  W: 'West',
-  WNW: 'West-Northwest',
-  NW: 'Northwest',
-  NNW: 'North-Northwest',
+  N: 'Utara',
+  NNE: 'Utara-Timur Laut',
+  NE: 'Timur Laut',
+  ENE: 'Timur-Timur Laut',
+  E: 'Timur',
+  ESE: 'Timur-Tenggara',
+  SE: 'Tenggara',
+  SSE: 'Selatan-Tenggara',
+  S: 'Selatan',
+  SSW: 'Selatan-Barat Daya',
+  SW: 'Barat Daya',
+  WSW: 'Barat-Barat Daya',
+  W: 'Barat',
+  WNW: 'Barat-Barat Laut',
+  NW: 'Barat Laut',
+  NNW: 'Utara-Barat Laut',
 };
 
 /**
@@ -28,7 +28,7 @@ const DIRECTION_NAMES: Record<string, string> = {
  * into human-readable altitude descriptions.
  */
 export function formatFlightLevelHuman(raw?: string | null): string {
-  if (!raw) return 'Altitude unspecified';
+  if (!raw) return 'Ketinggian tidak disebutkan';
 
   // Matches pattern like FL070, FL150, FL500
   const flMatch = raw.match(/FL(\d{2,3})/i);
@@ -36,7 +36,7 @@ export function formatFlightLevelHuman(raw?: string | null): string {
     const flNum = parseInt(flMatch[1], 10);
     const feet = flNum * 100;
     const meters = Math.round(feet * 0.3048);
-    return `${feet.toLocaleString('en-US')} ft altitude (~${meters.toLocaleString('en-US')} m)`;
+    return `Ketinggian ${feet.toLocaleString('id-ID')} ft (~${meters.toLocaleString('id-ID')} m)`;
   }
 
   // Range pattern like SFC/FL070 or SFC -> FL150
@@ -45,7 +45,7 @@ export function formatFlightLevelHuman(raw?: string | null): string {
     const flNum = parseInt(rangeMatch[1], 10);
     const feet = flNum * 100;
     const meters = Math.round(feet * 0.3048);
-    return `Surface to ${feet.toLocaleString('en-US')} ft (~${meters.toLocaleString('en-US')} m)`;
+    return `Permukaan hingga ${feet.toLocaleString('id-ID')} ft (~${meters.toLocaleString('id-ID')} m)`;
   }
 
   return raw;
@@ -56,11 +56,11 @@ export function formatFlightLevelHuman(raw?: string | null): string {
  * into human-readable direction and speed.
  */
 export function formatMovementHuman(raw?: string | null): string {
-  if (!raw) return 'Movement data not available';
+  if (!raw) return 'Data pergerakan tidak tersedia';
 
   const clean = raw.trim().toUpperCase();
   if (clean === 'STNR' || clean.includes('STATIONARY')) {
-    return 'Stationary (minimal wind movement)';
+    return 'Diam (pergerakan angin minimal)';
   }
 
   // Match direction and knots: e.g. "NW 05KT" or "MOV SE 10 KT"
@@ -71,7 +71,7 @@ export function formatMovementHuman(raw?: string | null): string {
     const kmh = Math.round(knots * 1.852);
     const dirFull = DIRECTION_NAMES[dirCode] || dirCode;
 
-    return `Moving ${dirFull} · ${knots} knots (${kmh} km/h)`;
+    return `Bergerak ke ${dirFull} · ${knots} knot (${kmh} km/jam)`;
   }
 
   return raw;
@@ -82,11 +82,11 @@ export function formatMovementHuman(raw?: string | null): string {
  * e.g. "SFC → FL070" => "SFC → FL070 (7,000 ft)"
  */
 export function formatAltitudeCompact(raw?: string | null): string {
-  if (!raw) return 'SFC → Unknown';
+  if (!raw) return 'SFC → tidak diketahui';
   const flMatch = raw.match(/FL(\d{2,3})/i);
   if (flMatch) {
     const feet = parseInt(flMatch[1], 10) * 100;
-    return `${raw} (${feet.toLocaleString('en-US')} ft)`;
+    return `${raw} (${feet.toLocaleString('id-ID')} ft)`;
   }
   return raw;
 }

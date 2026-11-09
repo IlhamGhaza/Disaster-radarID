@@ -10,10 +10,10 @@ import { Loader2 } from 'lucide-react';
 const DynamicDisasterMap = dynamic(() => import('./disaster-map'), {
   ssr: false,
   loading: () => (
-    <div className="flex h-full w-full flex-col items-center justify-center bg-[#0B0F17] text-[#8B95A7]">
-      <Loader2 className="h-8 w-8 animate-spin text-[#EF4444] mb-3" />
-      <p className="text-sm font-semibold text-[#F5F7FA]">Memuat Peta Bencana Indonesia...</p>
-      <p className="text-xs text-[#8B95A7] mt-1">Menginisialisasi OpenStreetMap & layer data BMKG, BNPB, PVMBG</p>
+    <div role="status" className="flex h-full w-full flex-col items-center justify-center bg-bg px-gutter text-center">
+      <Loader2 className="mb-3 h-7 w-7 animate-spin text-accent motion-reduce:animate-none" aria-hidden="true" />
+      <p className="text-body font-semibold text-fg-1">Memuat Peta Bencana Indonesia...</p>
+      <p className="mt-1 text-small text-fg-2">Menginisialisasi OpenStreetMap & layer data BMKG, BNPB, PVMBG</p>
     </div>
   ),
 });
@@ -106,9 +106,9 @@ export function MapWrapper(props: MapWrapperProps) {
   return (
     <Suspense
       fallback={
-        <div className="flex h-full w-full flex-col items-center justify-center bg-[#0B0F17] text-[#8B95A7]">
-          <Loader2 className="h-8 w-8 animate-spin text-[#EF4444] mb-3" />
-          <p className="text-sm font-semibold text-[#F5F7FA]">Memuat Peta Bencana Indonesia...</p>
+        <div role="status" className="flex h-full w-full flex-col items-center justify-center bg-bg px-gutter text-center">
+          <Loader2 className="mb-3 h-7 w-7 animate-spin text-accent motion-reduce:animate-none" aria-hidden="true" />
+          <p className="text-body font-semibold text-fg-1">Memuat Peta Bencana Indonesia...</p>
         </div>
       }
     >

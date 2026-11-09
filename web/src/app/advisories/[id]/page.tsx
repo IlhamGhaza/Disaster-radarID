@@ -8,15 +8,9 @@ import { formatAltitudeCompact, formatMovementHuman, formatFlightLevelHuman } fr
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import {
   Flame,
-  Clock,
-  Wind,
   Map,
   Layers,
   FileText,
-  ExternalLink,
-  ChevronRight,
-  Database,
-  ShieldCheck,
 } from 'lucide-react';
 import { SITE_URL } from '@/config/site';
 
@@ -75,66 +69,66 @@ export default async function AdvisoryDetailPage({ params }: PageProps) {
   }
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-4xl px-gutter py-stack sm:px-6 lg:px-8">
       <Breadcrumbs
         items={[
-          { name: 'Recent Advisories', url: '/advisories' },
+          { name: 'Advisori Abu Vulkanik', url: '/advisories' },
           { name: `${advisory.volcanoName} #${advisory.advisoryNumber}`, url: `/advisories/${advisory.id}` },
         ]}
       />
 
       {/* Advisory Structure directly matching tugas.md */}
-      <div className="surface-card rounded-3xl border border-white/10 p-6 sm:p-8 shadow-2xl space-y-6">
+      <div className="space-y-stack">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 border-b border-white/10 pb-6">
+        <div className="flex flex-col gap-gutter border-b border-line pb-stack sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <span className="text-xs text-[#8B95A7] uppercase tracking-wider block mb-1">
-              Volcano
+            <span className="mb-1 block text-small text-fg-3">
+              Gunung api
             </span>
-            <h1 className="text-3xl sm:text-5xl font-black text-white">
+            <h1 className="text-display text-fg-1 md:text-display-lg">
               {advisory.volcanoName}
             </h1>
-            <p className="text-xs text-[#8B95A7] mt-1">
-              Advisory #{advisory.advisoryNumber} · {advisory.area}
+            <p className="mt-1 font-mono text-small text-fg-2 tabular-nums">
+              Advisori #{advisory.advisoryNumber} · {advisory.area}
             </p>
           </div>
 
-          <div className="flex flex-col sm:items-end gap-2">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-[#FF6B1A]/20 px-3 py-1 text-xs font-bold text-[#FF8A3D] border border-[#FF6B1A]/30">
-              <Flame className="h-3.5 w-3.5" />
-              <span>ASH DETECTED</span>
+          <div className="flex flex-col gap-cell sm:items-end">
+            <span className="inline-flex items-center gap-1.5 self-start rounded-badge border border-sev-ash bg-sev-ash-soft px-2 py-0.5 text-label text-sev-ash sm:self-auto">
+              <Flame className="h-4 w-4" aria-hidden="true" />
+              <span>Abu terdeteksi</span>
             </span>
 
             <Link
               href={`/map?lat=${advisory.position?.latitude || -6}&lng=${advisory.position?.longitude || 106}&label=${encodeURIComponent(
                 advisory.volcanoName
               )}`}
-              className="flex items-center gap-1.5 text-xs font-bold text-[#FF6B1A] hover:text-[#FF8A3D] transition mt-2"
+              className="inline-flex min-h-tap items-center gap-1.5 rounded-control bg-accent px-gutter text-small font-semibold text-fg-inverse transition-colors duration-120 hover:bg-accent-hover"
             >
-              <Map className="h-3.5 w-3.5" />
-              <span>View On Interactive Map</span>
+              <Map className="h-4 w-4" aria-hidden="true" />
+              <span>Lihat di peta</span>
             </Link>
           </div>
         </div>
 
         {/* Current Ash Area & Movement */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="rounded-2xl bg-[#0B0F17]/80 p-5 border border-white/5">
-            <span className="text-xs text-[#8B95A7] block mb-1">Current ash area</span>
-            <span className="text-lg font-bold text-white block">
+        <div className="grid grid-cols-1 gap-x-stack gap-y-gutter sm:grid-cols-2">
+          <div className="border-l-4 border-sev-ash pl-gutter">
+            <span className="mb-1 block text-label text-fg-3">Ketinggian abu saat ini</span>
+            <span className="block font-mono text-num-lg font-bold text-fg-1 tabular-nums">
               {formatAltitudeCompact(advisory.primaryFlightLevel)}
             </span>
-            <span className="text-xs text-[#8B95A7] mt-1 block">
+            <span className="mt-1 block text-small text-fg-2">
               {formatFlightLevelHuman(advisory.primaryFlightLevel)}
             </span>
           </div>
 
-          <div className="rounded-2xl bg-[#0B0F17]/80 p-5 border border-white/5">
-            <span className="text-xs text-[#8B95A7] block mb-1">Movement</span>
-            <span className="text-lg font-bold text-amber-300 block">
+          <div className="border-l-4 border-line-strong pl-gutter">
+            <span className="mb-1 block text-label text-fg-3">Pergerakan</span>
+            <span className="block font-mono text-num-lg font-bold text-fg-1">
               {advisory.primaryMovement}
             </span>
-            <span className="text-xs text-[#8B95A7] mt-1 block">
+            <span className="mt-1 block text-small text-fg-2">
               {formatMovementHuman(advisory.primaryMovement)}
             </span>
           </div>
@@ -142,74 +136,72 @@ export default async function AdvisoryDetailPage({ params }: PageProps) {
 
         {/* Observed & Forecast Layers Breakdown */}
         <div>
-          <h2 className="text-sm font-bold text-white mb-3 flex items-center gap-2">
-            <Layers className="h-4 w-4 text-[#FF6B1A]" />
-            <span>Observed & Forecast Horizons ({advisory.polygons.length} Layers)</span>
+          <h2 className="mb-row flex items-center gap-cell text-heading text-fg-1">
+            <Layers className="h-5 w-5 text-fg-3" aria-hidden="true" />
+            <span>Area teramati & prakiraan ({advisory.polygons.length} lapisan)</span>
           </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="divide-y divide-line border-y border-line">
             {advisory.polygons.map((poly, idx) => (
               <div
                 key={idx}
-                className="rounded-xl border border-white/5 bg-[#0B0F17]/60 p-3.5 text-xs space-y-1"
+                className="flex flex-wrap items-baseline justify-between gap-x-gutter gap-y-1 py-row text-small"
               >
-                <div className="flex items-center justify-between">
-                  <span className="font-bold text-white uppercase">
-                    {poly.type === 'observed' ? 'Observed Cloud' : poly.type.replace('forecast', 'Forecast +')}
-                  </span>
-                  <span className="text-[10px] text-[#FF8A3D] font-mono">
-                    {poly.coordinates.length} coords
-                  </span>
-                </div>
-                <div className="text-[#8B95A7]">
-                  Alt: <strong className="text-white">{poly.baseFlightLevel || 'SFC'} → {poly.topFlightLevel || '???'}</strong>
-                </div>
+                <span className="font-semibold text-fg-1">
+                  {poly.type === 'observed' ? 'Awan abu teramati' : poly.type.replace('forecast', 'Prakiraan +').replace('h', ' jam')}
+                </span>
+                <span className="font-mono text-fg-1 tabular-nums">
+                  {poly.baseFlightLevel || 'SFC'} → {poly.topFlightLevel || '?'}
+                </span>
                 {poly.movementDirection && (
-                  <div className="text-amber-300 text-[11px]">
+                  <span className="w-full font-mono text-fg-2">
                     {poly.movementDirection} {poly.movementSpeed || ''}
-                  </div>
+                  </span>
                 )}
+                <span className="font-mono text-fg-3 tabular-nums">
+                  {poly.coordinates.length} titik koordinat
+                </span>
               </div>
             ))}
           </div>
         </div>
 
         {/* Source Attribution */}
-        <div className="rounded-2xl bg-[#0B0F17]/50 p-4 border border-white/5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs">
+        <div className="flex flex-col gap-1 border-t border-line pt-gutter text-small sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <span className="text-[#8B95A7] block text-[10px] uppercase">Data Source:</span>
-            <span className="font-semibold text-white">Darwin VAAC · Bureau of Meteorology (Australia)</span>
+            <span className="block text-label text-fg-3">Sumber data</span>
+            <span className="font-semibold text-fg-1">Darwin VAAC · Bureau of Meteorology (Australia)</span>
           </div>
-          <span className="text-[#8B95A7]">Issued: {formatWibDateTime(advisory.dtg)}</span>
+          <span className="font-mono text-fg-2 tabular-nums">Terbit {formatWibDateTime(advisory.dtg)}</span>
         </div>
 
         {/* Raw Bulletin Expandable Section (per tugas.md) */}
-        <details className="group rounded-2xl border border-white/10 bg-[#0B0F17]/80 p-4 transition">
-          <summary className="flex cursor-pointer items-center justify-between text-xs font-bold text-[#8B95A7] group-open:text-white">
-            <span className="flex items-center gap-2">
-              <FileText className="h-4 w-4 text-[#FF6B1A]" />
-              <span>Raw Bulletin</span>
+        <details className="group rounded-card border border-line bg-surface">
+          <summary className="flex min-h-tap cursor-pointer items-center justify-between px-gutter text-small font-semibold text-fg-2 group-open:text-fg-1">
+            <span className="flex items-center gap-cell">
+              <FileText className="h-4 w-4" aria-hidden="true" />
+              <span>Buletin mentah</span>
             </span>
-            <span className="text-[10px] bg-white/5 px-2 py-0.5 rounded group-open:hidden">
-              Click to Expand
+            <span className="text-small text-fg-3 group-open:hidden">
+              Buka
             </span>
           </summary>
-          <div className="mt-4 pt-3 border-t border-white/10 font-mono text-[11px] text-slate-300 space-y-1 overflow-x-auto">
-            <p><span className="text-[#8B95A7]">DTG:</span> {advisory.dtgRaw}</p>
-            <p><span className="text-[#8B95A7]">VAAC:</span> DARWIN</p>
-            <p><span className="text-[#8B95A7]">VOLCANO:</span> {advisory.volcanoName} {advisory.volcanoCode ? `[${advisory.volcanoCode}]` : ''}</p>
-            <p><span className="text-[#8B95A7]">AREA:</span> {advisory.area}</p>
-            <p><span className="text-[#8B95A7]">INFO SOURCE:</span> {advisory.infoSource || 'HIMAWARI-9 / GROUND'}</p>
+          <div className="space-y-1 overflow-x-auto border-t border-line px-gutter py-row font-mono text-small text-fg-2">
+            <p><span className="text-fg-3">DTG:</span> {advisory.dtgRaw}</p>
+            <p><span className="text-fg-3">VAAC:</span> DARWIN</p>
+            <p><span className="text-fg-3">VOLCANO:</span> {advisory.volcanoName} {advisory.volcanoCode ? `[${advisory.volcanoCode}]` : ''}</p>
+            <p><span className="text-fg-3">AREA:</span> {advisory.area}</p>
+            <p><span className="text-fg-3">INFO SOURCE:</span> {advisory.infoSource || 'HIMAWARI-9 / GROUND'}</p>
             {advisory.sourceElevation && (
-              <p><span className="text-[#8B95A7]">SUMMIT ELEV:</span> {advisory.sourceElevation}</p>
+              <p><span className="text-fg-3">SUMMIT ELEV:</span> {advisory.sourceElevation}</p>
             )}
             {advisory.eruptionDetails && (
-              <p><span className="text-[#8B95A7]">ERUPTION DETAILS:</span> {advisory.eruptionDetails}</p>
+              <p><span className="text-fg-3">ERUPTION DETAILS:</span> {advisory.eruptionDetails}</p>
             )}
             {advisory.remarks && (
-              <p><span className="text-[#8B95A7]">RMK:</span> {advisory.remarks}</p>
+              <p><span className="text-fg-3">RMK:</span> {advisory.remarks}</p>
             )}
-            <p><span className="text-[#8B95A7]">NEXT ADVISORY:</span> {advisory.nextAdvisory || 'AS REQUIRED'}</p>
+            <p><span className="text-fg-3">NEXT ADVISORY:</span> {advisory.nextAdvisory || 'AS REQUIRED'}</p>
           </div>
         </details>
       </div>

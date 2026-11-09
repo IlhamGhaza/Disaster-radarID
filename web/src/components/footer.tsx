@@ -16,9 +16,9 @@ const DISASTER_LINKS = [
 ];
 
 const NAV_LINKS = [
-  { href: '/map', label: 'Peta Interaktif Radar' },
+  { href: '/map', label: 'Peta Interaktif' },
   { href: '/safety-guide', label: 'Panduan Evakuasi & Keselamatan', highlight: true },
-  { href: '/volcanoes', label: 'Direktori 127+ Gunung Api' },
+  { href: '/volcanoes', label: 'Direktori Gunung Api' },
   { href: '/advisories', label: 'Arsip Advisori Darwin VAAC' },
   { href: '/data-sources', label: 'Transparansi Sumber Data' },
   { href: '/faq', label: 'Pertanyaan Umum (FAQ)' },
@@ -33,69 +33,65 @@ const DATA_SOURCES = [
   { href: 'https://www.openstreetmap.org/', label: 'OpenStreetMap Engine' },
 ];
 
+// Link footer: 44px di mobile (target sentuh), rapat di desktop.
+const linkBase =
+  'flex min-h-tap items-center gap-1.5 text-small transition-colors duration-120 md:min-h-0 md:py-1';
+
 export function Footer() {
   return (
-    <footer className="border-t border-white/[0.05] bg-[#060910] text-[#8B95A7]">
-      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 pb-10 border-b border-white/[0.05]">
+    <footer className="border-t border-line bg-bg text-fg-2">
+      <div className="mx-auto max-w-7xl px-gutter py-section sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-stack border-b border-line pb-stack md:grid-cols-4 md:gap-8">
           {/* Col 1: Brand & Tagline */}
-          <div className="md:col-span-1 space-y-4">
+          <div className="space-y-3 md:col-span-1">
             <div className="flex items-center gap-2">
-              <div className="relative flex h-7 w-7 items-center justify-center overflow-hidden rounded-lg border border-white/[0.08] bg-[#0D1117]">
+              <div className="relative flex h-7 w-7 items-center justify-center overflow-hidden rounded-control border border-line bg-surface">
                 <Image
                   src="/logo.png"
-                  alt="Disaster Radar Indonesia Logo"
+                  alt=""
                   width={28}
                   height={28}
                   className="h-full w-full object-contain p-0.5"
                 />
               </div>
-              <span className="text-sm font-extrabold text-[#E8ECF1] tracking-tight">
-                DISASTER <span className="text-[#EF4444]">RADAR</span>
-              </span>
+              <span className="text-[17px] font-bold text-fg-1">Disaster Radar</span>
             </div>
-            <p className="text-[11px] text-[#5A6478] leading-relaxed">
-              Platform independen agregasi dan visualisasi informasi kebencanaan di Indonesia. Memantau gempa, banjir, gunung api, karhutla, dan cuaca ekstrem melalui peta geospasial interaktif.
+            <p className="max-w-[36ch] text-small text-fg-2">
+              Platform independen agregasi dan visualisasi informasi kebencanaan di Indonesia. Memantau
+              gempa, banjir, gunung api, karhutla, dan cuaca ekstrem melalui peta geospasial interaktif.
             </p>
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[9px] font-semibold uppercase tracking-widest bg-white/[0.03] border border-white/[0.06] text-[#5A6478]">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Sistem Aktif</span>
-            </div>
           </div>
 
           {/* Col 2: Kategori Bencana */}
-          <div className="space-y-3">
-            <h3 className="text-[10px] font-bold uppercase tracking-widest text-[#5A6478]">
+          <nav aria-labelledby="footer-kategori">
+            <h3 id="footer-kategori" className="mb-1 text-small font-semibold text-fg-1">
               Kategori Bencana
             </h3>
-            <ul className="space-y-1.5">
+            <ul>
               {DISASTER_LINKS.map((link) => (
                 <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-[11px] text-[#8B95A7] hover:text-[#E8ECF1] transition-colors duration-150"
-                  >
+                  <Link href={link.href} className={`${linkBase} text-fg-2 hover:text-fg-1`}>
                     {link.label}
                   </Link>
                 </li>
               ))}
             </ul>
-          </div>
+          </nav>
 
           {/* Col 3: Navigasi & Edukasi */}
-          <div className="space-y-3">
-            <h3 className="text-[10px] font-bold uppercase tracking-widest text-[#5A6478]">
+          <nav aria-labelledby="footer-navigasi">
+            <h3 id="footer-navigasi" className="mb-1 text-small font-semibold text-fg-1">
               Navigasi & Edukasi
             </h3>
-            <ul className="space-y-1.5">
+            <ul>
               {NAV_LINKS.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className={`text-[11px] transition-colors duration-150 ${
+                    className={`${linkBase} ${
                       link.highlight
-                        ? 'font-semibold text-red-400 hover:text-red-300'
-                        : 'text-[#8B95A7] hover:text-[#E8ECF1]'
+                        ? 'font-semibold text-accent hover:text-accent-hover'
+                        : 'text-fg-2 hover:text-fg-1'
                     }`}
                   >
                     {link.label}
@@ -103,46 +99,46 @@ export function Footer() {
                 </li>
               ))}
             </ul>
-          </div>
+          </nav>
 
           {/* Col 4: Sumber Data Resmi */}
-          <div className="space-y-3">
-            <h3 className="text-[10px] font-bold uppercase tracking-widest text-[#5A6478]">
+          <nav aria-labelledby="footer-sumber">
+            <h3 id="footer-sumber" className="mb-1 text-small font-semibold text-fg-1">
               Sumber Data Resmi
             </h3>
-            <ul className="space-y-1.5">
+            <ul>
               {DATA_SOURCES.map((link) => (
                 <li key={link.href}>
                   <a
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1 text-[11px] text-[#8B95A7] hover:text-[#E8ECF1] transition-colors duration-150"
+                    className={`${linkBase} text-fg-2 hover:text-fg-1`}
                   >
                     <span>{link.label}</span>
-                    <ExternalLink className="h-2.5 w-2.5 text-[#5A6478]" />
+                    <ExternalLink className="h-3.5 w-3.5 text-fg-3" aria-hidden="true" />
+                    <span className="sr-only">(membuka tab baru)</span>
                   </a>
                 </li>
               ))}
             </ul>
-          </div>
+          </nav>
         </div>
 
         {/* Disclaimer Notice */}
-        <div className="mt-6 p-3.5 rounded-lg bg-white/[0.02] border border-white/[0.05] text-[10px] leading-relaxed">
-          <div className="flex items-start gap-2">
-            <AlertTriangle className="h-3.5 w-3.5 text-amber-500/70 shrink-0 mt-0.5" />
-            <div className="text-[#5A6478]">
-              <span className="font-bold text-[#8B95A7]">Bukan Situs Resmi Pemerintah: </span>
-              <span>
-                Disaster Radar Indonesia adalah proyek independen dan tidak terafiliasi secara kelembagaan dengan BNPB, BMKG, atau PVMBG. Data dihimpun dari feed publik resmi tanpa modifikasi substansi. Untuk tindakan kedaruratan, selalu ikuti instruksi resmi dari instansi pemerintah terkait.
-              </span>
-            </div>
-          </div>
+        <div className="mt-stack flex items-start gap-3 rounded-card border border-line border-l-4 border-l-sev-warning bg-surface p-gutter">
+          <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-sev-warning" aria-hidden="true" />
+          <p className="max-w-[80ch] text-small text-fg-2">
+            <strong className="font-semibold text-fg-1">Bukan Situs Resmi Pemerintah:</strong>{' '}
+            Disaster Radar Indonesia adalah proyek independen dan tidak terafiliasi secara kelembagaan
+            dengan BNPB, BMKG, atau PVMBG. Data dihimpun dari feed publik resmi tanpa modifikasi
+            substansi. Untuk tindakan kedaruratan, selalu ikuti instruksi resmi dari instansi pemerintah
+            terkait.
+          </p>
         </div>
 
         {/* Bottom copyright */}
-        <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-[10px] text-[#3E4A5C]">
+        <div className="mt-stack flex flex-col items-start justify-between gap-2 text-label font-normal text-fg-3 sm:flex-row sm:items-center">
           <p>© {new Date().getFullYear()} Disaster Radar Indonesia. Dikembangkan untuk transparansi kebencanaan publik.</p>
           <p>
             Dibuat oleh{' '}
@@ -150,7 +146,7 @@ export function Footer() {
               href="https://github.com/IlhamGhaza"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#5A6478] hover:text-[#E8ECF1] transition-colors font-semibold"
+              className="inline-flex min-h-tap items-center font-semibold text-fg-2 underline-offset-2 hover:text-fg-1 hover:underline md:min-h-0"
             >
               Ilham Ghazali
             </a>

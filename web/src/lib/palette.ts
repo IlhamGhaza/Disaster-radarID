@@ -1,56 +1,88 @@
 import { PolygonType } from './types';
 
 /**
- * Standard visual tokens for AshWatch map layers according to design specifications.
- * Observed/Estimated ash clouds use a neutral gray-white translucent appearance.
- * Forecast horizons (+6h, +12h, +18h) use progressively lighter translucent warm orange layers.
+ * Visual tokens for ash map layers. Values mirror globals.css (Arah A "Buletin"):
+ * ash = --sev-ash (#C9B79C), a grey-tan that is distinct from Siaga orange.
+ * Observed/Estimated: denser fill with a light (--fg-1) outline.
+ * Forecast horizons (+6h, +12h, +18h): same ash hue, outline in ash, fading opacity.
  */
 export const LAYER_COLORS: Record<PolygonType, { fill: string; stroke: string; opacity: number }> = {
   observed: {
-    fill: '#E2E8F0', // Neutral gray-white
-    stroke: '#FFFFFF',
+    fill: '#C9B79C', // --sev-ash
+    stroke: '#F2EEE6', // --fg-1
     opacity: 0.45,
   },
   estimated: {
-    fill: '#E2E8F0',
-    stroke: '#FFFFFF',
+    fill: '#C9B79C',
+    stroke: '#F2EEE6',
     opacity: 0.45,
   },
   forecast6h: {
-    fill: '#FF8A3D', // Warm orange
-    stroke: '#FFA25B',
-    opacity: 0.32,
+    fill: '#C9B79C',
+    stroke: '#C9B79C',
+    opacity: 0.3,
   },
   forecast12h: {
-    fill: '#FF8A3D',
-    stroke: '#FFA25B',
-    opacity: 0.20,
+    fill: '#C9B79C',
+    stroke: '#C9B79C',
+    opacity: 0.2,
   },
   forecast18h: {
-    fill: '#FF8A3D',
-    stroke: '#FFA25B',
+    fill: '#C9B79C',
+    stroke: '#C9B79C',
     opacity: 0.12,
   },
 };
 
 /**
- * Primary accent colors for AshWatch
+ * Brand colors, mirrored from globals.css tokens.
  */
 export const BRAND_COLORS = {
-  primaryAccent: '#FF6B1A',
-  secondaryAccent: '#FF8A3D',
-  background: '#0B0F17',
-  surfaceSecondary: '#111827',
-  surfaceElevated: '#151C28',
-  textPrimary: '#F5F7FA',
-  textSecondary: '#8B95A7',
+  primaryAccent: '#FF5B36', // --accent (Signal)
+  secondaryAccent: '#FF7A5A', // --accent-hover
+  background: '#0A0B0D', // --bg
+  surfaceSecondary: '#121316', // --surface
+  surfaceElevated: '#1A1B1F', // --raised
+  textPrimary: '#F2EEE6', // --fg-1
+  textSecondary: '#BEB9AF', // --fg-2
+};
+
+/**
+ * Hex mirror of the severity tokens in globals.css, for places that cannot use var():
+ * SVG presentation attributes and hex-alpha concatenation in Leaflet marker HTML.
+ */
+export const SEVERITY_HEX = {
+  critical: '#FF5B36', // --sev-critical (= Signal)
+  high: '#FFA23A', // --sev-high
+  warning: '#EFD24A', // --sev-warning
+  normal: '#52C98E', // --sev-normal
+  tsunami: '#4FC3E8', // --sev-tsunami
+  ash: '#C9B79C', // --sev-ash
+  on: '#0A0B0D', // --sev-on
+};
+
+/**
+ * Marker outline colors per disaster category (Arah A: icon = type, warm color = danger only).
+ * Categories without their own semantic token use neutral --fg-2 so they never read as a severity.
+ */
+export const CATEGORY_MARKER_COLORS: Record<string, string> = {
+  earthquake: '#BEB9AF', // --fg-2
+  flood: '#BEB9AF',
+  volcano: '#BEB9AF',
+  'volcanic-ash': SEVERITY_HEX.ash,
+  landslide: '#BEB9AF',
+  'forest-fire': '#BEB9AF',
+  'extreme-weather': '#BEB9AF',
+  tsunami: SEVERITY_HEX.tsunami,
+  drought: '#BEB9AF',
+  'coastal-hazard': SEVERITY_HEX.tsunami,
 };
 
 /**
  * Clean volcano marker accent color
  */
 export function getVolcanoColor(_volcanoName?: string): string {
-  // Return primary warm accent instead of random rainbow colors
+  // Single brand accent instead of random rainbow colors
   return BRAND_COLORS.primaryAccent;
 }
 

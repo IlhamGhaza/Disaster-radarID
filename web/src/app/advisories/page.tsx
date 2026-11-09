@@ -44,20 +44,15 @@ export default async function AdvisoriesPage() {
   const data = await getDarwinAdvisories();
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <Breadcrumbs items={[{ name: 'Volcanic Ash Advisories', url: '/advisories' }]} />
+    <div className="mx-auto max-w-7xl px-gutter py-stack sm:px-6 lg:px-8">
+      <Breadcrumbs items={[{ name: 'Advisori Abu Vulkanik', url: '/advisories' }]} />
 
-      <div className="flex flex-col gap-2 mb-8">
-        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#FF6B1A]">
-          <span className="h-2 w-2 rounded-full bg-[#FF6B1A] animate-pulse"></span>
-          <span>Darwin VAAC Feed</span>
-        </div>
-        <h1 className="text-2xl sm:text-4xl font-black tracking-tight text-white">
-          Volcanic Ash Advisories
+      <div className="mb-stack flex flex-col gap-cell border-b border-line pb-stack">
+        <h1 className="text-display text-fg-1 md:text-display-lg">
+          Advisori <span className="serif-accent text-accent">abu</span> vulkanik
         </h1>
-        <p className="text-xs sm:text-sm text-[#8B95A7] max-w-2xl">
-          Recent volcanic ash advisories issued by Darwin VAAC for Indonesian airspace.
-          Presented in human-readable format by default.
+        <p className="max-w-2xl text-body text-fg-2">
+          Buletin Darwin VAAC untuk ruang udara Indonesia, diperbarui tiap 5 menit.
         </p>
       </div>
 

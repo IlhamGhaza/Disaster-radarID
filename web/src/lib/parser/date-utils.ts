@@ -102,7 +102,7 @@ export function formatWibDateTime(date: Date | string): string {
 
   const wibTime = new Date(d.getTime() + 7 * 60 * 60 * 1000);
   const pad = (n: number) => n.toString().padStart(2, '0');
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
   const day = pad(wibTime.getUTCDate());
   const month = months[wibTime.getUTCMonth()];
   const year = wibTime.getUTCFullYear();

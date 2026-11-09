@@ -1,16 +1,31 @@
 import type { Metadata, Viewport } from 'next';
-import { Plus_Jakarta_Sans } from 'next/font/google';
+import { Geist, Geist_Mono, Instrument_Serif } from 'next/font/google';
 import './globals.css';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
 import { JsonLd, getRootJsonLd } from '@/components/json-ld';
 import { SITE_CONFIG, SITE_URL } from '@/config/site';
 
-const jakarta = Plus_Jakarta_Sans({
+// Konsep "Radar Malam": Geist (teks & UI, grotesk presisi), Geist Mono (angka data),
+// Instrument Serif miring (satu kata aksen per judul). Dipetakan di globals.css (@theme).
+const geist = Geist({
   subsets: ['latin', 'latin-ext'],
-  weight: ['400', '500', '600', '700', '800'],
   display: 'swap',
-  variable: '--font-jakarta',
+  variable: '--font-geist',
+});
+
+const geistMono = Geist_Mono({
+  subsets: ['latin', 'latin-ext'],
+  display: 'swap',
+  variable: '--font-geist-mono',
+});
+
+const instrumentSerif = Instrument_Serif({
+  subsets: ['latin', 'latin-ext'],
+  weight: '400',
+  style: ['italic'],
+  display: 'swap',
+  variable: '--font-instrument-serif',
 });
 
 export const metadata: Metadata = {
@@ -98,10 +113,10 @@ export default function RootLayout({
   const rootSchemas = getRootJsonLd();
 
   return (
-    <html lang="id" className={`dark ${jakarta.variable}`} suppressHydrationWarning>
+    <html lang="id" className={`dark ${geist.variable} ${geistMono.variable} ${instrumentSerif.variable}`} suppressHydrationWarning>
       <body
         suppressHydrationWarning
-        className={`${jakarta.className} min-h-screen bg-[#080C14] text-[#E8ECF1] antialiased flex flex-col selection:bg-red-500 selection:text-white`}
+        className={`${geist.className} min-h-screen bg-bg text-fg-1 antialiased flex flex-col selection:bg-accent selection:text-fg-inverse`}
       >
         {rootSchemas.map((schema, i) => (
           <JsonLd key={i} data={schema} />

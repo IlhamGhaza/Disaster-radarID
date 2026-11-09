@@ -15,9 +15,7 @@ import {
   AlertTriangle,
   Clock,
   ArrowRight,
-  ShieldCheck,
   ChevronRight,
-  Sparkles,
   Loader2,
   X,
 } from 'lucide-react';
@@ -132,22 +130,23 @@ export function CheckMyAreaCard({
     setGeoError(null);
   };
 
+  const mapHref = (label: string) =>
+    result
+      ? `/map?lat=${result.coordinates.latitude}&lng=${result.coordinates.longitude}&label=${encodeURIComponent(
+          result.locationName || label
+        )}`
+      : '/map';
+
+  const row = 'flex items-baseline justify-between gap-3 border-b border-line py-1.5 last:border-b-0';
+
   return (
-    <div
-      className={`surface-card rounded-2xl p-5 sm:p-6 shadow-2xl transition border border-white/10 ${
-        compact ? 'p-4' : ''
-      }`}
-    >
-      <div className="flex items-center justify-between gap-3 mb-3">
-        <div className="flex items-center gap-2">
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#FF6B1A]/15 text-[#FF6B1A] border border-[#FF6B1A]/30">
-            <MapPin className="h-4 w-4" />
-          </div>
+    <div className={`rounded-card border border-line bg-surface ${compact ? 'p-gutter' : 'p-gutter sm:p-6'}`}>
+      <div className="mb-3 flex items-start justify-between gap-3">
+        <div className="flex items-start gap-2">
+          <MapPin className="mt-1 h-4 w-4 shrink-0 text-fg-2" aria-hidden="true" />
           <div>
-            <h2 className="text-sm sm:text-base font-bold text-white tracking-tight">
-              Check My Area
-            </h2>
-            <p className="text-[11px] text-[#8B95A7]">
+            <h2 className="text-heading text-fg-1">Check My Area</h2>
+            <p className="text-small text-fg-2">
               Determine if your location overlaps active or forecast volcanic ash
             </p>
           </div>
@@ -155,42 +154,45 @@ export function CheckMyAreaCard({
 
         {result && (
           <button
+            type="button"
             onClick={handleReset}
-            className="text-[11px] text-[#8B95A7] hover:text-white flex items-center gap-1 transition"
+            className="flex min-h-tap shrink-0 items-center gap-1 rounded-control px-2 text-small text-fg-2 transition-colors duration-120 hover:bg-raised hover:text-fg-1 md:min-h-10"
           >
-            <X className="h-3.5 w-3.5" />
+            <X className="h-4 w-4" aria-hidden="true" />
             <span>Reset</span>
           </button>
         )}
       </div>
 
       {/* Search and GPS controls */}
-      <div className="mt-3 relative" ref={dropdownRef}>
-        <div className="flex flex-col sm:flex-row gap-2">
+      <div className="relative mt-3" ref={dropdownRef}>
+        <div className="flex flex-col gap-2 sm:flex-row">
           <div className="relative flex-1">
-            <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[#8B95A7]" />
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-fg-3" aria-hidden="true" />
             <input
               type="text"
+              aria-label="Search city, airport, or place"
               placeholder="Search city, airport, or place (e.g. Jakarta, Bali, Surabaya)..."
               value={query}
               onChange={(e) => handleQueryChange(e.target.value)}
               onFocus={() => {
                 if (query.trim().length >= 2) setShowSuggestions(true);
               }}
-              className="w-full rounded-xl border border-white/10 bg-[#0B0F17]/90 py-2.5 pl-10 pr-4 text-xs sm:text-sm text-[#F5F7FA] placeholder-[#8B95A7] focus:border-[#FF6B1A] focus:outline-none transition"
+              className="min-h-tap w-full rounded-control border border-line-strong bg-bg pl-9 pr-3 text-body text-fg-1 placeholder:text-fg-3 transition-colors duration-120 focus:border-accent"
             />
           </div>
 
           <button
+            type="button"
             onClick={handleUseMyLocation}
             disabled={isLocating}
-            className="flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-[#151C28] px-4 py-2.5 text-xs font-semibold text-[#F5F7FA] hover:bg-[#1f2937] hover:border-[#FF6B1A]/40 transition disabled:opacity-60 shrink-0"
+            className="flex min-h-tap shrink-0 items-center justify-center gap-2 rounded-control border border-line-strong px-4 text-small font-semibold text-fg-1 transition-colors duration-120 hover:bg-raised disabled:opacity-60"
             title="Locate via GPS"
           >
             {isLocating ? (
-              <Loader2 className="h-4 w-4 animate-spin text-[#FF6B1A]" />
+              <Loader2 className="h-4 w-4 animate-spin text-accent motion-reduce:animate-none" aria-hidden="true" />
             ) : (
-              <Crosshair className="h-4 w-4 text-[#FF6B1A]" />
+              <Crosshair className="h-4 w-4 text-accent" aria-hidden="true" />
             )}
             <span>Use My Location</span>
           </button>
@@ -198,79 +200,79 @@ export function CheckMyAreaCard({
 
         {/* Autocomplete Dropdown */}
         {showSuggestions && suggestions.length > 0 && (
-          <div className="absolute top-full left-0 right-0 z-50 mt-1.5 max-h-56 overflow-y-auto rounded-xl border border-white/10 bg-[#111827] p-1.5 shadow-2xl backdrop-blur-xl">
+          <div className="absolute left-0 right-0 top-full z-50 mt-1 max-h-64 overflow-y-auto rounded-card border border-line-strong bg-raised p-1 shadow-float">
             {suggestions.map((place, idx) => (
               <button
                 key={idx}
+                type="button"
                 onClick={() => handleSelectPlace(place)}
-                className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-xs transition hover:bg-[#151C28]"
+                className="flex min-h-tap w-full items-center justify-between gap-3 rounded-control px-3 text-left transition-colors duration-120 hover:bg-surface"
               >
-                <div className="flex items-center gap-2">
-                  <MapPin className="h-3.5 w-3.5 text-[#FF6B1A]" />
-                  <span className="font-semibold text-white">{place.name}</span>
-                </div>
-                <span className="text-[10px] text-[#8B95A7]">{place.province}</span>
+                <span className="flex items-center gap-2 text-body font-semibold text-fg-1">
+                  <MapPin className="h-4 w-4 text-fg-3" aria-hidden="true" />
+                  {place.name}
+                </span>
+                <span className="text-small text-fg-3">{place.province}</span>
               </button>
             ))}
           </div>
         )}
+
+        {/* Empty state pencarian */}
+        {showSuggestions && suggestions.length === 0 && query.trim().length >= 2 && (
+          <p className="mt-2 text-small text-fg-3" role="status">
+            No matching place for “{query.trim()}”.
+          </p>
+        )}
       </div>
 
       {geoError && (
-        <p className="mt-2 text-xs text-amber-400/90 flex items-center gap-1.5">
-          <AlertTriangle className="h-3.5 w-3.5 shrink-0" />
+        <p className="mt-2 flex items-center gap-1.5 text-small text-sev-warning" role="alert">
+          <AlertTriangle className="h-4 w-4 shrink-0" aria-hidden="true" />
           <span>{geoError}</span>
         </p>
       )}
 
-      {/* RESULT CARD - Follows exact CASE 1, CASE 2, CASE 3 specifications from tugas.md */}
+      {/* RESULT CARD - CASE 1, CASE 2, CASE 3 */}
       {result && (
-        <div className="mt-4 pt-4 border-t border-white/10 animate-in fade-in slide-in-from-top-2 duration-300">
+        <div className="mt-4 border-t border-line pt-4" role="status">
           {/* CASE 1: CLEAR */}
           {result.status === 'CLEAR' && (
-            <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4">
-              <div className="flex items-center justify-between">
-                <div className="inline-flex items-center gap-1.5 rounded-md bg-emerald-500/20 px-2.5 py-1 text-xs font-bold text-emerald-400 border border-emerald-500/30">
-                  <CheckCircle2 className="h-3.5 w-3.5" />
-                  <span>CLEAR</span>
-                </div>
-                <span className="text-[11px] text-[#8B95A7]">
-                  {result.locationName || 'Selected Location'}
+            <div className="rounded-card border border-line border-l-4 border-l-sev-normal bg-bg p-gutter">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <span className="inline-flex items-center gap-1.5 text-small font-semibold text-sev-normal">
+                  <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
+                  Clear
                 </span>
+                <span className="text-small text-fg-2">{result.locationName || 'Selected Location'}</span>
               </div>
 
-              <h3 className="mt-2.5 text-sm font-bold text-white">
-                No active volcanic ash detected in this area.
-              </h3>
+              <h3 className="mt-2 text-heading text-fg-1">No active volcanic ash detected in this area.</h3>
 
-              <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-[#8B95A7]">
-                <div className="rounded-lg bg-[#0B0F17]/60 p-2.5 border border-white/5">
-                  <span className="text-[10px] uppercase block text-[#8B95A7]">Nearest Ash Area:</span>
-                  <span className="font-semibold text-[#F5F7FA]">
-                    {result.nearestAshDistanceKm > 0
-                      ? `~${result.nearestAshDistanceKm} km away`
-                      : 'None within range'}
-                  </span>
+              <dl className="mt-3 text-small">
+                <div className={row}>
+                  <dt className="text-fg-3">Nearest Ash Area</dt>
+                  <dd className="font-mono tabular-nums text-fg-1">
+                    {result.nearestAshDistanceKm > 0 ? `~${result.nearestAshDistanceKm} km away` : 'None within range'}
+                  </dd>
                 </div>
-                <div className="rounded-lg bg-[#0B0F17]/60 p-2.5 border border-white/5">
-                  <span className="text-[10px] uppercase block text-[#8B95A7]">Nearest Volcano:</span>
-                  <span className="font-semibold text-[#F5F7FA]">{result.nearestVolcanoName}</span>
+                <div className={row}>
+                  <dt className="text-fg-3">Nearest Volcano</dt>
+                  <dd className="font-semibold text-fg-1">{result.nearestVolcanoName}</dd>
                 </div>
-              </div>
+                <div className={row}>
+                  <dt className="text-fg-3">Forecast</dt>
+                  <dd className="text-right text-fg-2">No intersection with your selected location.</dd>
+                </div>
+              </dl>
 
-              <div className="mt-2 text-[11px] text-[#8B95A7]">
-                Forecast: <span className="text-slate-300">No intersection with your selected location.</span>
-              </div>
-
-              <div className="mt-4 flex items-center justify-end">
+              <div className="mt-3 flex justify-end">
                 <Link
-                  href={`/map?lat=${result.coordinates.latitude}&lng=${result.coordinates.longitude}&label=${encodeURIComponent(
-                    result.locationName || 'Selected Area'
-                  )}`}
-                  className="flex items-center gap-1 text-xs font-bold text-[#FF6B1A] hover:text-[#FF8A3D] transition"
+                  href={mapHref('Selected Area')}
+                  className="inline-flex min-h-tap items-center gap-1 text-small font-semibold text-accent transition-colors duration-120 hover:text-accent-hover md:min-h-10"
                 >
                   <span>View on Map</span>
-                  <ChevronRight className="h-3.5 w-3.5" />
+                  <ChevronRight className="h-4 w-4" aria-hidden="true" />
                 </Link>
               </div>
             </div>
@@ -278,71 +280,70 @@ export function CheckMyAreaCard({
 
           {/* CASE 2: ASH AREA */}
           {result.status === 'ASH_AREA' && (
-            <div className="rounded-xl border border-[#FF6B1A]/40 bg-[#FF6B1A]/10 p-4">
-              <div className="flex items-center justify-between">
-                <div className="inline-flex items-center gap-1.5 rounded-md bg-[#FF6B1A] px-2.5 py-1 text-xs font-black text-white shadow-md shadow-[#FF6B1A]/30">
-                  <AlertTriangle className="h-3.5 w-3.5 text-white" />
-                  <span>ASH AREA</span>
-                </div>
-                <span className="text-[11px] font-semibold text-[#FF8A3D]">
-                  {result.locationName || 'Selected Location'}
+            <div className="rounded-card border border-line border-l-4 border-l-sev-critical bg-sev-critical-soft p-gutter">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <span className="inline-flex items-center gap-1.5 rounded-badge bg-sev-critical px-2 py-0.5 text-small font-semibold text-sev-on">
+                  <AlertTriangle className="h-4 w-4" aria-hidden="true" />
+                  Ash area
                 </span>
+                <span className="text-small font-semibold text-fg-1">{result.locationName || 'Selected Location'}</span>
               </div>
 
-              <h3 className="mt-2.5 text-sm font-bold text-white">
+              <h3 className="mt-2 text-heading text-fg-1">
                 This location is currently inside an active volcanic ash area.
               </h3>
 
               {(() => {
                 const magmaStatus = result.affectedVolcano ? getMagmaVolcanoStatus(result.affectedVolcano) : null;
                 return (
-                  <div className="mt-3 space-y-1.5 text-xs text-[#F5F7FA]">
-                    <div className="flex justify-between py-1 border-b border-white/10">
-                      <span className="text-[#8B95A7]">Gunung Api:</span>
-                      <strong className="text-white">{result.affectedVolcano}</strong>
+                  <dl className="mt-3 text-small">
+                    <div className={row}>
+                      <dt className="text-fg-3">Gunung Api</dt>
+                      <dd className="font-semibold text-fg-1">{result.affectedVolcano}</dd>
                     </div>
                     {magmaStatus && (
-                      <div className="flex justify-between py-1 border-b border-white/10">
-                        <span className="text-[#8B95A7]">Status MAGMA ESDM:</span>
-                        <span className="font-bold" style={{ color: magmaStatus.color }}>
+                      <div className={row}>
+                        <dt className="text-fg-3">Status MAGMA ESDM</dt>
+                        <dd className="flex items-center gap-1.5 font-semibold text-fg-1">
+                          <span
+                            aria-hidden="true"
+                            className="h-2.5 w-2.5 rounded-badge"
+                            style={{ backgroundColor: magmaStatus.color }}
+                          />
                           {magmaStatus.levelRoman} ({magmaStatus.levelName})
-                        </span>
+                        </dd>
                       </div>
                     )}
-                    <div className="flex justify-between py-1 border-b border-white/10">
-                      <span className="text-[#8B95A7]">Status Abu:</span>
-                      <span className="font-bold text-[#FF6B1A]">Teramati (Observed)</span>
+                    <div className={row}>
+                      <dt className="text-fg-3">Status Abu</dt>
+                      <dd className="font-semibold text-sev-ash">Teramati (Observed)</dd>
                     </div>
-                    <div className="flex justify-between py-1 border-b border-white/10">
-                      <span className="text-[#8B95A7]">Ketinggian Abu:</span>
-                      <span className="font-semibold text-white">
+                    <div className={row}>
+                      <dt className="text-fg-3">Ketinggian Abu</dt>
+                      <dd className="font-mono tabular-nums text-fg-1">
                         {result.flightLevel} ({result.humanAltitude})
-                      </span>
+                      </dd>
                     </div>
-                    <div className="flex justify-between py-1 border-b border-white/10">
-                      <span className="text-[#8B95A7]">Arah Pergerakan:</span>
-                      <span className="text-amber-300 font-semibold">{result.humanMovement}</span>
+                    <div className={row}>
+                      <dt className="text-fg-3">Arah Pergerakan</dt>
+                      <dd className="text-fg-1">{result.humanMovement}</dd>
                     </div>
-                    <div className="flex justify-between py-1">
-                      <span className="text-[#8B95A7]">Masa Berlaku:</span>
-                      <span className="text-slate-300">Buletin Terkini</span>
+                    <div className={row}>
+                      <dt className="text-fg-3">Masa Berlaku</dt>
+                      <dd className="text-fg-2">Buletin Terkini</dd>
                     </div>
-                  </div>
+                  </dl>
                 );
               })()}
 
-              <div className="mt-4 flex items-center justify-between pt-2">
-                <span className="text-[10px] text-[#8B95A7]">
-                  Consult official local authorities for safety actions.
-                </span>
+              <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
+                <span className="text-small text-fg-2">Consult official local authorities for safety actions.</span>
                 <Link
-                  href={`/map?lat=${result.coordinates.latitude}&lng=${result.coordinates.longitude}&label=${encodeURIComponent(
-                    result.locationName || 'Ash Area'
-                  )}`}
-                  className="flex items-center gap-1.5 rounded-lg bg-[#FF6B1A] px-3 py-1.5 text-xs font-bold text-white hover:bg-[#FF8A3D] transition shadow-md"
+                  href={mapHref('Ash Area')}
+                  className="inline-flex min-h-tap items-center gap-1.5 rounded-control bg-accent px-4 text-small font-semibold text-fg-inverse transition-colors duration-120 hover:bg-accent-hover"
                 >
                   <span>Inspect on Live Map</span>
-                  <ArrowRight className="h-3.5 w-3.5" />
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Link>
               </div>
             </div>
@@ -350,49 +351,45 @@ export function CheckMyAreaCard({
 
           {/* CASE 3: FORECAST ASH */}
           {result.status === 'FORECAST_OVERLAP' && (
-            <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4">
-              <div className="flex items-center justify-between">
-                <div className="inline-flex items-center gap-1.5 rounded-md bg-amber-500/20 px-2.5 py-1 text-xs font-bold text-amber-300 border border-amber-500/30">
-                  <Clock className="h-3.5 w-3.5" />
-                  <span>FORECAST ASH</span>
-                </div>
-                <span className="text-[11px] text-[#8B95A7]">
-                  {result.locationName || 'Selected Location'}
+            <div className="rounded-card border border-line border-l-4 border-l-sev-warning bg-sev-warning-soft p-gutter">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <span className="inline-flex items-center gap-1.5 text-small font-semibold text-sev-warning">
+                  <Clock className="h-4 w-4" aria-hidden="true" />
+                  Forecast ash
                 </span>
+                <span className="text-small text-fg-2">{result.locationName || 'Selected Location'}</span>
               </div>
 
-              <h3 className="mt-2.5 text-sm font-bold text-white">
+              <h3 className="mt-2 text-heading text-fg-1">
                 This location is currently outside observed ash, but a forecast ash area overlaps this location.
               </h3>
 
-              <div className="mt-3 space-y-1.5 text-xs text-[#F5F7FA]">
-                <div className="flex justify-between py-1 border-b border-white/10">
-                  <span className="text-[#8B95A7]">Forecast Horizon:</span>
-                  <strong className="text-amber-300">{result.forecastHorizon}</strong>
+              <dl className="mt-3 text-small">
+                <div className={row}>
+                  <dt className="text-fg-3">Forecast Horizon</dt>
+                  <dd className="font-mono font-semibold tabular-nums text-fg-1">{result.forecastHorizon}</dd>
                 </div>
-                <div className="flex justify-between py-1 border-b border-white/10">
-                  <span className="text-[#8B95A7]">Volcano:</span>
-                  <strong className="text-white">{result.affectedVolcano}</strong>
+                <div className={row}>
+                  <dt className="text-fg-3">Volcano</dt>
+                  <dd className="font-semibold text-fg-1">{result.affectedVolcano}</dd>
                 </div>
-                <div className="flex justify-between py-1 border-b border-white/10">
-                  <span className="text-[#8B95A7]">Ash Altitude:</span>
-                  <span className="font-semibold text-white">{result.humanAltitude}</span>
+                <div className={row}>
+                  <dt className="text-fg-3">Ash Altitude</dt>
+                  <dd className="font-mono tabular-nums text-fg-1">{result.humanAltitude}</dd>
                 </div>
-                <div className="flex justify-between py-1">
-                  <span className="text-[#8B95A7]">Movement:</span>
-                  <span className="text-amber-200">{result.humanMovement}</span>
+                <div className={row}>
+                  <dt className="text-fg-3">Movement</dt>
+                  <dd className="text-fg-1">{result.humanMovement}</dd>
                 </div>
-              </div>
+              </dl>
 
-              <div className="mt-4 flex items-center justify-end">
+              <div className="mt-3 flex justify-end">
                 <Link
-                  href={`/map?lat=${result.coordinates.latitude}&lng=${result.coordinates.longitude}&label=${encodeURIComponent(
-                    result.locationName || 'Forecast Ash'
-                  )}`}
-                  className="flex items-center gap-1 text-xs font-bold text-[#FF6B1A] hover:text-[#FF8A3D] transition"
+                  href={mapHref('Forecast Ash')}
+                  className="inline-flex min-h-tap items-center gap-1 text-small font-semibold text-accent transition-colors duration-120 hover:text-accent-hover md:min-h-10"
                 >
                   <span>View Forecast on Map</span>
-                  <ChevronRight className="h-3.5 w-3.5" />
+                  <ChevronRight className="h-4 w-4" aria-hidden="true" />
                 </Link>
               </div>
             </div>

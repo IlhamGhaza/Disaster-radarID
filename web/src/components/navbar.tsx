@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 
 const NAV_LINKS = [
-  { href: '/map', label: 'Peta Radar' },
+  { href: '/map', label: 'Peta' },
   { href: '/disasters', label: 'Bencana' },
   { href: '/volcanoes', label: 'Gunung Api' },
   { href: '/safety-guide', label: 'Panduan Evakuasi' },
@@ -99,17 +99,18 @@ export function Navbar() {
     <>
       <header
         suppressHydrationWarning
-        className="sticky top-0 z-50 w-full border-b border-white/[0.06] bg-[#080C14]/90 backdrop-blur-xl"
+        className="pointer-events-none sticky top-0 z-50 w-full px-3 pt-3 sm:px-6"
         style={{ height: 'var(--navbar-height)' }}
       >
-        <div className="mx-auto flex h-full w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        {/* Pulau navbar: pill mengambang, kaca hanya di elemen sticky ini */}
+        <div className="pointer-events-auto mx-auto flex h-14 w-full max-w-6xl items-center justify-between rounded-full bg-bg/70 py-1.5 pl-2 pr-1.5 shadow-float backdrop-blur-xl backdrop-saturate-150">
           {/* Brand */}
           <Link
             href="/"
-            className="group flex items-center gap-2.5 transition-transform hover:scale-[1.01]"
+            className="group flex min-h-tap items-center gap-2.5 rounded-full pr-2"
             aria-label="Disaster Radar Indonesia Home"
           >
-            <div className="relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg border border-white/[0.1] bg-[#0D1117] shadow-sm shadow-red-500/10">
+            <div className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-surface shadow-core">
               <Image
                 src="/logo-mark.png"
                 alt="Disaster Radar Indonesia Logo"
@@ -120,16 +121,10 @@ export function Navbar() {
               />
             </div>
             <div className="flex flex-col">
-              <div className="flex items-center gap-1.5">
-                <span className="text-sm font-extrabold tracking-tight text-[#E8ECF1] group-hover:text-[#EF4444] transition-colors duration-200">
-                  DISASTER <span className="text-[#EF4444]">RADAR</span>
-                </span>
-                <span className="relative flex h-1.5 w-1.5" title="Pemantauan Langsung (Live)">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75" />
-                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-red-500" />
-                </span>
-              </div>
-              <span className="text-[9px] font-medium tracking-widest uppercase text-[#5A6478]">
+              <span className="text-[16px] font-semibold leading-tight tracking-[-0.01em] text-fg-1">
+                Disaster Radar
+              </span>
+              <span className="text-label font-normal text-fg-3">
                 Monitoring Bencana
               </span>
             </div>
@@ -154,32 +149,32 @@ export function Navbar() {
                       onClick={() => setAboutDropdownOpen((prev) => !prev)}
                       aria-expanded={aboutDropdownOpen}
                       aria-haspopup="true"
-                      className={`flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-semibold tracking-wide uppercase transition-colors rounded-md ${
+                      className={`flex h-10 items-center gap-1.5 rounded-full px-3.5 text-[15px] transition-colors duration-120 ease-data ${
                         isActive
-                          ? 'text-[#E8ECF1] bg-white/[0.08]'
-                          : 'text-[#8B95A7] hover:text-[#E8ECF1] hover:bg-white/[0.04]'
+                          ? 'bg-shell font-medium text-fg-1 shadow-core'
+                          : 'text-fg-2 hover:bg-shell hover:text-fg-1'
                       }`}
                     >
                       <span>Tentang</span>
                       <ChevronDown
-                        className={`h-3 w-3 text-[#8B95A7] transition-transform duration-200 ${
-                          aboutDropdownOpen ? 'rotate-180 text-[#EF4444]' : ''
-                        }`}
+                        aria-hidden="true"
+                        className={`h-4 w-4 text-fg-3 transition-transform duration-160 ease-data ${aboutDropdownOpen ? 'rotate-180' : ''}`}
                       />
                     </button>
 
                     {aboutDropdownOpen && (
-                      <div className="absolute right-0 top-full pt-1.5 z-50">
-                        <div className="w-52 rounded-xl border border-white/[0.1] bg-[#0D1117] p-1.5 shadow-2xl shadow-black/80 backdrop-blur-xl">
+                      <div className="absolute right-0 top-full pt-3 z-50">
+                        <div className="w-60 rounded-3xl bg-raised p-1.5 shadow-float">
                           {ABOUT_LINKS.map((sub) => (
                             <Link
                               key={sub.href}
                               href={sub.href}
                               onClick={() => setAboutDropdownOpen(false)}
-                              className={`block rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
+                              aria-current={pathname === sub.href ? 'page' : undefined}
+                              className={`flex min-h-11 items-center rounded-2xl px-3.5 text-[15px] transition-colors duration-120 ${
                                 pathname === sub.href
-                                  ? 'text-[#E8ECF1] bg-white/[0.08] font-semibold'
-                                  : 'text-[#8B95A7] hover:text-white hover:bg-white/[0.04]'
+                                  ? 'bg-surface font-semibold text-fg-1'
+                                  : 'text-fg-2 hover:bg-surface hover:text-fg-1'
                               }`}
                             >
                               {sub.label}
@@ -196,15 +191,13 @@ export function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`relative px-3 py-1.5 text-[11px] font-semibold tracking-wide uppercase transition-colors rounded-md ${
+                  aria-current={isActive ? 'page' : undefined}
+                  className={`relative flex h-10 items-center rounded-full px-3.5 text-[15px] transition-colors duration-120 ease-data ${
                     isActive
-                      ? 'text-[#E8ECF1] bg-white/[0.06]'
-                      : 'text-[#8B95A7] hover:text-[#E8ECF1] hover:bg-white/[0.04]'
+                      ? 'bg-shell font-medium text-fg-1 shadow-core'
+                      : 'text-fg-2 hover:bg-shell hover:text-fg-1'
                   }`}
                 >
-                  {isActive && (
-                    <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-3 bg-[#EF4444] rounded-full" />
-                  )}
                   {link.label}
                 </Link>
               );
@@ -215,10 +208,12 @@ export function Navbar() {
           <div className="hidden sm:flex sm:items-center sm:gap-3">
             <Link
               href="/map"
-              className="flex items-center gap-1.5 rounded-lg bg-[#EF4444] px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wide text-white shadow-md shadow-red-900/30 transition-all duration-200 hover:bg-[#DC2626] hover:-translate-y-px focus:outline-none focus:ring-2 focus:ring-red-500/40 focus:ring-offset-2 focus:ring-offset-[#080C14]"
+              className="group flex h-11 items-center gap-2 rounded-full bg-accent py-1.5 pl-4 pr-1.5 text-[15px] font-semibold text-fg-inverse transition-colors duration-160 ease-data hover:bg-accent-hover active:scale-[0.98]"
             >
-              <MapPin className="h-3 w-3" />
-              <span>Cek Lokasi Saya</span>
+              <span>Buka peta</span>
+              <span className="pill-icon bg-fg-inverse/15">
+                <MapPin className="h-4 w-4" aria-hidden="true" />
+              </span>
             </Link>
           </div>
 
@@ -226,12 +221,12 @@ export function Navbar() {
           <button
             type="button"
             onClick={() => setIsOpen(!isOpen)}
-            className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/[0.08] text-[#8B95A7] hover:bg-white/[0.04] hover:text-white transition-colors md:hidden"
+            className="flex size-tap items-center justify-center rounded-full bg-shell text-fg-1 shadow-core transition-colors duration-120 hover:bg-surface md:hidden"
             aria-expanded={isOpen}
             aria-controls="mobile-nav-drawer"
             aria-label={isOpen ? 'Tutup Menu Navigasi' : 'Buka Menu Navigasi'}
           >
-            {isOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4 text-[#E8ECF1]" />}
+            {isOpen ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
           </button>
         </div>
       </header>
@@ -246,7 +241,7 @@ export function Navbar() {
         >
           {/* Dark Backdrop Overlay */}
           <div
-            className="fixed inset-0 bg-black/75 backdrop-blur-sm transition-opacity animate-[fadeIn_150ms_ease]"
+            className="fixed inset-0 bg-bg/85 animate-[fadeIn_160ms_ease-out] motion-reduce:animate-none"
             onClick={() => setIsOpen(false)}
             aria-hidden="true"
           />
@@ -255,12 +250,12 @@ export function Navbar() {
           <div
             ref={drawerRef}
             id="mobile-nav-drawer"
-            className="fixed right-0 top-0 bottom-0 w-[280px] max-w-[85vw] bg-[#0A0E16] border-l border-white/[0.08] shadow-2xl flex flex-col z-[10000] overflow-y-auto animate-[slideInRight_200ms_ease]"
+            className="fixed right-0 top-0 bottom-0 z-[10000] flex w-[300px] max-w-[85vw] flex-col overflow-y-auto border-l border-line-strong bg-surface animate-[slideInRight_160ms_ease-out] motion-reduce:animate-none"
           >
             {/* Mobile Drawer Header with Logo & Close button */}
-            <div className="flex items-center justify-between p-4 border-b border-white/[0.08] shrink-0 bg-[#080C14]/90">
+            <div className="flex shrink-0 items-center justify-between border-b border-line px-4 py-2">
               <div className="flex items-center gap-2">
-                <div className="relative flex h-7 w-7 items-center justify-center overflow-hidden rounded-lg border border-white/[0.1] bg-[#0D1117]">
+                <div className="relative flex h-7 w-7 items-center justify-center overflow-hidden rounded-control border border-line bg-bg">
                   <Image
                     src="/logo-mark.png"
                     alt="Disaster Radar Indonesia Logo"
@@ -269,42 +264,41 @@ export function Navbar() {
                     className="h-full w-full object-contain p-0.5"
                   />
                 </div>
-                <span className="text-xs font-extrabold tracking-tight text-[#E8ECF1]">
-                  DISASTER <span className="text-[#EF4444]">RADAR</span>
-                </span>
+                <span className="text-[17px] font-bold text-fg-1">Disaster Radar</span>
               </div>
 
               <button
                 type="button"
                 onClick={() => setIsOpen(false)}
-                className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/[0.08] text-[#8B95A7] hover:text-white hover:bg-white/[0.06] transition-colors"
+                autoFocus
+                className="flex size-tap items-center justify-center rounded-control text-fg-2 transition-colors duration-120 hover:bg-raised hover:text-fg-1"
                 aria-label="Tutup Menu"
               >
-                <X className="h-4 w-4" />
+                <X className="h-5 w-5" aria-hidden="true" />
               </button>
             </div>
 
             {/* Nav Links */}
-            <div className="flex flex-col p-4 space-y-1 flex-1">
+            <div className="flex flex-1 flex-col gap-0.5 p-3">
               <Link
                 href="/map"
                 onClick={() => setIsOpen(false)}
-                className={`flex items-center justify-between rounded-lg px-3 py-2.5 text-xs font-semibold transition-colors ${
+                className={`flex min-h-tap items-center justify-between rounded-control px-3 text-body font-semibold transition-colors duration-120 ${
                   pathname === '/map'
-                    ? 'bg-red-500/10 text-red-400 border-l-2 border-red-500 pl-2.5'
-                    : 'text-[#E8ECF1] hover:bg-white/[0.04]'
+                    ? 'border-l-2 border-accent bg-raised pl-2.5 text-fg-1'
+                    : 'text-fg-1 hover:bg-raised'
                 }`}
               >
-                <span>Peta Radar</span>
+                <span>Peta</span>
               </Link>
 
               <Link
                 href="/disasters"
                 onClick={() => setIsOpen(false)}
-                className={`flex items-center justify-between rounded-lg px-3 py-2.5 text-xs font-semibold transition-colors ${
+                className={`flex min-h-tap items-center justify-between rounded-control px-3 text-body font-semibold transition-colors duration-120 ${
                   pathname.startsWith('/disasters')
-                    ? 'bg-red-500/10 text-red-400 border-l-2 border-red-500 pl-2.5'
-                    : 'text-[#E8ECF1] hover:bg-white/[0.04]'
+                    ? 'border-l-2 border-accent bg-raised pl-2.5 text-fg-1'
+                    : 'text-fg-1 hover:bg-raised'
                 }`}
               >
                 <span>Kategori Bencana</span>
@@ -313,10 +307,10 @@ export function Navbar() {
               <Link
                 href="/volcanoes"
                 onClick={() => setIsOpen(false)}
-                className={`flex items-center justify-between rounded-lg px-3 py-2.5 text-xs font-semibold transition-colors ${
+                className={`flex min-h-tap items-center justify-between rounded-control px-3 text-body font-semibold transition-colors duration-120 ${
                   pathname.startsWith('/volcanoes')
-                    ? 'bg-red-500/10 text-red-400 border-l-2 border-red-500 pl-2.5'
-                    : 'text-[#E8ECF1] hover:bg-white/[0.04]'
+                    ? 'border-l-2 border-accent bg-raised pl-2.5 text-fg-1'
+                    : 'text-fg-1 hover:bg-raised'
                 }`}
               >
                 <span>Gunung Api (PVMBG)</span>
@@ -325,10 +319,10 @@ export function Navbar() {
               <Link
                 href="/advisories"
                 onClick={() => setIsOpen(false)}
-                className={`flex items-center justify-between rounded-lg px-3 py-2.5 text-xs font-semibold transition-colors ${
+                className={`flex min-h-tap items-center justify-between rounded-control px-3 text-body font-semibold transition-colors duration-120 ${
                   pathname.startsWith('/advisories')
-                    ? 'bg-red-500/10 text-red-400 border-l-2 border-red-500 pl-2.5'
-                    : 'text-[#E8ECF1] hover:bg-white/[0.04]'
+                    ? 'border-l-2 border-accent bg-raised pl-2.5 text-fg-1'
+                    : 'text-fg-1 hover:bg-raised'
                 }`}
               >
                 <span>Advisori Abu Vulkanik</span>
@@ -337,28 +331,28 @@ export function Navbar() {
               <Link
                 href="/safety-guide"
                 onClick={() => setIsOpen(false)}
-                className={`flex items-center justify-between rounded-lg px-3 py-2.5 text-xs font-semibold transition-colors ${
+                className={`flex min-h-tap items-center justify-between rounded-control px-3 text-body font-semibold transition-colors duration-120 ${
                   pathname === '/safety-guide'
-                    ? 'bg-red-500/10 text-red-400 border-l-2 border-red-500 pl-2.5'
-                    : 'text-[#E8ECF1] hover:bg-white/[0.04]'
+                    ? 'border-l-2 border-accent bg-raised pl-2.5 text-fg-1'
+                    : 'text-fg-1 hover:bg-raised'
                 }`}
               >
                 <span>Panduan Evakuasi</span>
               </Link>
 
-              <div className="h-px bg-white/[0.06] my-2" />
+              <div className="my-2 h-px bg-line" />
 
-              <div className="px-3 py-1 text-[10px] font-mono font-bold tracking-wider uppercase text-[#5A6478]">
+              <div className="px-3 pb-1 pt-2 text-label text-fg-3">
                 Informasi & Otoritas
               </div>
 
               <Link
                 href="/data-sources"
                 onClick={() => setIsOpen(false)}
-                className={`flex items-center justify-between rounded-lg px-3 py-2.5 text-xs font-medium transition-colors ${
+                className={`flex min-h-tap items-center justify-between rounded-control px-3 text-body transition-colors duration-120 ${
                   pathname === '/data-sources'
-                    ? 'bg-red-500/10 text-red-400 border-l-2 border-red-500 pl-2.5'
-                    : 'text-[#8B95A7] hover:text-[#E8ECF1] hover:bg-white/[0.04]'
+                    ? 'border-l-2 border-accent bg-raised pl-2.5 text-fg-1'
+                    : 'text-fg-2 hover:bg-raised hover:text-fg-1'
                 }`}
               >
                 <span>Sumber Data Resmi</span>
@@ -367,10 +361,10 @@ export function Navbar() {
               <Link
                 href="/faq"
                 onClick={() => setIsOpen(false)}
-                className={`flex items-center justify-between rounded-lg px-3 py-2.5 text-xs font-medium transition-colors ${
+                className={`flex min-h-tap items-center justify-between rounded-control px-3 text-body transition-colors duration-120 ${
                   pathname === '/faq'
-                    ? 'bg-red-500/10 text-red-400 border-l-2 border-red-500 pl-2.5'
-                    : 'text-[#8B95A7] hover:text-[#E8ECF1] hover:bg-white/[0.04]'
+                    ? 'border-l-2 border-accent bg-raised pl-2.5 text-fg-1'
+                    : 'text-fg-2 hover:bg-raised hover:text-fg-1'
                 }`}
               >
                 <span>FAQ</span>
@@ -379,23 +373,23 @@ export function Navbar() {
               <Link
                 href="/about"
                 onClick={() => setIsOpen(false)}
-                className={`flex items-center justify-between rounded-lg px-3 py-2.5 text-xs font-medium transition-colors ${
+                className={`flex min-h-tap items-center justify-between rounded-control px-3 text-body transition-colors duration-120 ${
                   pathname === '/about'
-                    ? 'bg-red-500/10 text-red-400 border-l-2 border-red-500 pl-2.5'
-                    : 'text-[#8B95A7] hover:text-[#E8ECF1] hover:bg-white/[0.04]'
+                    ? 'border-l-2 border-accent bg-raised pl-2.5 text-fg-1'
+                    : 'text-fg-2 hover:bg-raised hover:text-fg-1'
                 }`}
               >
                 <span>Tentang Proyek</span>
               </Link>
 
-              <div className="pt-4 mt-auto border-t border-white/[0.06]">
+              <div className="mt-auto border-t border-line pt-3">
                 <Link
                   href="/map"
                   onClick={() => setIsOpen(false)}
-                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#EF4444] py-2.5 text-center text-xs font-bold uppercase tracking-wide text-white shadow-md shadow-red-900/30 transition-colors hover:bg-[#DC2626]"
+                  className="flex min-h-tap w-full items-center justify-center gap-2 rounded-control bg-accent text-body font-semibold text-fg-inverse transition-colors duration-120 hover:bg-accent-hover"
                 >
-                  <MapPin className="h-3.5 w-3.5" />
-                  <span>Cek Lokasi Saya</span>
+                  <MapPin className="h-4 w-4" aria-hidden="true" />
+                  <span>Buka peta</span>
                 </Link>
               </div>
             </div>

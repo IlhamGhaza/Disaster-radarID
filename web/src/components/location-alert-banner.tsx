@@ -26,6 +26,8 @@ import {
   Info,
   Radio,
   Bell,
+  CheckCircle2,
+  XCircle,
 } from 'lucide-react';
 
 interface LocationAlertBannerProps {
@@ -133,21 +135,23 @@ export function LocationAlertBanner({
   // If dismissed or no location cached, show a minimal prompt pill
   if (!cachedLoc) {
     return (
-      <div className={`flex items-center justify-between gap-3 px-3 py-2 rounded-xl bg-[#111827]/90 border border-white/10 text-xs text-[#8B95A7] backdrop-blur-md ${className}`}>
+      <div
+        className={`flex items-center justify-between gap-3 rounded-card border border-line-strong bg-raised py-1 pl-3 pr-1 text-small text-fg-2 shadow-float ${className}`}
+      >
         <div className="flex items-center gap-2">
-          <MapPin className="h-4 w-4 text-[#FF6B1A] shrink-0" />
+          <MapPin className="h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
           <span>Simpan lokasi Anda untuk mengaktifkan notifikasi zona bahaya otomatis</span>
         </div>
         <button
           type="button"
           onClick={handleGetGpsLocation}
           disabled={isLocating}
-          className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#FF6B1A]/20 text-[#FF8A3D] hover:bg-[#FF6B1A]/30 font-semibold transition shrink-0"
+          className="flex min-h-tap shrink-0 items-center gap-1.5 rounded-control px-3 font-semibold text-accent transition-colors duration-120 hover:bg-surface hover:text-accent-hover disabled:opacity-60"
         >
           {isLocating ? (
-            <RefreshCw className="h-3 w-3 animate-spin" />
+            <RefreshCw className="h-4 w-4 animate-spin motion-reduce:animate-none" aria-hidden="true" />
           ) : (
-            <Radio className="h-3 w-3" />
+            <Radio className="h-4 w-4" aria-hidden="true" />
           )}
           <span>{isLocating ? 'Mendeteksi...' : 'Deteksi GPS'}</span>
         </button>
@@ -161,64 +165,48 @@ export function LocationAlertBanner({
   const isWarning = alertInfo.status === 'NEARBY_WARNING';
   const isSafe = alertInfo.status === 'SAFE';
 
+  // Status selalu punya label teks + ikon, bukan warna saja.
+  const tone = isDanger
+    ? { label: 'Di dalam zona bahaya', text: 'text-sev-critical', edge: 'border-l-sev-critical', soft: 'bg-sev-critical-soft' }
+    : isWarning
+    ? { label: 'Dekat zona bahaya', text: 'text-sev-warning', edge: 'border-l-sev-warning', soft: 'bg-sev-warning-soft' }
+    : { label: isSafe ? 'Di luar zona terpantau' : 'Status lokasi', text: 'text-sev-normal', edge: 'border-l-sev-normal', soft: 'bg-raised' };
+
   const guide = alertInfo.safetyGuideType
     ? DISASTER_SAFETY_GUIDES[alertInfo.safetyGuideType]
     : DISASTER_SAFETY_GUIDES.earthquake;
 
+  const secondaryBtn =
+    'flex min-h-tap items-center gap-1.5 rounded-control border border-line-strong px-3 text-small font-semibold text-fg-1 transition-colors duration-120 hover:bg-surface md:min-h-10';
+
   return (
     <>
       <div
-        className={`relative overflow-hidden rounded-2xl border transition-all duration-300 backdrop-blur-xl shadow-2xl ${
-          isDanger
-            ? 'bg-red-950/80 border-red-500/40 text-red-100 shadow-red-950/50'
-            : isWarning
-            ? 'bg-amber-950/70 border-amber-500/40 text-amber-100 shadow-amber-950/40'
-            : 'bg-[#111827]/90 border-emerald-500/30 text-emerald-100'
-        } ${className}`}
+        role="status"
+        className={`relative rounded-card border border-line-strong border-l-4 ${tone.edge} ${tone.soft} text-fg-1 shadow-float ${className}`}
       >
-        {/* Pulsing indicator edge */}
-        {isDanger && (
-          <div className="absolute top-0 left-0 bottom-0 w-1.5 bg-gradient-to-b from-red-500 to-rose-600 animate-pulse" />
-        )}
-        {isWarning && (
-          <div className="absolute top-0 left-0 bottom-0 w-1.5 bg-gradient-to-b from-amber-500 to-orange-500" />
-        )}
-
-        <div className="p-3 sm:p-4 pl-4 sm:pl-5">
+        <div className="p-3 sm:p-4">
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-start gap-3">
-              <div
-                className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${
-                  isDanger
-                    ? 'bg-red-500/25 text-red-400 ring-2 ring-red-500/40 animate-pulse'
-                    : isWarning
-                    ? 'bg-amber-500/25 text-amber-400'
-                    : 'bg-emerald-500/20 text-emerald-400'
-                }`}
-              >
+              <div className={`mt-0.5 shrink-0 ${tone.text}`}>
                 {isDanger ? (
-                  <AlertTriangle className="h-5 w-5" />
+                  <AlertTriangle className="h-5 w-5" aria-hidden="true" />
                 ) : isWarning ? (
-                  <Radio className="h-5 w-5" />
+                  <Radio className="h-5 w-5" aria-hidden="true" />
                 ) : (
-                  <ShieldCheck className="h-5 w-5" />
+                  <ShieldCheck className="h-5 w-5" aria-hidden="true" />
                 )}
               </div>
 
               <div>
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-xs font-bold uppercase tracking-wider text-white">
-                    {alertInfo.headline}
-                  </span>
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-white/10 text-[#CBD5E1]">
-                    <MapPin className="h-2.5 w-2.5" />
-                    {cachedLoc.label}
-                  </span>
-                </div>
-
-                <p className="mt-1 text-xs text-[#CBD5E1] leading-relaxed">
-                  {alertInfo.message}
+                <p className={`text-label ${tone.text}`}>{tone.label}</p>
+                <p className="mt-0.5 text-heading text-fg-1">{alertInfo.headline}</p>
+                <p className="mt-0.5 inline-flex items-center gap-1 text-small text-fg-2">
+                  <MapPin className="h-3.5 w-3.5 text-fg-3" aria-hidden="true" />
+                  {cachedLoc.label}
                 </p>
+
+                <p className="mt-1.5 max-w-[68ch] text-small text-fg-2">{alertInfo.message}</p>
 
                 {/* Action Buttons */}
                 <div className="mt-3 flex flex-wrap items-center gap-2">
@@ -226,13 +214,9 @@ export function LocationAlertBanner({
                     <button
                       type="button"
                       onClick={() => setShowGuideModal(true)}
-                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-md ${
-                        isDanger
-                          ? 'bg-red-600 hover:bg-red-500 text-white shadow-red-900/40'
-                          : 'bg-amber-600 hover:bg-amber-500 text-white shadow-amber-900/30'
-                      }`}
+                      className="flex min-h-tap items-center gap-1.5 rounded-control bg-accent px-3 text-small font-semibold text-fg-inverse transition-colors duration-120 hover:bg-accent-hover md:min-h-10"
                     >
-                      <BookOpen className="h-3.5 w-3.5" />
+                      <BookOpen className="h-4 w-4" aria-hidden="true" />
                       <span>Lihat Panduan Evakuasi</span>
                     </button>
                   )}
@@ -241,22 +225,17 @@ export function LocationAlertBanner({
                     <button
                       type="button"
                       onClick={() => onSelectEvent(alertInfo.affectedEvent!)}
-                      className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/15 text-xs text-white transition"
+                      className={secondaryBtn}
                     >
                       <span>Fokus ke Kejadian</span>
-                      <ChevronRight className="h-3 w-3" />
+                      <ChevronRight className="h-4 w-4" aria-hidden="true" />
                     </button>
                   )}
 
                   {/* Notification Permission Prompt if not granted */}
                   {notificationPermission !== 'granted' && typeof window !== 'undefined' && 'Notification' in window && (
-                    <button
-                      type="button"
-                      onClick={handleEnableNotification}
-                      className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/30 text-xs font-bold text-red-300 border border-red-500/40 transition"
-                      title="Aktifkan notifikasi bahaya di browser"
-                    >
-                      <Bell className="h-3.5 w-3.5 animate-bounce" />
+                    <button type="button" onClick={handleEnableNotification} className={secondaryBtn}>
+                      <Bell className="h-4 w-4" aria-hidden="true" />
                       <span>Aktifkan Notifikasi</span>
                     </button>
                   )}
@@ -265,11 +244,13 @@ export function LocationAlertBanner({
                     type="button"
                     onClick={handleGetGpsLocation}
                     disabled={isLocating}
-                    className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs text-[#94A3B8] hover:text-white transition"
-                    title="Perbarui koordinat dengan GPS"
+                    className={`${secondaryBtn} font-normal text-fg-2`}
                   >
-                    <RefreshCw className={`h-3 w-3 ${isLocating ? 'animate-spin text-white' : ''}`} />
-                    <span>Perbarui Lokasi</span>
+                    <RefreshCw
+                      className={`h-4 w-4 ${isLocating ? 'animate-spin motion-reduce:animate-none' : ''}`}
+                      aria-hidden="true"
+                    />
+                    <span>{isLocating ? 'Mendeteksi...' : 'Perbarui Lokasi'}</span>
                   </button>
                 </div>
               </div>
@@ -279,10 +260,10 @@ export function LocationAlertBanner({
             <button
               type="button"
               onClick={() => setIsDismissed(true)}
-              className="p-1 text-[#94A3B8] hover:text-white rounded-lg hover:bg-white/10 transition"
-              aria-label="Tutup notifikasi"
+              className="-mr-1 -mt-1 flex size-tap shrink-0 items-center justify-center rounded-control text-fg-2 transition-colors duration-120 hover:bg-surface hover:text-fg-1"
+              aria-label="Tutup pemberitahuan lokasi"
             >
-              <X className="h-4 w-4" />
+              <X className="h-5 w-5" aria-hidden="true" />
             </button>
           </div>
         </div>
@@ -290,109 +271,118 @@ export function LocationAlertBanner({
 
       {/* Safety & Evacuation Modal */}
       {showGuideModal && guide && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in">
-          <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl border border-white/15 bg-[#0B0F17] p-6 shadow-2xl text-white">
-            <div className="flex items-start justify-between pb-4 border-b border-white/10">
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-bg/85 p-gutter"
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') setShowGuideModal(false);
+          }}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="guide-modal-title"
+            className="relative max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-card border border-line-strong bg-raised text-fg-1 shadow-float"
+          >
+            <div className="sticky top-0 flex items-start justify-between gap-3 border-b border-line bg-raised p-gutter">
               <div>
-                <span className="text-[11px] font-bold uppercase tracking-wider text-[#EF4444]">
-                  Panduan Tanggap Darurat Resmi
-                </span>
-                <h2 className="text-xl font-black text-white mt-0.5">{guide.title}</h2>
-                <p className="text-xs text-[#8B95A7] mt-1">{guide.tagline}</p>
+                <p className="text-label text-fg-3">Panduan Tanggap Darurat Resmi</p>
+                <h2 id="guide-modal-title" className="mt-0.5 text-title text-fg-1">
+                  {guide.title}
+                </h2>
+                <p className="mt-1 text-small text-fg-2">{guide.tagline}</p>
               </div>
               <button
                 type="button"
+                autoFocus
                 onClick={() => setShowGuideModal(false)}
-                className="rounded-xl p-2 text-[#8B95A7] hover:bg-white/10 hover:text-white transition"
+                className="flex size-tap shrink-0 items-center justify-center rounded-control text-fg-2 transition-colors duration-120 hover:bg-surface hover:text-fg-1"
+                aria-label="Tutup panduan"
               >
-                <X className="h-5 w-5" />
+                <X className="h-5 w-5" aria-hidden="true" />
               </button>
             </div>
 
-            {/* Emergency hotlines banner */}
-            <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
-              {guide.emergencyHotlines.map((hotline) => (
-                <a
-                  key={hotline.number}
-                  href={`tel:${hotline.number}`}
-                  className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-red-950/40 border border-red-500/30 hover:bg-red-900/40 transition group"
-                >
-                  <span className="text-[10px] text-[#FCA5A5]">{hotline.name}</span>
-                  <span className="text-lg font-black text-white group-hover:text-red-300">
-                    {hotline.number}
-                  </span>
-                  <span className="text-[9px] text-[#94A3B8] text-center line-clamp-1">
-                    {hotline.role}
-                  </span>
-                </a>
-              ))}
-            </div>
-
-            {/* Step-by-step immediate actions */}
-            <div className="mt-6">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-white mb-3 flex items-center gap-2">
-                <AlertTriangle className="h-4 w-4 text-amber-400" />
-                <span>Tindakan Cepat Saat Ini (Golden Time)</span>
-              </h3>
-              <div className="space-y-2.5">
-                {guide.duringAction.map((step) => (
-                  <div
-                    key={step.step}
-                    className="flex items-start gap-3 p-3 rounded-xl bg-[#151C28] border border-white/5"
+            <div className="p-gutter">
+              {/* Emergency hotlines banner */}
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                {guide.emergencyHotlines.map((hotline) => (
+                  <a
+                    key={hotline.number}
+                    href={`tel:${hotline.number}`}
+                    className="flex min-h-tap-lg flex-col justify-center rounded-control border border-line-strong bg-surface px-3 py-2 transition-colors duration-120 hover:border-accent"
                   >
-                    <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-red-500/20 text-red-400 font-black text-xs">
-                      {step.step}
-                    </div>
-                    <div>
-                      <h4 className="text-xs font-bold text-white">{step.title}</h4>
-                      <p className="text-xs text-[#94A3B8] mt-0.5 leading-relaxed">
-                        {step.instruction}
-                      </p>
-                    </div>
-                  </div>
+                    <span className="text-label font-normal text-fg-2">{hotline.name}</span>
+                    <span className="font-mono text-num-lg font-semibold tabular-nums text-fg-1">
+                      {hotline.number}
+                    </span>
+                    <span className="text-label font-normal text-fg-3 line-clamp-1">{hotline.role}</span>
+                  </a>
                 ))}
               </div>
-            </div>
 
-            {/* Dos and Don'ts */}
-            <div className="mt-6 grid sm:grid-cols-2 gap-4">
-              <div className="p-4 rounded-2xl bg-emerald-950/20 border border-emerald-500/30">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-400 mb-2">
-                  ✓ Hal Yang Harus Dilakukan
-                </h4>
-                <ul className="space-y-1.5 text-xs text-[#CBD5E1]">
-                  {guide.dos.map((item, idx) => (
-                    <li key={idx} className="flex items-start gap-2">
-                      <span className="text-emerald-400 shrink-0">•</span>
-                      <span>{item}</span>
+              {/* Step-by-step immediate actions */}
+              <section className="mt-stack" aria-labelledby="guide-during">
+                <h3 id="guide-during" className="mb-2 flex items-center gap-2 text-heading text-fg-1">
+                  <AlertTriangle className="h-5 w-5 text-sev-warning" aria-hidden="true" />
+                  <span>Yang dilakukan saat kejadian</span>
+                </h3>
+                <ol className="divide-y divide-line rounded-card border border-line">
+                  {guide.duringAction.map((step) => (
+                    <li key={step.step} className="flex items-start gap-3 bg-surface p-3">
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-badge border border-line-strong font-mono text-small font-semibold tabular-nums text-fg-1">
+                        {step.step}
+                      </span>
+                      <div>
+                        <h4 className="text-body font-semibold text-fg-1">{step.title}</h4>
+                        <p className="mt-0.5 text-small text-fg-2">{step.instruction}</p>
+                      </div>
                     </li>
                   ))}
-                </ul>
+                </ol>
+              </section>
+
+              {/* Dos and Don'ts */}
+              <div className="mt-stack grid gap-3 sm:grid-cols-2">
+                <div className="rounded-card border border-line border-l-4 border-l-sev-normal bg-surface p-gutter">
+                  <h4 className="mb-2 flex items-center gap-2 text-body font-semibold text-fg-1">
+                    <CheckCircle2 className="h-4 w-4 text-sev-normal" aria-hidden="true" />
+                    Hal Yang Harus Dilakukan
+                  </h4>
+                  <ul className="space-y-1.5 text-small text-fg-2">
+                    {guide.dos.map((item, idx) => (
+                      <li key={idx} className="flex items-start gap-2">
+                        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-sev-normal" aria-hidden="true" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="rounded-card border border-line border-l-4 border-l-sev-critical bg-surface p-gutter">
+                  <h4 className="mb-2 flex items-center gap-2 text-body font-semibold text-fg-1">
+                    <XCircle className="h-4 w-4 text-sev-critical" aria-hidden="true" />
+                    Hal Yang Dilarang Keras
+                  </h4>
+                  <ul className="space-y-1.5 text-small text-fg-2">
+                    {guide.donts.map((item, idx) => (
+                      <li key={idx} className="flex items-start gap-2">
+                        <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-sev-critical" aria-hidden="true" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
 
-              <div className="p-4 rounded-2xl bg-red-950/20 border border-red-500/30">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-red-400 mb-2">
-                  ✕ Hal Yang Dilarang Keras
-                </h4>
-                <ul className="space-y-1.5 text-xs text-[#CBD5E1]">
-                  {guide.donts.map((item, idx) => (
-                    <li key={idx} className="flex items-start gap-2">
-                      <span className="text-red-400 shrink-0">•</span>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
+              <div className="mt-stack flex justify-end border-t border-line pt-3">
+                <button
+                  type="button"
+                  onClick={() => setShowGuideModal(false)}
+                  className="flex min-h-tap items-center rounded-control border border-line-strong px-4 text-body font-semibold text-fg-1 transition-colors duration-120 hover:bg-surface"
+                >
+                  Tutup Panduan
+                </button>
               </div>
-            </div>
-
-            <div className="mt-6 pt-4 border-t border-white/10 flex justify-end">
-              <button
-                type="button"
-                onClick={() => setShowGuideModal(false)}
-                className="px-5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold text-white transition"
-              >
-                Tutup Panduan
-              </button>
             </div>
           </div>
         </div>
